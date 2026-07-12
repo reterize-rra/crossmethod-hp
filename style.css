@@ -1844,12 +1844,12 @@ p{color:var(--muted)}
 
 /* 無料体験：PCでは下部が見切れにくい高さへ */
 .embed-shell {
-  min-height: 1040px !important;
+  min-height: 1040px;
 }
 
 .embed-shell iframe {
-  height: 1040px !important;
-  min-height: 1040px !important;
+  height: 1040px;
+  min-height: 1040px;
 }
 
 /* 背景演出を持つセクション共通 */
@@ -2252,23 +2252,23 @@ p{color:var(--muted)}
   }
 
   .embed-shell {
-    min-height: 920px !important;
+    min-height: 920px;
   }
 
   .embed-shell iframe {
-    height: 920px !important;
-    min-height: 920px !important;
+    height: 920px;
+    min-height: 920px;
   }
 }
 
 @media (max-width: 600px) {
   .embed-shell {
-    min-height: 820px !important;
+    min-height: 820px;
   }
 
   .embed-shell iframe {
-    height: 820px !important;
-    min-height: 820px !important;
+    height: 820px;
+    min-height: 820px;
   }
 }
 
@@ -2292,12 +2292,12 @@ p{color:var(--muted)}
 
 /* 無料体験：余白を減らしつつ、設問操作に十分な高さを確保 */
 .embed-shell {
-  min-height: 920px !important;
+  min-height: 920px;
 }
 
 .embed-shell iframe {
-  height: 920px !important;
-  min-height: 920px !important;
+  height: 920px;
+  min-height: 920px;
 }
 
 /* 背景グラフ：薄すぎない濃度へ */
@@ -2364,23 +2364,23 @@ p{color:var(--muted)}
 /* タブレット・スマホも高さを少し縮小 */
 @media (max-width: 900px) {
   .embed-shell {
-    min-height: 840px !important;
+    min-height: 840px;
   }
 
   .embed-shell iframe {
-    height: 840px !important;
-    min-height: 840px !important;
+    height: 840px;
+    min-height: 840px;
   }
 }
 
 @media (max-width: 600px) {
   .embed-shell {
-    min-height: 760px !important;
+    min-height: 760px;
   }
 
   .embed-shell iframe {
-    height: 760px !important;
-    min-height: 760px !important;
+    height: 760px;
+    min-height: 760px;
   }
 }
 
@@ -3910,8 +3910,8 @@ a.news-item:hover {
 
   .embed-shell,
   .embed-shell iframe {
-    height: 700px !important;
-    min-height: 700px !important;
+    height: 700px;
+    min-height: 700px;
   }
 
   .embed-shell {
@@ -5018,3 +5018,35 @@ a.news-item:hover {
 @media (prefers-reduced-motion: reduce) {
   .mobile-in-view.mobile-card-motion, .mobile-in-view.mobile-card-motion > span:first-child, .mobile-in-view.mobile-card-motion .menu-icon, .mobile-in-view.mobile-card-motion .round-index, .mobile-in-view.mobile-card-motion .achievement-placeholder-mark { animation:none !important; }
 }
+
+/* ==========================================================
+   体験診断iframe 自動高さ調整
+   GAS側から通知された高さをJavaScriptで反映する
+   ========================================================== */
+
+.embed-shell {
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+#crossmethod-experience-frame {
+  display: block;
+  width: 100%;
+  height: 900px;
+  min-height: 720px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+@media (max-width: 768px) {
+  #crossmethod-experience-frame {
+    height: 760px;
+    min-height: 640px;
+  }
+}
+

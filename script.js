@@ -127,10 +127,41 @@ function setupExperienceFrame() {
   const frame = document.getElementById("crossmethod-experience-frame");
   const note = document.getElementById("embed-note");
   if (!frame) return;
+
+  setupTrialFrameAutoHeight(frame);
+
   if (SITE_CONFIG.experienceGasUrl && SITE_CONFIG.experienceGasUrl !== "GAS_WEB_APP_URL_HERE") {
     frame.src = SITE_CONFIG.experienceGasUrl;
     if (note) note.style.display = "none";
   }
+}
+
+/**
+ * 体験診断iframe 自動高さ調整
+ */
+function setupTrialFrameAutoHeight(frame) {
+  const MESSAGE_TYPE = "CROSS_METHOD_TRIAL_FRAME_HEIGHT_V1";
+  const MIN_HEIGHT = 280;
+  const MAX_HEIGHT = 30000;
+  const EXTRA_SPACE = 12;
+  const CHANGE_THRESHOLD = 2;
+
+  let lastAppliedHeight = 0;
+
+  window.addEventListener("message", (event) => {
+    if (event.source !== frame.contentWindow) return;
+
+    const data = event.data;
+    if (!data || data.type !== MESSAGE_TYPE) return;
+
+    const receivedHeight = Math.ceil(Number(data.height));
+    if (!Number.isFinite(receivedHeight)) return;
+    if (receivedHeight < MIN_HEIGHT || receivedHeight > MAX_HEIGHT) return;
+    if (Math.abs(receivedHeight - lastAppliedHeight) < CHANGE_THRESHOLD) return;
+
+    lastAppliedHeight = receivedHeight;
+    frame.style.height = `${receivedHeight + EXTRA_SPACE}px`;
+  });
 }
 
 function setupCounters() {
