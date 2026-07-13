@@ -4,6 +4,18 @@
   const privacyUrl = "/privacy-policy/";
   const commerceUrl = "/commercial-transaction/";
 
+  function openContactModal() {
+    const trigger = Array.from(document.querySelectorAll("[data-open-contact]"))
+      .find((element) => !element.closest(".footer-legal-links"));
+
+    if (trigger) {
+      trigger.click();
+      return;
+    }
+
+    window.location.href = "/#contact";
+  }
+
   function addFooterLinks() {
     const footerCompany = document.querySelector(".site-footer .footer-company");
     if (!footerCompany || footerCompany.querySelector(".footer-legal-links")) return;
@@ -14,8 +26,14 @@
     nav.innerHTML = `
       <a href="${privacyUrl}">プライバシーポリシー</a>
       <a href="${commerceUrl}">特定商取引法に基づく表記</a>
-      <a href="#contact">お問い合わせ</a>
+      <button type="button" class="footer-legal-contact">お問い合わせ</button>
     `;
+
+    const contactButton = nav.querySelector(".footer-legal-contact");
+    if (contactButton) {
+      contactButton.addEventListener("click", openContactModal);
+    }
+
     footerCompany.appendChild(nav);
   }
 
@@ -43,13 +61,41 @@
 
   function addStyles() {
     if (document.getElementById("crossmethod-legal-links-style")) return;
+
     const style = document.createElement("style");
     style.id = "crossmethod-legal-links-style";
     style.textContent = `
-      .footer-legal-links{display:flex;gap:12px 18px;flex-wrap:wrap;margin-top:12px}
-      .footer-legal-links a{font-size:12px;color:inherit;text-decoration:underline;text-underline-offset:3px}
-      .legal-form-notice{margin:12px 0 16px;font-size:12px;line-height:1.7;color:#607782}
-      .legal-form-notice a{color:#087f89;font-weight:700}
+      .footer-legal-links {
+        display: flex;
+        gap: 12px 18px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .footer-legal-links a,
+      .footer-legal-links button {
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        font-size: 12px;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .legal-form-notice {
+        margin: 12px 0 16px;
+        font-size: 12px;
+        line-height: 1.7;
+        color: #607782;
+      }
+
+      .legal-form-notice a {
+        color: #087f89;
+        font-weight: 700;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -65,5 +111,6 @@
   } else {
     setup();
   }
+
   window.addEventListener("hpmanageddataready", setup);
 })();
