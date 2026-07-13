@@ -1,6 +1,7 @@
 (() => {
   "use strict";
 
+  const faqUrl = "/faq/";
   const privacyUrl = "/privacy-policy/";
   const commerceUrl = "/commercial-transaction/";
 
@@ -24,6 +25,7 @@
     nav.className = "footer-legal-links";
     nav.setAttribute("aria-label", "法務・運営情報");
     nav.innerHTML = `
+      <a href="${faqUrl}">よくある質問</a>
       <a href="${privacyUrl}">プライバシーポリシー</a>
       <a href="${commerceUrl}">特定商取引法に基づく表記</a>
       <button type="button" class="footer-legal-contact">お問い合わせ</button>

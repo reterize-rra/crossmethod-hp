@@ -2,14 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.tsunagari-jp.com/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-07-14</lastmod>
+  </url>
+  <url>
+    <loc>https://www.tsunagari-jp.com/faq/</loc>
+    <lastmod>2026-07-14</lastmod>
   </url>
   <url>
     <loc>https://www.tsunagari-jp.com/privacy-policy/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-07-14</lastmod>
   </url>
   <url>
     <loc>https://www.tsunagari-jp.com/commercial-transaction/</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-07-14</lastmod>
   </url>
 </urlset>
