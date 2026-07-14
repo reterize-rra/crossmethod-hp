@@ -5,7 +5,7 @@
   const DEFAULT_DATA = {
   "hero": {
     "eyebrow": "Health Management",
-    "title": "健康を、個人任せにしない。\n働く力を守る経営へ。",
+    "title": "健康を、\n個人任せにしない。\n働く力を守る経営へ。",
     "lead": "健康経営は、健康診断や福利厚生の制度をそろえるだけではありません。心身の不調、疲労、ストレス、治療や介護との両立、管理者の抱え込み、食生活など、働く人の状態を経営課題として捉え、働き続けられる環境へつなげる取り組みです。クロスメソッド™は、数字だけでは見えにくい現場の声を集め、優先して整えるテーマを視える化します。",
     "badge1": "心身の健康",
     "badge2": "働き続けられる環境",
@@ -34,7 +34,7 @@
       "lead": "現在の課題や体制に合わせて、必要な領域を選び、無理のない順番で取り組みます。"
     },
     "recognition": {
-      "title": "認定取得は、\nゴールではなく、取り組みを続けるための節目です。",
+      "title": "認定取得は、ゴールではなく、\n取り組みを続けるための節目です。",
       "lead": "認定制度への対応だけを目的にせず、現場で使われる仕組みと継続的な改善を整えます。"
     },
     "flow": {
@@ -352,22 +352,58 @@
 };
 
   const $ = (selector) => document.querySelector(selector);
+  const BRAND_NAME = "クロスメソッド™";
 
   function setText(selector, value) {
     const el = $(selector);
     if (el) el.textContent = value || "";
   }
 
+  function appendBrandAwareText(parent, value) {
+    const parts = String(value || "").split(BRAND_NAME);
+
+    parts.forEach((part, index) => {
+      if (part) parent.appendChild(document.createTextNode(part));
+
+      if (index < parts.length - 1) {
+        const brand = document.createElement("span");
+        brand.className = "hm-inline-brand";
+        brand.textContent = BRAND_NAME;
+        parent.appendChild(brand);
+      }
+    });
+  }
+
+  function setRichText(selector, value) {
+    const el = $(selector);
+    if (!el) return;
+
+    el.innerHTML = "";
+    appendBrandAwareText(el, value);
+  }
+
   function setTitle(selector, value) {
     const el = $(selector);
     if (!el) return;
+
     el.innerHTML = "";
-    String(value || "").split("\n").filter(Boolean).forEach((line) => {
-      const span = document.createElement("span");
-      span.className = "hm-title-line";
-      span.textContent = line;
-      el.appendChild(span);
-    });
+
+    String(value || "")
+      .split("\n")
+      .filter(Boolean)
+      .forEach((line) => {
+        const span = document.createElement("span");
+        span.className = "hm-title-line";
+        appendBrandAwareText(span, line);
+        el.appendChild(span);
+      });
+  }
+
+  function brandHtml(value) {
+    return escapeHtml(value).replace(
+      /クロスメソッド™/g,
+      '<span class="hm-inline-brand">クロスメソッド™</span>'
+    );
   }
 
   async function fetchData() {
@@ -382,22 +418,38 @@
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const result = await response.json();
       if (!result?.success || !result?.data) throw new Error(result?.message || "API error");
-      return {
+      return normalizeLegacyCopy({
         hero: Object.assign({}, DEFAULT_DATA.hero, result.data.hero || {}),
         sections: Object.assign({}, DEFAULT_DATA.sections, result.data.sections || {}),
         cards: Object.assign({}, DEFAULT_DATA.cards, result.data.cards || {}),
         faq: Array.isArray(result.data.faq) && result.data.faq.length ? result.data.faq : DEFAULT_DATA.faq
-      };
+      });
     } catch (error) {
       console.warn("health-management fallback", error);
-      return DEFAULT_DATA;
+      return normalizeLegacyCopy(structuredClone(DEFAULT_DATA));
     }
+  }
+
+  function normalizeLegacyCopy(data) {
+    if (data.hero?.title === "健康を、個人任せにしない。\n働く力を守る経営へ。") {
+      data.hero.title = "健康を、\n個人任せにしない。\n働く力を守る経営へ。";
+    }
+
+    if (
+      data.sections?.recognition?.title ===
+      "認定取得は、\nゴールではなく、取り組みを続けるための節目です。"
+    ) {
+      data.sections.recognition.title =
+        "認定取得は、ゴールではなく、\n取り組みを続けるための節目です。";
+    }
+
+    return data;
   }
 
   function renderHero(data) {
     setText("#hero-eyebrow", data.hero.eyebrow);
     setTitle("#hero-title", data.hero.title);
-    setText("#hero-lead", data.hero.lead);
+    setRichText("#hero-lead", data.hero.lead);
     const wrap = $("#hero-badges");
     if (!wrap) return;
     wrap.innerHTML = "";
@@ -414,7 +466,7 @@
     ["definition","signals","framework","voices","support","recognition","flow","deliverables","faq","cta"]
       .forEach((key) => {
         setTitle(`#${key}-title`, sections[key]?.title);
-        setText(`#${key}-lead`, sections[key]?.lead);
+        setRichText(`#${key}-lead`, sections[key]?.lead);
       });
     setText("#cta-button-1", sections.cta?.button1);
     setText("#cta-button-2", sections.cta?.button2);
@@ -436,37 +488,60 @@
   function renderAllCards(cards) {
     renderCards(cards.signals, "#signals-list", "hm-card", (item) => `
       <div class="hm-card-icon" aria-hidden="true">${iconSvg(item.icon)}</div>
-      <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.text)}</p>`);
+      <h3>${brandHtml(item.title)}</h3>
+      <p>${brandHtml(item.text)}</p>`);
 
     renderCards(cards.framework, "#framework-list", "hm-framework-card", (item,index) => `
       <div class="hm-framework-number">0${index+1}</div>
-      <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.text)}</p>`);
+      <h3>${brandHtml(item.title)}</h3>
+      <p>${brandHtml(item.text)}</p>`);
 
     renderCards(cards.voices, "#voices-list", "hm-voice-card", (item) => `
       <div class="hm-voice-number">${escapeHtml(item.number || "")}</div>
-      <div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>`);
+      <div><h3>${brandHtml(item.title)}</h3><p>${brandHtml(item.text)}</p></div>`);
 
     renderCards(cards.support, "#support-list", "hm-card", (item) => `
       <div class="hm-card-icon" aria-hidden="true">${iconSvg(item.icon)}</div>
-      <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.text)}</p>`);
+      <h3>${brandHtml(item.title)}</h3>
+      <p>${brandHtml(item.text)}</p>
+      ${supportCardLink(item)}`);
 
     renderCards(cards.recognition, "#recognition-list", "hm-recognition-card", (item) => `
       <div class="hm-card-icon" aria-hidden="true">${iconSvg(item.icon)}</div>
-      <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.text)}</p>`);
+      <h3>${brandHtml(item.title)}</h3>
+      <p>${brandHtml(item.text)}</p>`);
 
     renderCards(cards.flow, "#flow-list", "hm-flow-card", (item,index) => `
       <div class="hm-flow-number">0${index+1}</div>
-      <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.text)}</p>`);
+      <h3>${brandHtml(item.title)}</h3>
+      <p>${brandHtml(item.text)}</p>`);
 
     renderCards(cards.deliverables, "#deliverables-list", "hm-deliverable-card", (item) => `
       <div class="hm-card-icon" aria-hidden="true">${iconSvg(item.icon)}</div>
-      <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.text)}</p>`);
+      <h3>${brandHtml(item.title)}</h3>
+      <p>${brandHtml(item.text)}</p>`);
+  }
+
+  function supportCardLink(item) {
+    const title = String(item?.title || "");
+
+    if (title === "ストレスチェック活用") {
+      return `
+        <a class="hm-card-link hm-card-link-stress" href="/#stresscheck">
+          ストレスチェックを詳しく見る
+          <span aria-hidden="true">→</span>
+        </a>`;
+    }
+
+    if (title === "食生活・健康食") {
+      return `
+        <a class="hm-card-link hm-card-link-food" href="/#healthyfood">
+          健康食を詳しく見る
+          <span aria-hidden="true">→</span>
+        </a>`;
+    }
+
+    return "";
   }
 
   function renderFaq(items) {
@@ -478,10 +553,10 @@
       article.className = "hm-faq-item";
       article.innerHTML = `
         <button type="button" aria-expanded="false" aria-controls="hm-faq-${index}">
-          Q. ${escapeHtml(item.q || "")}
+          Q. ${brandHtml(item.q || "")}
         </button>
         <div class="hm-faq-answer" id="hm-faq-${index}">
-          <p>A. ${escapeHtml(item.a || "")}</p>
+          <p>A. ${brandHtml(item.a || "")}</p>
         </div>`;
       const button = article.querySelector("button");
       button.addEventListener("click", () => {

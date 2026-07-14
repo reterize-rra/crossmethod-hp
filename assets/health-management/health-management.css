@@ -239,3 +239,402 @@ section[data-managed-background]>.hm-shell{position:relative;z-index:2}
 @media(prefers-reduced-motion:reduce){
   .hm-cta-rings{animation:none!important}
 }
+
+
+/* Health-management refinement */
+.hm-inline-brand {
+  display: inline-block;
+  white-space: nowrap;
+  font-weight: 900;
+  background: linear-gradient(90deg, #0876c1, #0caeb8 34%, #63bd4f 68%, #d5a33d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hm-title-line {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.hm-section-head h2,
+.hm-cta-card h2 {
+  text-wrap: balance;
+}
+
+.hm-card,
+.hm-framework-card,
+.hm-recognition-card,
+.hm-flow-card,
+.hm-deliverable-card,
+.hm-voice-card {
+  border-color: rgba(16, 47, 71, .13);
+}
+
+.hm-card p,
+.hm-framework-card p,
+.hm-recognition-card p,
+.hm-flow-card p,
+.hm-deliverable-card p {
+  font-size: 15px;
+  line-height: 1.82;
+}
+
+.hm-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.hm-card-link {
+  width: fit-content;
+  max-width: 100%;
+  min-height: 40px;
+  margin-top: auto;
+  padding: 9px 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 900;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.hm-card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.hm-card-link span {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.hm-card-link-stress {
+  color: #6c4c94;
+  background: #eee5fa;
+  border-color: #d8c7ed;
+}
+
+.hm-card-link-food {
+  color: #7b5a18;
+  background: #fff0bf;
+  border-color: #ead494;
+}
+
+.hm-related-supports {
+  margin-top: 28px;
+  padding: 25px 27px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border: 1px solid rgba(16, 47, 71, .11);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 12% 30%, rgba(17, 174, 183, .10), transparent 24%),
+    radial-gradient(circle at 90% 76%, rgba(211, 165, 66, .11), transparent 22%),
+    rgba(255, 255, 255, .84);
+  box-shadow: var(--shadow);
+}
+
+.hm-related-label {
+  margin: 0;
+  color: var(--aqua);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.hm-related-supports h3 {
+  margin: 4px 0 0;
+  color: var(--navy);
+  font-size: 23px;
+}
+
+.hm-related-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 11px;
+}
+
+.hm-related-button {
+  min-width: 245px;
+  padding: 14px 17px;
+  display: grid;
+  border: 1px solid transparent;
+  border-radius: 21px;
+  text-decoration: none;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.hm-related-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.hm-related-button span {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+
+.hm-related-button strong {
+  margin-top: 2px;
+  color: var(--navy);
+  font-size: 15px;
+}
+
+.related-stress {
+  color: #71519a;
+  background: linear-gradient(135deg, #f0e8fa, #ffffff);
+  border-color: #ddd0ee;
+}
+
+.related-food {
+  color: #9b7121;
+  background: linear-gradient(135deg, #fff1c5, #ffffff);
+  border-color: #ead79d;
+}
+
+/* Richer voice diagram */
+.hm-voice-orbit {
+  min-height: 690px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(17, 174, 183, .09), transparent 23%),
+    radial-gradient(circle at 18% 18%, rgba(79, 154, 215, .08), transparent 19%),
+    radial-gradient(circle at 82% 80%, rgba(211, 165, 66, .08), transparent 19%),
+    rgba(255, 255, 255, .86);
+}
+
+.hm-voice-orbit::before {
+  width: 660px;
+  height: 470px;
+  border-color: rgba(17, 174, 183, .27);
+  box-shadow:
+    0 0 0 56px rgba(79, 154, 215, .025),
+    0 0 0 112px rgba(101, 185, 90, .018);
+}
+
+.hm-voice-connectors {
+  position: absolute;
+  inset: 45px 55px;
+  z-index: 1;
+  width: calc(100% - 110px);
+  height: calc(100% - 90px);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.hm-voice-connectors .connector {
+  fill: none;
+  stroke-width: 2.3;
+  stroke-linecap: round;
+  stroke-dasharray: 8 11;
+  opacity: .56;
+  animation: hmConnectorFlow 8s linear infinite;
+}
+
+.connector-green { stroke: rgba(101, 185, 90, .50); }
+.connector-blue { stroke: rgba(79, 154, 215, .50); }
+.connector-coral { stroke: rgba(223, 132, 109, .48); }
+.connector-purple { stroke: rgba(146, 114, 189, .48); }
+.connector-gold { stroke: rgba(211, 165, 66, .50); }
+.connector-aqua { stroke: rgba(17, 174, 183, .50); }
+
+.hm-voice-connectors .connector-dot {
+  fill: #ffffff;
+  stroke: var(--aqua);
+  stroke-width: 4;
+  transform-origin: center;
+}
+
+.connector-dot-one {
+  animation: hmVoiceDot 2.7s ease-in-out infinite;
+}
+
+.connector-dot-two {
+  animation: hmVoiceDot 2.7s ease-in-out infinite .8s;
+}
+
+@keyframes hmConnectorFlow {
+  to { stroke-dashoffset: -76; }
+}
+
+@keyframes hmVoiceDot {
+  0%, 100% { opacity: .35; transform: scale(.75); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+.hm-voice-decoration {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hm-voice-decoration span {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  border: 1px solid rgba(17, 174, 183, .20);
+  box-shadow: 0 0 0 11px rgba(17, 174, 183, .035);
+  animation: hmVoiceFloat 6s ease-in-out infinite alternate;
+}
+
+.voice-decoration-one {
+  left: 10%;
+  top: 25%;
+  width: 27px;
+  height: 27px;
+}
+
+.voice-decoration-two {
+  right: 12%;
+  top: 18%;
+  width: 18px;
+  height: 18px;
+  animation-delay: .8s !important;
+}
+
+.voice-decoration-three {
+  right: 17%;
+  bottom: 19%;
+  width: 23px;
+  height: 23px;
+  animation-delay: 1.5s !important;
+}
+
+@keyframes hmVoiceFloat {
+  from { transform: translate3d(0, 0, 0) scale(.85); opacity: .38; }
+  to { transform: translate3d(8px, -10px, 0) scale(1.12); opacity: .84; }
+}
+
+.hm-voice-center {
+  width: 222px;
+  height: 222px;
+  padding: 25px 16px;
+  border-width: 11px;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, .98), rgba(247, 253, 253, .98));
+  box-shadow:
+    0 24px 58px rgba(16, 47, 71, .14),
+    0 0 0 18px rgba(17, 174, 183, .045);
+}
+
+.hm-voice-brand {
+  font-size: 12px;
+  letter-spacing: .01em;
+}
+
+.hm-voice-center strong {
+  margin-top: 8px;
+  font-size: 22px;
+}
+
+.hm-voice-steps {
+  margin-top: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.hm-voice-steps span {
+  padding: 4px 7px;
+  border-radius: 999px;
+  color: var(--navy);
+  background: rgba(17, 174, 183, .09);
+}
+
+.hm-voice-steps i {
+  color: var(--gold);
+  font-style: normal;
+}
+
+.hm-voice-grid {
+  min-height: 610px;
+}
+
+.hm-voice-card {
+  z-index: 4;
+  min-height: 146px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.hm-voice-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.hm-voice-card.tone-blue .hm-voice-number { background: #397ead; }
+.hm-voice-card.tone-aqua .hm-voice-number { background: #087f87; }
+.hm-voice-card.tone-green .hm-voice-number { background: #4c9145; }
+.hm-voice-card.tone-gold .hm-voice-number { background: #aa7b23; }
+.hm-voice-card.tone-coral .hm-voice-number { background: #ba624e; }
+.hm-voice-card.tone-purple .hm-voice-number { background: #72569a; }
+
+.hm-voice-card h3 {
+  font-size: 18px;
+}
+
+.hm-voice-card p {
+  font-size: 14px;
+}
+
+@media (max-width: 1100px) {
+  .hm-voice-connectors,
+  .hm-voice-decoration {
+    display: none;
+  }
+
+  .hm-related-supports {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hm-related-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .hm-title-line {
+    width: auto;
+  }
+
+  .hm-related-supports {
+    padding: 22px 18px;
+  }
+
+  .hm-related-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .hm-related-button {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .hm-card-link {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-voice-connectors .connector,
+  .hm-voice-connectors .connector-dot,
+  .hm-voice-decoration span {
+    animation: none !important;
+  }
+}
