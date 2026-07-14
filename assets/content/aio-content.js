@@ -7,14 +7,10 @@
     const style = document.createElement("style");
     style.id = "crossmethod-aio-content-style";
     style.textContent = `
-      .aio-about-section,
-      .aio-expertise-section {
+      .aio-about-section {
         position: relative;
         isolation: isolate;
         overflow: hidden;
-      }
-
-      .aio-about-section {
         padding: clamp(48px, 7vw, 88px) 0;
         background:
           radial-gradient(circle at 88% 12%, rgba(16,182,189,.11), transparent 27%),
@@ -44,12 +40,32 @@
         text-transform: uppercase;
       }
 
-      .aio-answer-card h2,
-      .aio-expertise-copy h2 {
+      .aio-about-title {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        column-gap: .16em;
+        row-gap: .05em;
         margin: 0;
         color: #102f47;
-        font-size: clamp(29px, 5vw, 48px);
+        font-size: clamp(30px, 3.6vw, 44px);
         line-height: 1.35;
+        text-wrap: balance;
+      }
+
+      .aio-brand-gradient {
+        display: inline-block;
+        white-space: nowrap;
+        background: linear-gradient(90deg, #0875c1, #10b6bd, #54bd47, #d3a63f);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .aio-title-suffix {
+        display: inline-block;
+        white-space: nowrap;
+        color: #102f47;
       }
 
       .aio-answer-lead {
@@ -186,100 +202,8 @@
         line-height: 1.8;
       }
 
-      .aio-expertise-section {
-        padding: clamp(52px, 8vw, 96px) 0;
-        background:
-          radial-gradient(circle at 18% 18%, rgba(16,182,189,.10), transparent 25%),
-          radial-gradient(circle at 84% 82%, rgba(212,165,61,.09), transparent 27%),
-          #f8fcfc;
-      }
-
-      .aio-expertise-shell {
-        width: min(1180px, calc(100% - 40px));
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
-        gap: clamp(24px, 5vw, 58px);
-        align-items: center;
-      }
-
-      .aio-expertise-copy > p:not(.aio-label) {
-        margin: 18px 0 0;
-        color: #506b79;
-        font-size: 16px;
-        line-height: 1.9;
-      }
-
-      .aio-expertise-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-      }
-
-      .aio-expertise-grid article {
-        min-height: 160px;
-        padding: 22px;
-        border: 1px solid rgba(13,61,82,.09);
-        border-radius: 22px;
-        background: rgba(255,255,255,.96);
-        box-shadow: 0 13px 36px rgba(13,61,82,.06);
-      }
-
-      .aio-expertise-grid span {
-        color: #0d9fa7;
-        font-size: 12px;
-        font-weight: 900;
-        letter-spacing: .08em;
-      }
-
-      .aio-expertise-grid h3 {
-        margin: 8px 0 7px;
-        color: #123d56;
-        font-size: 19px;
-      }
-
-      .aio-expertise-grid p {
-        margin: 0;
-        color: #607581;
-        line-height: 1.75;
-      }
-
-      .aio-expertise-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 23px;
-      }
-
-      .aio-expertise-actions a,
-      .aio-expertise-actions button {
-        min-height: 46px;
-        padding: 0 19px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 999px;
-        border: 0;
-        font: inherit;
-        font-weight: 800;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .aio-expertise-actions a {
-        color: #123d56;
-        background: #e9f7f7;
-        border: 1px solid #cce8ea;
-      }
-
-      .aio-expertise-actions button {
-        color: #ffffff;
-        background: linear-gradient(135deg, #12aeb6, #087f89);
-      }
-
       @media (max-width: 900px) {
-        .aio-about-grid,
-        .aio-expertise-shell {
+        .aio-about-grid {
           grid-template-columns: 1fr;
         }
 
@@ -293,8 +217,7 @@
       }
 
       @media (max-width: 620px) {
-        .aio-about-shell,
-        .aio-expertise-shell {
+        .aio-about-shell {
           width: min(100% - 24px, 1180px);
         }
 
@@ -303,8 +226,17 @@
           border-radius: 24px;
         }
 
-        .aio-process,
-        .aio-expertise-grid {
+        .aio-about-title {
+          font-size: clamp(28px, 8vw, 34px);
+          line-height: 1.42;
+        }
+
+        .aio-answer-lead {
+          font-size: 16px;
+          line-height: 1.9;
+        }
+
+        .aio-process {
           grid-template-columns: 1fr;
         }
 
@@ -367,20 +299,35 @@
   }
 
   function insertAboutSection() {
-    if (document.getElementById("crossmethod-about")) return;
+    const existingSections = Array.from(
+      document.querySelectorAll("#crossmethod-about")
+    );
 
-    const hero = document.querySelector("main > .hero");
-    if (!hero) return;
+    existingSections.slice(1).forEach((section) => section.remove());
+
+    if (existingSections[0]) {
+      existingSections[0].dataset.sectionId = "crossmethod-about";
+      existingSections[0].dataset.managedBackground = "voice";
+      positionAboutSection(existingSections[0]);
+      return;
+    }
 
     const section = document.createElement("section");
     section.className = "aio-about-section";
     section.id = "crossmethod-about";
+    section.dataset.sectionId = "crossmethod-about";
+    section.dataset.managedBackground = "voice";
     section.setAttribute("aria-labelledby", "crossmethod-about-title");
+
     section.innerHTML = `
       <div class="aio-about-shell">
         <div class="aio-answer-card">
           <p class="aio-label">What is Cross Method</p>
-          <h2 id="crossmethod-about-title">クロスメソッド™とは</h2>
+          <h2 id="crossmethod-about-title" class="aio-about-title">
+            <span class="aio-brand-gradient">クロスメソッド™</span>
+            <span class="aio-title-suffix">とは</span>
+          </h2>
+
           <p class="aio-answer-lead">
             クロスメソッド™は、お客様・従業員・現場の声を、経営判断に使える形へ変える仕組みです。
             声を集めて終わらず、強み・課題・優先順位を視える化し、組織改善、健康経営、人材定着、
@@ -443,76 +390,22 @@
       </div>
     `;
 
-    hero.insertAdjacentElement("afterend", section);
+    positionAboutSection(section);
   }
 
-  function openContact() {
-    const trigger = document.querySelector("[data-open-contact]");
-    if (trigger) {
-      trigger.click();
-      return;
-    }
+  function positionAboutSection(section) {
+    const hero = document.querySelector("main > .hero");
+    if (!hero || !section) return;
 
-    window.location.href = "/#contact";
+    if (hero.nextElementSibling !== section) {
+      hero.insertAdjacentElement("afterend", section);
+    }
   }
 
-  function insertExpertiseSection() {
-    if (document.getElementById("crossmethod-expertise")) return;
-
-    const contact = document.getElementById("contact");
-    const main = document.querySelector("main");
-    if (!contact || !main) return;
-
-    const section = document.createElement("section");
-    section.className = "aio-expertise-section";
-    section.id = "crossmethod-expertise";
-    section.setAttribute("aria-labelledby", "crossmethod-expertise-title");
-    section.innerHTML = `
-      <div class="aio-expertise-shell">
-        <div class="aio-expertise-copy">
-          <p class="aio-label">Who We Are</p>
-          <h2 id="crossmethod-expertise-title">声を扱うからこそ、現場を知る人が支援します。</h2>
-          <p>
-            合同会社 TSUNAGARIは、医療・介護・福祉、健康支援、職場改善の実務経験をもとに、
-            組織の声を集め、判断できる形へ整理し、実行可能な改善へつなげる支援を提供しています。
-          </p>
-          <div class="aio-expertise-actions">
-            <a href="/faq/">よくある質問を見る</a>
-            <button type="button" id="aio-contact-button">相談する</button>
-          </div>
-        </div>
-
-        <div class="aio-expertise-grid">
-          <article>
-            <span>EXPERIENCE</span>
-            <h3>約20年の実務経験</h3>
-            <p>医療・介護分野の現場と事業運営に関わってきた経験を、職場改善へ生かします。</p>
-          </article>
-          <article>
-            <span>PROFESSIONAL</span>
-            <h3>国家資格に基づく専門性</h3>
-            <p>健康、生活、働き方、人との関わりを、現場の実態に合わせて整理します。</p>
-          </article>
-          <article>
-            <span>MANAGEMENT</span>
-            <h3>開設・運営支援</h3>
-            <p>訪問看護、訪問リハ、通所、居宅などの開設・運営支援経験があります。</p>
-          </article>
-          <article>
-            <span>HEALTH SUPPORT</span>
-            <h3>健康食・健康経営支援</h3>
-            <p>制度だけでなく、食事、ストレス、両立支援、職場環境を実行へつなげます。</p>
-          </article>
-        </div>
-      </div>
-    `;
-
-    main.insertBefore(section, contact);
-
-    const contactButton = section.querySelector("#aio-contact-button");
-    if (contactButton) {
-      contactButton.addEventListener("click", openContact);
-    }
+  function removeExpertiseSection() {
+    document
+      .querySelectorAll("#crossmethod-expertise, .aio-expertise-section")
+      .forEach((section) => section.remove());
   }
 
   function replaceKnownAlerts() {
@@ -538,12 +431,36 @@
     };
   }
 
+  function syncSections() {
+    insertAboutSection();
+    removeExpertiseSection();
+  }
+
+  function setupObserver() {
+    if (window.__crossMethodAioContentObserver) return;
+    window.__crossMethodAioContentObserver = true;
+
+    const main = document.querySelector("main");
+    if (!main) return;
+
+    let timer = 0;
+
+    const observer = new MutationObserver(() => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(syncSections, 80);
+    });
+
+    observer.observe(main, {
+      childList: true
+    });
+  }
+
   function setup() {
     addStyles();
     replacePublicCopy();
     replaceKnownAlerts();
-    insertAboutSection();
-    insertExpertiseSection();
+    syncSections();
+    setupObserver();
   }
 
   if (document.readyState === "loading") {
@@ -552,5 +469,9 @@
     setup();
   }
 
-  window.addEventListener("hpmanageddataready", replacePublicCopy);
+  window.addEventListener("hpmanageddataready", () => {
+    replacePublicCopy();
+    window.setTimeout(syncSections, 80);
+    window.setTimeout(syncSections, 420);
+  });
 })();
