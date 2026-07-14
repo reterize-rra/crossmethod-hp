@@ -3,16 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>お客様の声・顧客体験の視える化｜選ばれる理由を改善へ｜クロスメソッド™</title>
   <meta name="description" content="飲食店、ホテル、介護・福祉、一般企業まで。お客様の声をもとに、顧客体験のどこに強みや課題があるかを視える化し、教育・業務・サービス改善へつなげます。">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <link rel="canonical" href="https://www.tsunagari-jp.com/customer-voice/">
+
   <meta property="og:type" content="website">
   <meta property="og:title" content="お客様の声・顧客体験の視える化｜クロスメソッド™">
-  <meta property="og:description" content="お客様の声を、選ばれる理由と改善の順番へ。飲食店の動線を代表例として、ホテル・介護・一般企業にも広がる顧客体験の視える化を紹介します。">
+  <meta property="og:description" content="お客様の声から、選ばれる理由と改善点を視える化。飲食店の動線を代表例として、ホテル・介護・一般企業にも広がる顧客体験の確認方法を紹介します。">
   <meta property="og:url" content="https://www.tsunagari-jp.com/customer-voice/">
   <meta property="og:image" content="https://www.tsunagari-jp.com/assets/images/seo/ogp-crossmethod.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://www.tsunagari-jp.com/customer-voice/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="/assets/customer-voice/customer-voice.css">
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -33,6 +43,7 @@
     ]
   }
   </script>
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -50,150 +61,238 @@
   }
   </script>
 </head>
+
 <body>
   <header class="cv-header">
     <div class="cv-shell cv-header-inner">
-      <a class="cv-brand" href="/">TSUNAGARI <span>クロスメソッド™</span></a>
+      <a class="cv-brand" href="/" aria-label="クロスメソッド™トップへ戻る">
+        <img class="cv-company-logo" src="/assets/images/brand/company_logo.png" alt="TSUNAGARI">
+        <span class="cv-brand-divider" aria-hidden="true"></span>
+        <img class="cv-method-mark" src="/assets/images/brand/crossmethod_logo.png" alt="">
+        <span class="cv-method-name">クロスメソッド™</span>
+      </a>
+
       <nav class="cv-nav" aria-label="ページ内移動">
-        <a href="#common-flow">顧客体験の流れ</a>
-        <a href="#restaurant">飲食店の代表例</a>
-        <a href="#industries">他業種への展開</a>
-        <a href="#faq">FAQ</a>
+        <a class="tone-aqua" href="#common-flow">顧客体験の流れ</a>
+        <a class="tone-gold" href="#restaurant">飲食店の代表例</a>
+        <a class="tone-green" href="#industries">他業種への展開</a>
+        <a class="tone-purple" href="#faq">FAQ</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <section class="cv-hero">
+    <section class="cv-hero" data-managed-background="voice">
       <div class="cv-shell cv-hero-grid">
         <div class="cv-hero-copy">
           <p class="cv-eyebrow" id="hero-eyebrow"></p>
           <h1 id="hero-title"></h1>
           <p class="cv-lead" id="hero-lead"></p>
+
           <div class="cv-badges" id="hero-badges"></div>
+
           <div class="cv-actions">
             <a class="cv-btn cv-btn-primary" href="/#experience">無料体験診断を見る</a>
             <a class="cv-btn cv-btn-secondary" href="/#contact">相談する</a>
           </div>
         </div>
-        <div class="cv-hero-visual" aria-hidden="true">
-          <div class="cv-visual-card">
-            <span>来店前</span>
-            <strong>期待と不安</strong>
+
+        <div class="cv-hero-journey" aria-label="顧客体験の3つの時間軸">
+          <article class="cv-journey-card journey-before">
+            <div class="cv-journey-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <rect x="16" y="12" width="32" height="42" rx="7"/>
+                <path d="M23 23h18M23 31h12"/>
+                <circle cx="39" cy="44" r="5"/>
+              </svg>
+            </div>
+            <div>
+              <span>利用前</span>
+              <strong>期待と不安</strong>
+              <p>検索・予約・問い合わせ</p>
+            </div>
+          </article>
+
+          <div class="cv-journey-line" aria-hidden="true">
+            <i></i><i></i><i></i>
           </div>
-          <div class="cv-visual-card">
-            <span>利用中</span>
-            <strong>接客・説明・待ち時間</strong>
-          </div>
-          <div class="cv-visual-card">
-            <span>利用後</span>
-            <strong>再来店・紹介・口コミ</strong>
-          </div>
+
+          <article class="cv-journey-card journey-during">
+            <div class="cv-journey-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M13 25h38v24H13z"/>
+                <path d="M19 25v-8h26v8M20 34h9M35 34h9"/>
+                <path d="M24 49v6M40 49v6"/>
+              </svg>
+            </div>
+            <div>
+              <span>利用中</span>
+              <strong>接客・説明・待ち時間</strong>
+              <p>サービス・連携・安心感</p>
+            </div>
+          </article>
+
+          <article class="cv-journey-card journey-after">
+            <div class="cv-journey-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M11 16h42v28H29L18 54V44h-7z"/>
+                <path d="M22 27h20M22 35h13"/>
+                <path d="m46 10 2 4 5 .7-3.6 3.5.9 4.8-4.3-2.3-4.3 2.3.9-4.8-3.6-3.5 5-.7z"/>
+              </svg>
+            </div>
+            <div>
+              <span>利用後</span>
+              <strong>再利用・紹介・口コミ</strong>
+              <p>記憶に残る体験と継続意向</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="cv-section">
+    <section class="cv-section cv-difference-section" data-managed-background="graph">
       <div class="cv-shell">
         <div class="cv-section-head">
+          <p class="cv-section-label">Beyond Satisfaction</p>
           <h2 id="difference-title"></h2>
           <p id="difference-lead"></p>
         </div>
+
         <div class="cv-intro-grid">
-          <article class="cv-card">
+          <article class="cv-feature-card tone-blue">
+            <div class="cv-feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <path d="M10 50h44"/>
+                <rect x="14" y="31" width="8" height="19" rx="3"/>
+                <rect x="28" y="20" width="8" height="30" rx="3"/>
+                <rect x="42" y="12" width="8" height="38" rx="3"/>
+                <path d="m16 22 13-9 12 5 12-9"/>
+              </svg>
+            </div>
             <h3>総合満足だけでは分からないこと</h3>
-            <p>満足度が高くても、再来店や紹介につながるとは限りません。接点ごとの体験を見ることで、どこに差が生まれているかを確認します。</p>
+            <p>満足度が高くても、再利用や紹介につながるとは限りません。接点ごとの体験を確認し、どこに差が生まれているかを整理します。</p>
           </article>
-          <article class="cv-card">
+
+          <article class="cv-feature-card tone-coral">
+            <div class="cv-feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 64">
+                <circle cx="22" cy="22" r="8"/>
+                <circle cx="42" cy="22" r="8"/>
+                <path d="M10 52c1-11 6-17 12-17s11 6 12 17"/>
+                <path d="M30 52c1-11 6-17 12-17s11 6 12 17"/>
+                <path d="M26 29h12"/>
+              </svg>
+            </div>
             <h3>誰かを責めるためではないこと</h3>
-            <p>個人評価に使うのではなく、教育、役割分担、説明方法、業務導線の改善に活用する前提で整理します。</p>
+            <p>個人評価ではなく、教育、役割分担、説明方法、業務導線を整える材料として活用します。</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="cv-section cv-section-soft" id="common-flow">
+    <section class="cv-section cv-flow-section" id="common-flow" data-managed-background="flow">
       <div class="cv-shell">
         <div class="cv-section-head">
+          <p class="cv-section-label">Customer Journey</p>
           <h2 id="scope-title"></h2>
           <p id="scope-lead"></p>
         </div>
-        <div class="cv-flow-track" id="common-flow-list"></div>
+
+        <div class="cv-common-journey" id="common-flow-list"></div>
       </div>
     </section>
 
-    <section class="cv-section" id="restaurant">
+    <section class="cv-section cv-restaurant-section" id="restaurant" data-managed-background="food">
       <div class="cv-shell">
         <div class="cv-section-head">
+          <p class="cv-section-label">Restaurant Example</p>
           <h2 id="restaurant-title"></h2>
           <p id="restaurant-lead"></p>
         </div>
-        <div class="cv-figure-shell">
-          <div class="cv-figure-explain">
-            <h3>店内体験の図説イメージ</h3>
-            <p>検索・予約から、退店後の再来店や口コミまで。どの場面で、どんな声を確認するのかを図として見せることで、改善テーマが鮮明になります。</p>
+
+        <div class="cv-restaurant-intro">
+          <div>
+            <span>代表例</span>
+            <h3>飲食店の顧客体験</h3>
           </div>
-          <div class="cv-restaurant-map" id="restaurant-flow-list"></div>
+          <p>
+            店内で起きる場面を5つに分け、各場面で確認する声と改善テーマを一つの物語として見せます。
+          </p>
         </div>
+
+        <div class="cv-restaurant-story" id="restaurant-flow-list"></div>
       </div>
     </section>
 
-    <section class="cv-section cv-section-soft" id="industries">
+    <section class="cv-section cv-industry-section" id="industries" data-managed-background="connections">
       <div class="cv-shell">
         <div class="cv-section-head">
+          <p class="cv-section-label">Across Industries</p>
           <h2 id="industries-title"></h2>
           <p id="industries-lead"></p>
         </div>
+
         <div class="cv-industry-grid" id="industry-example-list"></div>
       </div>
     </section>
 
-    <section class="cv-section" id="signals">
+    <section class="cv-section cv-signals-section" id="signals" data-managed-background="diagnostics">
       <div class="cv-shell">
         <div class="cv-section-head">
+          <p class="cv-section-label">Shared Signals</p>
           <h2 id="signals-title"></h2>
           <p id="signals-lead"></p>
         </div>
-        <div class="cv-pill-grid" id="common-signal-list"></div>
+
+        <div class="cv-signal-grid" id="common-signal-list"></div>
       </div>
     </section>
 
-    <section class="cv-section cv-section-soft" id="improvement">
+    <section class="cv-section cv-improvement-section" id="improvement" data-managed-background="services">
       <div class="cv-shell">
         <div class="cv-section-head">
+          <p class="cv-section-label">From Voice to Action</p>
           <h2 id="improvement-title"></h2>
           <p id="improvement-lead"></p>
         </div>
+
         <div class="cv-process-grid" id="improvement-flow-list"></div>
       </div>
     </section>
 
-    <section class="cv-section" id="deliverables">
+    <section class="cv-section cv-deliverables-section" id="deliverables" data-managed-background="certification">
       <div class="cv-shell">
         <div class="cv-section-head">
+          <p class="cv-section-label">Deliverables</p>
           <h2 id="deliverables-title"></h2>
           <p id="deliverables-lead"></p>
         </div>
+
         <div class="cv-deliverable-grid" id="deliverable-list"></div>
       </div>
     </section>
 
-    <section class="cv-section cv-section-soft" id="faq">
+    <section class="cv-section cv-faq-section" id="faq" data-managed-background="faq">
       <div class="cv-shell">
         <div class="cv-section-head">
+          <p class="cv-section-label">FAQ</p>
           <h2 id="faq-title"></h2>
           <p id="faq-lead"></p>
         </div>
+
         <div class="cv-faq-list" id="faq-list"></div>
       </div>
     </section>
 
-    <section class="cv-cta">
+    <section class="cv-cta" data-managed-background="contact">
       <div class="cv-shell">
         <div class="cv-cta-card">
+          <div class="cv-cta-orbit" aria-hidden="true"></div>
+          <p class="cv-section-label">Contact</p>
           <h2 id="cta-title"></h2>
           <p id="cta-lead"></p>
-          <div class="cv-actions">
+
+          <div class="cv-actions cv-actions-center">
             <a class="cv-btn cv-btn-primary" id="cta-button-1" href="/#experience"></a>
             <a class="cv-btn cv-btn-secondary" id="cta-button-2" href="/#contact"></a>
           </div>
@@ -202,6 +301,23 @@
     </section>
   </main>
 
+  <footer class="cv-footer">
+    <div class="cv-shell cv-footer-inner">
+      <a class="cv-footer-brand" href="/">
+        <img src="/assets/images/brand/company_logo.png" alt="TSUNAGARI">
+        <span class="cv-method-name">クロスメソッド™</span>
+      </a>
+
+      <nav aria-label="フッターメニュー">
+        <a href="/">トップへ戻る</a>
+        <a href="/faq/">よくある質問</a>
+        <a href="/privacy-policy/">プライバシーポリシー</a>
+        <a href="/commercial-transaction/">特定商取引法</a>
+      </nav>
+    </div>
+  </footer>
+
   <script src="/assets/customer-voice/customer-voice.js"></script>
+  <script src="/assets/managed/section-ambient.js"></script>
 </body>
 </html>

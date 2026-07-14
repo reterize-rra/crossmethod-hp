@@ -2,293 +2,155 @@
   "use strict";
 
   const API_URL = "https://script.google.com/macros/s/AKfycbxuGAYkdygkpMsxFQvxmSdu2TnRs7svrudmgwDVOQg9YKIAa1T-Q-v5YmXOf4b5fQCSJw/exec";
+
   const DEFAULT_DATA = {
-  "hero": {
-    "eyebrow": "Customer Voice",
-    "title": "お客様の声を、\n「選ばれる理由」と改善の順番へ。",
-    "lead": "顧客満足は、商品やサービスの品質だけで決まりません。問い合わせ、案内、待ち時間、説明、接客、利用中の安心感、会計、アフターフォローまで、体験全体が再利用・継続・紹介・口コミに影響します。クロスメソッド™は、お客様の声を集め、顧客体験のどこに強みや課題があるかを視える化し、教育・業務・サービス改善へつなげます。",
-    "badge1": "飲食店",
-    "badge2": "ホテル",
-    "badge3": "介護・福祉",
-    "badge4": "一般企業"
-  },
-  "sections": {
-    "difference": {
-      "title": "味やサービスの評価だけでは、改善の順番までは分かりません。",
-      "lead": "「おいしいのに再来店が増えない」「クレームは少ないのに紹介されにくい」「スタッフは頑張っているのに評価が安定しない」。こうした状態は、体験のどこかに小さな違和感が残っている可能性があります。クロスメソッド™は、総合満足だけでは見えない接点ごとの声を整理します。"
+    hero: {
+      eyebrow: "Customer Voice",
+      title: "お客様の声から、\n選ばれる理由と\u200B改善点を視える化。",
+      lead: "顧客満足は、商品やサービスの品質だけで決まりません。問い合わせ、案内、待ち時間、説明、接客、利用中の安心感、会計、アフターフォローまで、体験全体が再利用・継続・紹介・口コミに影響します。クロスメソッド™は、お客様の声を集め、顧客体験のどこに強みや課題があるかを視える化し、教育・業務・サービス改善へつなげます。",
+      badge1: "飲食店",
+      badge2: "ホテル",
+      badge3: "介護・福祉",
+      badge4: "一般企業"
     },
-    "scope": {
-      "title": "共通して確認する顧客体験の流れ",
-      "lead": "業種が違っても、顧客体験は接点の連続でできています。まずは共通構造を押さえ、そのうえで業種ごとの動線へ落とし込みます。"
+    sections: {
+      difference: {
+        title: "満足度だけでは、\n改善すべき接点までは\u200B分かりません。",
+        lead: "「おいしいのに再来店が増えない」「クレームは少ないのに紹介されにくい」「スタッフは頑張っているのに評価が安定しない」。こうした状態は、体験のどこかに小さな違和感が残っている可能性があります。クロスメソッド™は、総合満足だけでは見えない接点ごとの声を整理します。"
+      },
+      scope: {
+        title: "顧客体験は、\n利用前から利用後まで\u200Bつながっています。",
+        lead: "業種が違っても、顧客体験は接点の連続でできています。まずは共通構造を押さえ、そのうえで業種ごとの動線へ落とし込みます。"
+      },
+      restaurant: {
+        title: "飲食店を例に、\n店内体験の流れを\u200B見てみましょう。",
+        lead: "飲食店は顧客体験の流れがイメージしやすく、改善テーマも見つけやすい代表例です。味の評価だけでなく、店内で起きている一連の体験を確認します。"
+      },
+      industries: {
+        title: "ホテル・介護・一般企業にも、\n同じ考え方を\u200B応用できます。",
+        lead: "代表例は飲食店ですが、顧客体験を接点ごとに見る考え方は、予約・受付・説明・利用・継続があるすべての業種に応用できます。"
+      },
+      signals: {
+        title: "業種が違っても、\n確認すべき声には\u200B共通点があります。",
+        lead: "以下の視点は、飲食店、ホテル、介護・福祉、一般企業のどれでも確認できます。"
+      },
+      improvement: {
+        title: "お客様の声を、\n教育と業務改善へ。",
+        lead: "一件の低評価を個人責任で終わらせず、接点を特定し、教育・連携・手順・説明資料・導線の改善テーマへ変換します。"
+      },
+      deliverables: {
+        title: "声を集めた後に、\n整理されること",
+        lead: "声を集めた後は、現場で使える形へ整えて返します。"
+      },
+      faq: {
+        title: "よくある質問",
+        lead: "初回相談でよくいただく質問をまとめています。"
+      },
+      cta: {
+        title: "お客様の声を、\n改善のきっかけに変えたい方へ。",
+        lead: "飲食店、ホテル、介護・福祉、一般企業まで。まずは、どの接点の声を確認したいかをご相談ください。",
+        button1: "無料体験診断を見る",
+        button2: "相談する"
+      }
     },
-    "restaurant": {
-      "title": "代表例：飲食店の店内体験をどう視える化するか",
-      "lead": "飲食店は顧客体験の流れがイメージしやすく、改善テーマも見つけやすい代表例です。味の評価だけでなく、店内で起きている一連の体験を確認します。"
+    flows: {
+      commonFlow: [],
+      restaurantFlow: [],
+      industryHotel: [],
+      industryCare: [],
+      industryBusiness: [],
+      commonSignals: [],
+      improvementFlow: [],
+      deliverables: []
     },
-    "industries": {
-      "title": "考え方は、ホテル・介護・一般企業にもそのまま応用できます。",
-      "lead": "代表例は飲食店ですが、顧客体験を接点ごとに見る考え方は、予約・受付・説明・利用・継続があるすべての業種に応用できます。"
+    faq: []
+  };
+
+  const COMMON_PHASES = [
+    {
+      title: "知る・問い合わせる",
+      indexes: [0, 1]
     },
-    "signals": {
-      "title": "業種が違っても、共通して確認する声があります。",
-      "lead": "以下の視点は、飲食店、ホテル、介護・福祉、一般企業のどれでも確認できます。"
+    {
+      title: "訪れる・説明を受ける",
+      indexes: [2, 3]
     },
-    "improvement": {
-      "title": "お客様の声は、誰かを責めるためではなく、教育と業務改善へ変えます。",
-      "lead": "一件の低評価を個人責任で終わらせず、接点を特定し、教育・連携・手順・説明資料・導線の改善テーマへ変換します。"
+    {
+      title: "利用する・手続きする",
+      indexes: [4, 5]
     },
-    "deliverables": {
-      "title": "診断後に整理される内容",
-      "lead": "声を集めた後は、現場で使える形へ整えて返します。"
-    },
-    "faq": {
-      "title": "よくある質問",
-      "lead": "初回相談でよくいただく質問をまとめています。"
-    },
-    "cta": {
-      "title": "お客様の声を、改善のきっかけに変えたい方へ。",
-      "lead": "飲食店、ホテル、介護・福祉、一般企業まで。まずは、どの接点の声を確認したいかをご相談ください。",
-      "button1": "無料体験診断を見る",
-      "button2": "相談する"
+    {
+      title: "利用後につながる",
+      indexes: [6, 7]
     }
-  },
-  "flows": {
-    "commonFlow": [
-      {
-        "label": "知る",
-        "text": "検索・紹介・広告・口コミなどで存在を知る"
-      },
-      {
-        "label": "問い合わせ・予約",
-        "text": "予約しやすさ、返答の早さ、最初の印象"
-      },
-      {
-        "label": "訪問・来店",
-        "text": "入口の分かりやすさ、到着時の安心感"
-      },
-      {
-        "label": "説明・案内",
-        "text": "案内の分かりやすさ、対応の丁寧さ"
-      },
-      {
-        "label": "利用",
-        "text": "利用中の満足感、連携、安心感"
-      },
-      {
-        "label": "会計・手続き",
-        "text": "最後の印象、スムーズさ、納得感"
-      },
-      {
-        "label": "利用後",
-        "text": "フォロー、問い合わせ対応、記憶に残る体験"
-      },
-      {
-        "label": "再利用・紹介",
-        "text": "また利用したいか、誰かに勧めたいか"
-      }
-    ],
-    "restaurantFlow": [
-      {
-        "step": "01",
-        "scene": "検索・予約",
-        "voice": "予約のしやすさ／店の魅力は伝わったか"
-      },
-      {
-        "step": "02",
-        "scene": "入店",
-        "voice": "第一印象／迎えられた安心感"
-      },
-      {
-        "step": "03",
-        "scene": "案内・着席",
-        "voice": "席への案内／待たされた印象はないか"
-      },
-      {
-        "step": "04",
-        "scene": "注文",
-        "voice": "メニューの分かりやすさ／説明の丁寧さ"
-      },
-      {
-        "step": "05",
-        "scene": "待ち時間",
-        "voice": "時間の長さ／説明や気配りはあったか"
-      },
-      {
-        "step": "06",
-        "scene": "料理提供",
-        "voice": "提供時の印象／料理説明や確認の丁寧さ"
-      },
-      {
-        "step": "07",
-        "scene": "食事中対応",
-        "voice": "追加注文／スタッフ間の連携／居心地"
-      },
-      {
-        "step": "08",
-        "scene": "会計",
-        "voice": "最後まで気持ちよく対応されたか"
-      },
-      {
-        "step": "09",
-        "scene": "見送り",
-        "voice": "また来たいと思える印象が残ったか"
-      },
-      {
-        "step": "10",
-        "scene": "口コミ・再来店",
-        "voice": "紹介したい理由／再来店を妨げる不安はないか"
-      }
-    ],
-    "industryHotel": [
-      {
-        "label": "ホテル・宿泊",
-        "text": "検索・予約 → 事前案内 → 到着・チェックイン → 客室・館内利用 → 食事・設備・スタッフ対応 → チェックアウト → 口コミ・再予約"
-      }
-    ],
-    "industryCare": [
-      {
-        "label": "介護・福祉",
-        "text": "問い合わせ・相談 → 見学・説明 → 契約・利用開始 → 日々のサービス → 本人への関わり → 家族への説明 → 継続利用・紹介"
-      }
-    ],
-    "industryBusiness": [
-      {
-        "label": "一般企業",
-        "text": "認知 → 問い合わせ → 提案・見積 → 契約 → 導入・利用開始 → 日常利用 → サポート → 更新・継続・紹介"
-      }
-    ],
-    "commonSignals": [
-      {
-        "label": "第一印象",
-        "text": "来店・到着・初回接点で安心感があったか"
-      },
-      {
-        "label": "分かりやすさ",
-        "text": "説明・案内・情報が理解しやすかったか"
-      },
-      {
-        "label": "待ち時間",
-        "text": "待たされた印象や不安はなかったか"
-      },
-      {
-        "label": "説明・納得感",
-        "text": "必要な説明を十分に受けられたか"
-      },
-      {
-        "label": "接遇・信頼",
-        "text": "丁寧さ、気遣い、誠実さを感じたか"
-      },
-      {
-        "label": "個別対応",
-        "text": "自分に合った対応を受けられたか"
-      },
-      {
-        "label": "安全・安心",
-        "text": "利用中に不安や危険を感じなかったか"
-      },
-      {
-        "label": "清潔感",
-        "text": "場や設備が整っていると感じたか"
-      },
-      {
-        "label": "連携",
-        "text": "スタッフ同士がつながっている印象があったか"
-      },
-      {
-        "label": "トラブル対応",
-        "text": "不具合や要望に適切に対応してもらえたか"
-      },
-      {
-        "label": "継続意向",
-        "text": "また利用したい、続けたいと思えたか"
-      },
-      {
-        "label": "紹介・口コミ意向",
-        "text": "人へ勧めたいと思える理由があったか"
-      }
-    ],
-    "improvementFlow": [
-      {
-        "label": "声を集める",
-        "text": "お客様や利用者、その家族などから体験の声を集める"
-      },
-      {
-        "label": "接点を特定する",
-        "text": "どの場面で満足・不満・迷いが起きたかを分ける"
-      },
-      {
-        "label": "個人責任と組織課題を分ける",
-        "text": "誰か一人の問題で終わらせず、構造の問題を確認する"
-      },
-      {
-        "label": "教育・業務改善へ変える",
-        "text": "教え方、手順、資料、導線、役割分担の改善テーマにする"
-      },
-      {
-        "label": "再確認する",
-        "text": "改善後にもう一度声を確認し、変化を確かめる"
-      }
-    ],
-    "deliverables": [
-      {
-        "label": "集計結果",
-        "text": "接点ごとの評価や傾向を整理"
-      },
-      {
-        "label": "強み・改善優先",
-        "text": "選ばれている理由と確認優先ポイントを可視化"
-      },
-      {
-        "label": "レポート",
-        "text": "現場共有しやすい形で結果を出力"
-      },
-      {
-        "label": "改善テーマ",
-        "text": "教育・業務・接客改善へつなげる材料を整理"
-      }
-    ]
-  },
-  "faq": [
+  ];
+
+  const RESTAURANT_SCENES = [
     {
-      "q": "料理やサービスの内容そのものを評価する診断ですか？",
-      "a": "内容そのものだけでなく、予約、案内、説明、待ち時間、接客、会計、継続利用意向など、体験全体を確認するための仕組みです。"
+      label: "来店前",
+      title: "検索・予約",
+      indexes: [0],
+      icon: "search"
     },
     {
-      "q": "クレームが少ない店舗でも必要ですか？",
-      "a": "はい。クレームが少なくても、再来店や紹介につながりにくい場合は、表面化していない違和感が残っていることがあります。"
+      label: "第一印象",
+      title: "入店・案内・着席",
+      indexes: [1, 2],
+      icon: "entrance"
     },
     {
-      "q": "スタッフ個人の評価に使うものですか？",
-      "a": "いいえ。個人を責めるためではなく、教育、連携、手順、説明の改善に使う前提で整理します。"
+      label: "注文から提供",
+      title: "注文・待ち時間・料理提供",
+      indexes: [3, 4, 5],
+      icon: "order"
     },
     {
-      "q": "飲食店以外でも使えますか？",
-      "a": "使えます。ホテル、介護・福祉、クリニック、サロン、一般企業など、顧客体験に接点がある業種で活用できます。"
+      label: "店内体験",
+      title: "食事中対応・会計",
+      indexes: [6, 7],
+      icon: "dining"
     },
     {
-      "q": "自由記述は扱えますか？",
-      "a": "はい。数値だけでなく、お客様の言葉として残る自由記述も改善のヒントとして扱えます。"
-    },
-    {
-      "q": "複数店舗や複数部署でも比較できますか？",
-      "a": "可能です。店舗別、時間帯別、担当別など、必要に応じた切り分けを前提に設計できます。"
+      label: "利用後",
+      title: "見送り・口コミ・再来店",
+      indexes: [8, 9],
+      icon: "review"
     }
-  ]
-};
+  ];
+
+  const INDUSTRY_ICONS = ["hotel", "care", "business"];
 
   function qs(selector) {
     return document.querySelector(selector);
   }
 
   function setText(selector, value) {
-    const el = qs(selector);
-    if (el) el.textContent = value || "";
+    const element = qs(selector);
+    if (element) element.textContent = value || "";
+  }
+
+  function setTitle(selector, value) {
+    const element = qs(selector);
+    if (!element) return;
+
+    element.innerHTML = "";
+
+    String(value || "")
+      .split("\n")
+      .filter((line) => line !== "")
+      .forEach((line) => {
+        const span = document.createElement("span");
+        span.className = "cv-title-line";
+        span.textContent = line;
+        element.appendChild(span);
+      });
   }
 
   async function fetchData() {
     try {
       const url = new URL(API_URL);
       url.searchParams.set("action", "customerVoicePage");
+
       const response = await fetch(url.toString(), {
         method: "GET",
         cache: "no-store",
@@ -298,7 +160,10 @@
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const result = await response.json();
-      if (!result?.success || !result?.data) throw new Error(result?.message || "API error");
+      if (!result?.success || !result?.data) {
+        throw new Error(result?.message || "API error");
+      }
+
       return mergeData(DEFAULT_DATA, result.data);
     } catch (error) {
       console.warn("customer-voice page fallback", error);
@@ -311,55 +176,54 @@
       hero: Object.assign({}, base.hero, incoming.hero || {}),
       sections: Object.assign({}, base.sections, incoming.sections || {}),
       flows: Object.assign({}, base.flows, incoming.flows || {}),
-      faq: Array.isArray(incoming.faq) && incoming.faq.length ? incoming.faq : base.faq
+      faq: Array.isArray(incoming.faq) && incoming.faq.length
+        ? incoming.faq
+        : base.faq
     };
   }
 
   function renderHero(data) {
     setText("#hero-eyebrow", data.hero.eyebrow);
-    setText("#hero-title", data.hero.title);
+    setTitle("#hero-title", data.hero.title);
     setText("#hero-lead", data.hero.lead);
 
     const badges = qs("#hero-badges");
-    if (badges) {
-      badges.innerHTML = "";
-      [data.hero.badge1, data.hero.badge2, data.hero.badge3, data.hero.badge4]
-        .filter(Boolean)
-        .forEach((text) => {
-          const span = document.createElement("span");
-          span.textContent = text;
-          badges.appendChild(span);
-        });
-    }
+    if (!badges) return;
+
+    badges.innerHTML = "";
+
+    [
+      data.hero.badge1,
+      data.hero.badge2,
+      data.hero.badge3,
+      data.hero.badge4
+    ]
+      .filter(Boolean)
+      .forEach((label) => {
+        const span = document.createElement("span");
+        span.textContent = label;
+        badges.appendChild(span);
+      });
   }
 
   function renderSectionTitles(sections) {
-    setText("#difference-title", sections.difference?.title);
-    setText("#difference-lead", sections.difference?.lead);
+    const fields = [
+      "difference",
+      "scope",
+      "restaurant",
+      "industries",
+      "signals",
+      "improvement",
+      "deliverables",
+      "faq",
+      "cta"
+    ];
 
-    setText("#scope-title", sections.scope?.title);
-    setText("#scope-lead", sections.scope?.lead);
+    fields.forEach((key) => {
+      setTitle(`#${key}-title`, sections[key]?.title);
+      setText(`#${key}-lead`, sections[key]?.lead);
+    });
 
-    setText("#restaurant-title", sections.restaurant?.title);
-    setText("#restaurant-lead", sections.restaurant?.lead);
-
-    setText("#industries-title", sections.industries?.title);
-    setText("#industries-lead", sections.industries?.lead);
-
-    setText("#signals-title", sections.signals?.title);
-    setText("#signals-lead", sections.signals?.lead);
-
-    setText("#improvement-title", sections.improvement?.title);
-    setText("#improvement-lead", sections.improvement?.lead);
-
-    setText("#deliverables-title", sections.deliverables?.title);
-    setText("#deliverables-lead", sections.deliverables?.lead);
-
-    setText("#faq-title", sections.faq?.title);
-    setText("#faq-lead", sections.faq?.lead);
-
-    setText("#cta-title", sections.cta?.title);
-    setText("#cta-lead", sections.cta?.lead);
     setText("#cta-button-1", sections.cta?.button1);
     setText("#cta-button-2", sections.cta?.button2);
   }
@@ -369,13 +233,30 @@
     if (!wrap) return;
 
     wrap.innerHTML = "";
-    (items || []).forEach((item) => {
+
+    COMMON_PHASES.forEach((phase, phaseIndex) => {
       const article = document.createElement("article");
-      article.className = "cv-flow-item";
+      article.className = "cv-phase-card";
+
+      const details = phase.indexes
+        .map((index) => items[index])
+        .filter(Boolean);
+
       article.innerHTML = `
-        <strong>${escapeHtml(item.label || "")}</strong>
-        <p>${escapeHtml(item.text || "")}</p>
+        <div class="cv-phase-number">0${phaseIndex + 1}</div>
+        <h3>${escapeHtml(phase.title)}</h3>
+        <ul>
+          ${details
+            .map((item) => `
+              <li>
+                <strong>${escapeHtml(item.label || "")}</strong>
+                ${escapeHtml(item.text || "")}
+              </li>
+            `)
+            .join("")}
+        </ul>
       `;
+
       wrap.appendChild(article);
     });
   }
@@ -385,17 +266,32 @@
     if (!wrap) return;
 
     wrap.innerHTML = "";
-    (items || []).forEach((item) => {
+
+    RESTAURANT_SCENES.forEach((scene) => {
+      const details = scene.indexes
+        .map((index) => items[index])
+        .filter(Boolean);
+
       const article = document.createElement("article");
-      article.className = "cv-restaurant-step";
+      article.className = "cv-scene-card";
       article.innerHTML = `
-        <div class="cv-step-index">${escapeHtml(item.step || "")}</div>
-        <div>
-          <h3>${escapeHtml(item.scene || "")}</h3>
-          <span class="cv-step-label">この場面で確認する声</span>
-          <p>${escapeHtml(item.voice || "")}</p>
+        <div class="cv-scene-visual" aria-hidden="true">
+          ${sceneSvg(scene.icon)}
         </div>
+        <span class="cv-scene-label">${escapeHtml(scene.label)}</span>
+        <h3>${escapeHtml(scene.title)}</h3>
+        <ul>
+          ${details
+            .map((item) => `
+              <li>
+                <strong>${escapeHtml(item.scene || "")}</strong>
+                ${escapeHtml(item.voice || "")}
+              </li>
+            `)
+            .join("")}
+        </ul>
       `;
+
       wrap.appendChild(article);
     });
   }
@@ -410,13 +306,18 @@
       .concat(flows.industryBusiness || []);
 
     wrap.innerHTML = "";
-    groups.forEach((item) => {
+
+    groups.forEach((item, index) => {
       const article = document.createElement("article");
       article.className = "cv-industry-card";
       article.innerHTML = `
+        <div class="cv-industry-icon" aria-hidden="true">
+          ${industrySvg(INDUSTRY_ICONS[index] || "business")}
+        </div>
         <h3>${escapeHtml(item.label || "")}</h3>
         <p>${escapeHtml(item.text || "")}</p>
       `;
+
       wrap.appendChild(article);
     });
   }
@@ -426,9 +327,12 @@
     if (!wrap) return;
 
     wrap.innerHTML = "";
+
     (items || []).forEach((item) => {
       const article = document.createElement("article");
+      article.className = "cv-signal-card";
       article.innerHTML = `
+        <span aria-hidden="true"></span>
         <h3>${escapeHtml(item.label || "")}</h3>
         <p>${escapeHtml(item.text || "")}</p>
       `;
@@ -441,11 +345,12 @@
     if (!wrap) return;
 
     wrap.innerHTML = "";
-    (items || []).forEach((item) => {
+
+    (items || []).forEach((item, index) => {
       const article = document.createElement("article");
       article.className = "cv-process-card";
       article.innerHTML = `
-        <span>${escapeHtml(item.label || "")}</span>
+        <div class="cv-process-number">0${index + 1}</div>
         <h3>${escapeHtml(item.label || "")}</h3>
         <p>${escapeHtml(item.text || "")}</p>
       `;
@@ -458,6 +363,7 @@
     if (!wrap) return;
 
     wrap.innerHTML = "";
+
     (items || []).forEach((item) => {
       const article = document.createElement("article");
       article.className = "cv-deliverable-card";
@@ -474,14 +380,19 @@
     if (!wrap) return;
 
     wrap.innerHTML = "";
+
     (items || []).forEach((item, index) => {
       const article = document.createElement("article");
       article.className = "cv-faq-item";
       article.innerHTML = `
-        <button type="button" aria-expanded="false" aria-controls="cv-faq-${index}">
+        <button
+          type="button"
+          aria-expanded="false"
+          aria-controls="cv-faq-answer-${index}"
+        >
           Q. ${escapeHtml(item.q || "")}
         </button>
-        <div id="cv-faq-${index}">
+        <div class="cv-faq-answer" id="cv-faq-answer-${index}">
           <p>A. ${escapeHtml(item.a || "")}</p>
         </div>
       `;
@@ -496,6 +407,89 @@
     });
   }
 
+  function sceneSvg(type) {
+    const icons = {
+      search: `
+        <svg viewBox="0 0 120 120">
+          <rect x="26" y="14" width="68" height="92" rx="12"/>
+          <path d="M40 34h40M40 48h24"/>
+          <circle cx="71" cy="76" r="15"/>
+          <path d="m82 87 13 13"/>
+          <circle cx="47" cy="76" r="4"/>
+        </svg>
+      `,
+      entrance: `
+        <svg viewBox="0 0 120 120">
+          <path d="M24 102V20h50v82"/>
+          <path d="M36 102V32h27v70"/>
+          <circle cx="57" cy="67" r="3"/>
+          <path d="M80 102V54h22v48"/>
+          <path d="M82 54h18M90 54V43"/>
+          <path d="M17 102h92"/>
+        </svg>
+      `,
+      order: `
+        <svg viewBox="0 0 120 120">
+          <rect x="18" y="18" width="42" height="72" rx="8"/>
+          <path d="M29 35h20M29 48h15M29 62h20"/>
+          <path d="M69 81h36"/>
+          <path d="M75 81c1-22 8-34 18-34s17 12 18 34"/>
+          <path d="M72 88h42"/>
+          <circle cx="91" cy="35" r="9"/>
+          <path d="M91 27v9l6 4"/>
+        </svg>
+      `,
+      dining: `
+        <svg viewBox="0 0 120 120">
+          <path d="M20 62h80"/>
+          <path d="M28 62v40M92 62v40"/>
+          <circle cx="42" cy="39" r="13"/>
+          <circle cx="78" cy="39" r="13"/>
+          <path d="M40 52v10M80 52v10"/>
+          <rect x="49" y="70" width="22" height="14" rx="3"/>
+          <path d="M55 77h10"/>
+        </svg>
+      `,
+      review: `
+        <svg viewBox="0 0 120 120">
+          <path d="M17 24h70v50H46L27 92V74H17z"/>
+          <path d="M32 42h38M32 56h24"/>
+          <path d="m92 21 4 8 9 1-7 7 2 9-8-4-8 4 2-9-7-7 9-1z"/>
+          <path d="M83 78h20M93 68v20"/>
+        </svg>
+      `
+    };
+
+    return icons[type] || icons.search;
+  }
+
+  function industrySvg(type) {
+    const icons = {
+      hotel: `
+        <svg viewBox="0 0 64 64">
+          <path d="M10 54V16h44v38"/>
+          <path d="M18 25h8v8h-8zM38 25h8v8h-8zM18 39h8v8h-8zM38 39h8v8h-8z"/>
+          <path d="M7 54h50"/>
+        </svg>
+      `,
+      care: `
+        <svg viewBox="0 0 64 64">
+          <path d="M32 54C22 45 12 38 12 27c0-7 5-12 12-12 4 0 7 2 8 5 2-3 5-5 9-5 7 0 12 5 12 12 0 11-10 18-21 27z"/>
+          <path d="M32 25v15M24 32h16"/>
+        </svg>
+      `,
+      business: `
+        <svg viewBox="0 0 64 64">
+          <rect x="9" y="18" width="46" height="34" rx="5"/>
+          <path d="M23 18v-6h18v6M9 31h46"/>
+          <path d="M27 29h10v6H27z"/>
+        </svg>
+      `
+    };
+
+    return icons[type] || icons.business;
+  }
+
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -507,6 +501,7 @@
 
   async function setup() {
     const data = await fetchData();
+
     renderHero(data);
     renderSectionTitles(data.sections || {});
     renderCommonFlow(data.flows?.commonFlow || []);
