@@ -353,6 +353,74 @@
 
   const $ = (selector) => document.querySelector(selector);
   const BRAND_NAME = "クロスメソッド™";
+
+  const MOBILE_TITLES = {
+    "#hero-title": [
+      "健康を、",
+      "個人任せにしない。",
+      "働く力を守る経営へ。"
+    ],
+    "#definition-title": [
+      "健康経営は、",
+      "制度を導入する",
+      "ことではなく、",
+      "働く力を守る",
+      "仕組みづくりです。"
+    ],
+    "#signals-title": [
+      "健康課題は、",
+      "大きな不調になる前に、",
+      "小さな声として表れます。"
+    ],
+    "#framework-title": [
+      "健康経営を、",
+      "5つの視点で整理します。"
+    ],
+    "#voices-title": [
+      "クロスメソッド™で",
+      "確認する、",
+      "健康経営につながる声"
+    ],
+    "#support-title": [
+      "会社ごとに必要な支援は、",
+      "同じではありません。"
+    ],
+    "#recognition-title": [
+      "認定取得は、",
+      "ゴールではなく、",
+      "取り組みを続けるための",
+      "節目です。"
+    ],
+    "#flow-title": [
+      "声を集めて、",
+      "実行できる健康経営へ。"
+    ],
+    "#deliverables-title": [
+      "支援後に整理される内容"
+    ],
+    "#faq-title": [
+      "よくある質問"
+    ],
+    "#cta-title": [
+      "健康経営を、",
+      "制度から実行へ",
+      "進めたい方へ。"
+    ]
+  };
+
+  let currentPageData = null;
+  let resizeTimer = 0;
+
+  function getTitleLines(selector, value) {
+    if (
+      window.matchMedia("(max-width: 760px)").matches &&
+      MOBILE_TITLES[selector]
+    ) {
+      return MOBILE_TITLES[selector];
+    }
+
+    return String(value || "").split("\n").filter(Boolean);
+  }
   const BRAND_PATTERN = /クロスメソッド™︎?/g;
 
   function setText(selector, value) {
@@ -396,15 +464,12 @@
 
     el.innerHTML = "";
 
-    String(value || "")
-      .split("\n")
-      .filter(Boolean)
-      .forEach((line) => {
-        const span = document.createElement("span");
-        span.className = "hm-title-line";
-        appendBrandAwareText(span, line);
-        el.appendChild(span);
-      });
+    getTitleLines(selector, value).forEach((line) => {
+      const span = document.createElement("span");
+      span.className = "hm-title-line";
+      appendBrandAwareText(span, line);
+      el.appendChild(span);
+    });
   }
 
   function brandHtml(value) {
@@ -611,10 +676,21 @@
 
   async function setup() {
     const data = await fetchData();
+    currentPageData = data;
+
     renderHero(data);
     renderSectionTitles(data.sections || {});
     renderAllCards(data.cards || {});
     renderFaq(data.faq || []);
+
+    window.addEventListener("resize", () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        if (!currentPageData) return;
+        renderHero(currentPageData);
+        renderSectionTitles(currentPageData.sections || {});
+      }, 120);
+    });
   }
 
   if (document.readyState === "loading") {

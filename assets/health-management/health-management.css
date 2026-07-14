@@ -805,3 +805,120 @@ section[data-managed-background]>.hm-shell{position:relative;z-index:2}
     display: none;
   }
 }
+
+
+/* Final hero and mobile heading tuning */
+@media (min-width: 1181px) {
+  .hm-hero-grid {
+    grid-template-columns: minmax(0, 1.16fr) minmax(430px, .84fr);
+    gap: clamp(26px, 3.7vw, 56px);
+  }
+
+  .hm-hero-copy {
+    max-width: 760px;
+  }
+
+  .hm-hero h1 {
+    max-width: 760px;
+    font-size: clamp(39px, 4.5vw, 58px);
+    line-height: 1.18;
+  }
+
+  .hm-hero-visual {
+    min-height: 610px;
+  }
+
+  .hm-core {
+    top: 54%;
+    width: 178px;
+    height: 178px;
+  }
+
+  .hm-orbit-card {
+    width: 216px;
+    min-height: 108px;
+  }
+
+  .orbit-health {
+    left: 4%;
+    top: 7%;
+  }
+
+  .orbit-workplace {
+    right: 4%;
+    top: 31%;
+  }
+
+  .orbit-management {
+    left: 10%;
+    bottom: 7%;
+  }
+}
+
+@media (max-width: 760px) {
+  .hm-hero h1 {
+    max-width: 100%;
+    font-size: clamp(28px, 7.7vw, 33px);
+    line-height: 1.39;
+    letter-spacing: -.025em;
+  }
+
+  .hm-section-head h2,
+  .hm-cta-card h2 {
+    max-width: 100%;
+    font-size: clamp(25px, 6.9vw, 30px);
+    line-height: 1.48;
+    letter-spacing: -.02em;
+  }
+
+  .hm-title-line {
+    width: auto;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  .hm-hero-visual {
+    min-height: 760px;
+    border-radius: 31px;
+  }
+
+  .hm-hero-connectors {
+    display: none;
+  }
+
+  .hm-core {
+    top: 60%;
+    width: 158px;
+    height: 158px;
+  }
+
+  .hm-core strong {
+    font-size: 18px;
+  }
+
+  .hm-orbit-card {
+    width: calc(100% - 44px);
+    min-height: 118px;
+    left: 22px;
+    right: auto;
+    transform: none;
+  }
+
+  .orbit-health {
+    top: 24px;
+    left: 22px;
+  }
+
+  .orbit-workplace {
+    top: 178px;
+    left: auto;
+    right: 22px;
+    transform: none;
+  }
+
+  .orbit-management {
+    top: auto;
+    bottom: 24px;
+    left: 22px;
+  }
+}
