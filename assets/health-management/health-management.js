@@ -353,6 +353,7 @@
 
   const $ = (selector) => document.querySelector(selector);
   const BRAND_NAME = "クロスメソッド™";
+  const BRAND_PATTERN = /クロスメソッド™︎?/g;
 
   function setText(selector, value) {
     const el = $(selector);
@@ -360,18 +361,25 @@
   }
 
   function appendBrandAwareText(parent, value) {
-    const parts = String(value || "").split(BRAND_NAME);
+    const text = String(value || "");
+    let lastIndex = 0;
 
-    parts.forEach((part, index) => {
-      if (part) parent.appendChild(document.createTextNode(part));
-
-      if (index < parts.length - 1) {
-        const brand = document.createElement("span");
-        brand.className = "hm-inline-brand";
-        brand.textContent = BRAND_NAME;
-        parent.appendChild(brand);
+    text.replace(BRAND_PATTERN, (match, offset) => {
+      if (offset > lastIndex) {
+        parent.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
       }
+
+      const brand = document.createElement("span");
+      brand.className = "hm-inline-brand";
+      brand.textContent = BRAND_NAME;
+      parent.appendChild(brand);
+      lastIndex = offset + match.length;
+      return match;
     });
+
+    if (lastIndex < text.length) {
+      parent.appendChild(document.createTextNode(text.slice(lastIndex)));
+    }
   }
 
   function setRichText(selector, value) {
@@ -401,7 +409,7 @@
 
   function brandHtml(value) {
     return escapeHtml(value).replace(
-      /クロスメソッド™/g,
+      BRAND_PATTERN,
       '<span class="hm-inline-brand">クロスメソッド™</span>'
     );
   }
