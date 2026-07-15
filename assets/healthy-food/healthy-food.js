@@ -570,7 +570,8 @@
     [
       "#hero-order-button",
       "#menu-order-button",
-      "#cta-order-button"
+      "#cta-order-button",
+      "#personal-order-button"
     ].forEach((selector) => {
       const button = $(selector);
 
