@@ -1472,3 +1472,59 @@ section[data-managed-background] > .ev-shell {
     animation: none !important;
   }
 }
+
+
+/* PC hero map: keep card text horizontal and prevent narrow columns */
+@media (min-width: 761px) {
+  .ev-hero-map {
+    min-height: 760px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto 230px auto;
+    grid-template-areas:
+      "employee organization"
+      "center center"
+      "field manager";
+    gap: 22px;
+    align-items: stretch;
+  }
+
+  .ev-map-center {
+    justify-self: center;
+    align-self: center;
+  }
+
+  .ev-map-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 150px;
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+
+  .ev-map-card > div:last-child {
+    min-width: 0;
+  }
+
+  .ev-map-card span,
+  .ev-map-card strong {
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+
+  .ev-map-card strong {
+    font-size: clamp(16px, 1.45vw, 19px);
+    line-height: 1.5;
+  }
+
+  .ev-map-lines {
+    opacity: .82;
+  }
+}
+
+@media (min-width: 1181px) {
+  .ev-hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(560px, .96fr);
+  }
+}
