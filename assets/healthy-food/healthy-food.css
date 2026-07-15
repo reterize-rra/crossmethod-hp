@@ -1486,3 +1486,112 @@ section[data-food-ambient] > .hf-shell {
 .hf-personal-order{margin:0 0 28px;padding:24px 26px;display:grid;grid-template-columns:68px minmax(0,1fr) auto;gap:20px;align-items:center;border:1px solid rgba(17,173,182,.18);border-radius:30px;background:radial-gradient(circle at 12% 28%,rgba(17,173,182,.10),transparent 25%),radial-gradient(circle at 90% 76%,rgba(211,165,66,.10),transparent 23%),#fff;box-shadow:var(--hf-shadow)}.hf-personal-order-icon{width:68px;height:68px;display:grid;place-items:center;border-radius:22px;color:#087f87;background:var(--hf-aqua-soft)}.hf-personal-order-icon svg{width:40px;height:40px}.hf-personal-order-icon svg *{fill:none;stroke:currentColor;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round}.hf-personal-order h3{margin:4px 0 0;color:var(--hf-navy);font-size:23px}.hf-personal-order p:last-child{margin:7px 0 0;font-size:14px}.hf-personal-order-button{min-height:50px;padding:0 19px;display:inline-flex;align-items:center;gap:11px;border:0;border-radius:999px;color:#fff;background:linear-gradient(135deg,#d7ad4b,#a97c25);box-shadow:0 14px 31px rgba(211,165,66,.22);font-weight:900;white-space:nowrap}.hf-personal-order-button span{font-size:18px;line-height:1}
 @media(max-width:900px){.hf-personal-order{grid-template-columns:68px minmax(0,1fr)}.hf-personal-order-button{grid-column:1/-1;width:fit-content}}
 @media(max-width:760px){.hf-hero-title-nowrap{white-space:normal}.hf-benefit-grid article{padding-top:82px}.hf-trust-tags span{grid-template-columns:1fr;justify-items:center;text-align:center}.hf-personal-order{padding:21px 18px;grid-template-columns:1fr}.hf-personal-order-button{width:100%;justify-content:center}}
+
+
+/* Final title and hero-card line-break tuning */
+.hf-hero-card {
+  padding-left: 18px;
+  padding-right: 18px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.hf-hero-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 17px;
+}
+
+.hf-hero-icon svg {
+  width: 34px;
+  height: 34px;
+}
+
+.hf-hero-card strong {
+  white-space: nowrap;
+  word-break: keep-all;
+  font-size: clamp(14px, 1.05vw, 15px);
+  letter-spacing: -.045em;
+}
+
+.hf-hero-card p {
+  word-break: keep-all;
+  line-break: strict;
+  font-size: 12px;
+}
+
+.hf-trust-copy h2 {
+  font-size: clamp(30px, 3.15vw, 42px);
+}
+
+.hf-trust-copy h2 span {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.hf-hero h1,
+.hf-section-head h2,
+.hf-trust-copy h2,
+.hf-cta-card h2,
+.hf-benefit-grid h3,
+.hf-intro-flow h3,
+.hf-personal-order h3 {
+  word-break: keep-all;
+  line-break: strict;
+}
+
+@media (max-width: 760px) {
+  .hf-hero h1 {
+    font-size: clamp(22px, 6.1vw, 25px);
+    line-height: 1.46;
+    letter-spacing: -.025em;
+  }
+
+  .hf-section-head h2,
+  .hf-cta-card h2 {
+    font-size: clamp(20px, 5.6vw, 23px);
+    line-height: 1.52;
+    letter-spacing: -.02em;
+  }
+
+  .hf-trust-panel {
+    padding: 24px 16px;
+  }
+
+  .hf-trust-copy h2 {
+    font-size: clamp(17px, 4.8vw, 19px);
+    line-height: 1.58;
+    letter-spacing: -.015em;
+  }
+
+  .hf-cta-card {
+    padding: 32px 18px;
+  }
+
+  .hf-hero h1 span,
+  .hf-section-head h2 span,
+  .hf-trust-copy h2 span,
+  .hf-cta-card h2 span {
+    white-space: nowrap;
+    word-break: keep-all;
+  }
+
+  .hf-hero-card {
+    padding-left: 18px;
+    padding-right: 18px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .hf-hero-card strong {
+    font-size: 15px;
+    letter-spacing: -.04em;
+  }
+
+  .hf-benefit-grid h3,
+  .hf-intro-flow h3,
+  .hf-personal-order h3 {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+}
