@@ -56,7 +56,7 @@
     "cta": {
       "title": "ストレスチェックの導入準備を、\n今から始めませんか。",
       "lead": "事業場の規模、実施時期、現在の体制を確認し、必要な準備と支援範囲を整理します。",
-      "button1": "導入について相談する",
+      "button1": "ストレスチェック導入を申し込む",
       "button2": "健康経営支援を見る"
     }
   },
@@ -283,6 +283,83 @@
   const BRAND_NAME = "クロスメソッド™";
   const $ = (selector) => document.querySelector(selector);
 
+  const MOBILE_TITLES = {
+    "#hero-title": [
+      "ストレスチェックを、",
+      "実施して終わらせない。",
+      "安心して働ける",
+      "職場へ。"
+    ],
+    "#obligation-title": [
+      "2028年4月1日から、",
+      "50人未満の事業場にも",
+      "ストレスチェックが",
+      "義務化されます。"
+    ],
+    "#purpose-title": [
+      "ストレスチェックは、",
+      "病気を診断する",
+      "検査ではありません。"
+    ],
+    "#difference-title": [
+      "法定ストレスチェックと、",
+      "組織診断は",
+      "別の仕組みです。"
+    ],
+    "#flow-title": [
+      "導入から実施後まで、",
+      "必要な流れを整理します。"
+    ],
+    "#roles-title": [
+      "誰が何を担うのかを、",
+      "実施前に決めておきます。"
+    ],
+    "#privacy-title": [
+      "個人結果を、",
+      "人事評価の材料にしない",
+      "仕組みが必要です。"
+    ],
+    "#interview-title": [
+      "高ストレスと",
+      "判定された後の、",
+      "面接指導への導線を",
+      "整えます。"
+    ],
+    "#group-title": [
+      "集団分析は、",
+      "個人を探すためではなく、",
+      "職場の傾向を整えるために",
+      "使います。"
+    ],
+    "#support-title": [
+      "制度導入に必要な準備を、",
+      "順番に支援します。"
+    ],
+    "#faq-title": [
+      "よくある質問"
+    ],
+    "#cta-title": [
+      "ストレスチェックの",
+      "導入準備を、",
+      "今から始めませんか。"
+    ]
+  };
+
+  let currentPageData = null;
+  let resizeTimer = 0;
+
+  function getTitleLines(selector, value) {
+    if (
+      window.matchMedia("(max-width: 760px)").matches &&
+      MOBILE_TITLES[selector]
+    ) {
+      return MOBILE_TITLES[selector];
+    }
+
+    return String(value || "").split("\n").filter(Boolean);
+  }
+
+
   function escapeHtml(value) {
     return String(value || "")
       .replace(/&/g, "&amp;")
@@ -340,15 +417,12 @@
 
     el.innerHTML = "";
 
-    String(value || "")
-      .split("\n")
-      .filter(Boolean)
-      .forEach((line) => {
-        const span = document.createElement("span");
-        span.className = "sc-title-line";
-        appendBrandAwareText(span, line);
-        el.appendChild(span);
-      });
+    getTitleLines(selector, value).forEach((line) => {
+      const span = document.createElement("span");
+      span.className = "sc-title-line";
+      appendBrandAwareText(span, line);
+      el.appendChild(span);
+    });
   }
 
   async function fetchData() {
@@ -369,18 +443,29 @@
         throw new Error(result?.message || "API error");
       }
 
-      return {
+      return normalizeLegacyCopy({
         hero: Object.assign({}, DEFAULT_DATA.hero, result.data.hero || {}),
         sections: Object.assign({}, DEFAULT_DATA.sections, result.data.sections || {}),
         cards: Object.assign({}, DEFAULT_DATA.cards, result.data.cards || {}),
         faq: Array.isArray(result.data.faq) && result.data.faq.length
           ? result.data.faq
           : DEFAULT_DATA.faq
-      };
+      });
     } catch (error) {
       console.warn("stress-check fallback", error);
-      return DEFAULT_DATA;
+      return normalizeLegacyCopy(structuredClone(DEFAULT_DATA));
     }
+  }
+
+  function normalizeLegacyCopy(data) {
+    if (
+      data.sections?.cta?.button1 === "導入について相談する"
+    ) {
+      data.sections.cta.button1 =
+        "ストレスチェック導入を申し込む";
+    }
+
+    return data;
   }
 
   function renderHero(data) {
@@ -497,10 +582,21 @@
 
   async function setup() {
     const data = await fetchData();
+    currentPageData = data;
+
     renderHero(data);
     renderSectionTitles(data.sections || {});
     renderAllCards(data.cards || {});
     renderFaq(data.faq || []);
+
+    window.addEventListener("resize", () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        if (!currentPageData) return;
+        renderHero(currentPageData);
+        renderSectionTitles(currentPageData.sections || {});
+      }, 120);
+    });
   }
 
   if (document.readyState === "loading") {

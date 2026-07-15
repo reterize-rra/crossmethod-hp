@@ -234,3 +234,163 @@ section[data-managed-background]>.sc-shell{position:relative;z-index:2}
 @media(prefers-reduced-motion:reduce){
   .sc-cta-ring{animation:none!important}
 }
+
+
+/* Stress-check refinement */
+.sc-roles-grid .sc-card {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.sc-roles-grid .sc-card h3 {
+  white-space: nowrap;
+  font-size: clamp(15px, 1.18vw, 18px);
+  letter-spacing: -.045em;
+}
+
+.sc-application-panel {
+  margin-top: 28px;
+  padding: 25px 27px;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  border: 1px solid rgba(145, 113, 188, .20);
+  border-radius: 31px;
+  background:
+    radial-gradient(circle at 12% 28%, rgba(79, 153, 213, .11), transparent 25%),
+    radial-gradient(circle at 90% 75%, rgba(145, 113, 188, .11), transparent 23%),
+    rgba(255, 255, 255, .88);
+  box-shadow: var(--sc-shadow);
+}
+
+.sc-application-icon {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 23px;
+  color: #6e5598;
+  background: #eee7f8;
+}
+
+.sc-application-icon svg {
+  width: 43px;
+  height: 43px;
+}
+
+.sc-application-icon svg * {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sc-application-copy h3 {
+  margin: 4px 0 0;
+  color: var(--sc-navy);
+  font-size: 23px;
+  line-height: 1.45;
+}
+
+.sc-application-copy > p:last-child {
+  max-width: 690px;
+  margin: 8px 0 0;
+  font-size: 14px;
+}
+
+.sc-application-button {
+  min-height: 52px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #5c96d6, #7055a4);
+  box-shadow: 0 14px 31px rgba(91, 112, 189, .22);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+  transition: transform .2s ease;
+}
+
+.sc-application-button:hover {
+  transform: translateY(-2px);
+}
+
+.sc-application-button span {
+  font-size: 18px;
+  line-height: 1;
+}
+
+@media (max-width: 1100px) {
+  .sc-hero h1 {
+    max-width: 100%;
+    font-size: clamp(34px, 5.5vw, 48px);
+    line-height: 1.36;
+  }
+
+  .sc-title-line {
+    width: fit-content;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  .sc-roles-grid .sc-card h3 {
+    white-space: normal;
+    font-size: 20px;
+    letter-spacing: normal;
+  }
+
+  .sc-application-panel {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .sc-application-button {
+    grid-column: 1 / -1;
+    width: fit-content;
+  }
+}
+
+@media (max-width: 760px) {
+  .sc-hero h1 {
+    font-size: clamp(27px, 7.5vw, 32px);
+    line-height: 1.42;
+    letter-spacing: -.025em;
+  }
+
+  .sc-section-head h2,
+  .sc-cta-card h2,
+  .sc-separation-card h2 {
+    font-size: clamp(25px, 6.8vw, 30px);
+    line-height: 1.5;
+  }
+
+  .sc-title-line {
+    width: auto;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  .sc-application-panel {
+    padding: 22px 18px;
+    grid-template-columns: 1fr;
+  }
+
+  .sc-application-icon {
+    width: 62px;
+    height: 62px;
+  }
+
+  .sc-application-copy h3 {
+    font-size: 20px;
+  }
+
+  .sc-application-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
