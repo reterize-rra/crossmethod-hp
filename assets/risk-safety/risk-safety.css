@@ -1517,3 +1517,53 @@ section[data-managed-background] > .rs-shell {
     font-size: 12px;
   }
 }
+
+
+/* Remove the thin report mockup and use the full width for deliverable cards */
+.rs-report-board {
+  display: block;
+}
+
+.rs-deliverable-grid {
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.rs-deliverable-card {
+  min-height: 215px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.rs-deliverable-card .rs-card-icon {
+  margin-bottom: 16px;
+}
+
+.rs-deliverable-card h3 {
+  font-size: 19px;
+  line-height: 1.48;
+}
+
+.rs-deliverable-card p {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+@media (max-width: 1180px) {
+  .rs-deliverable-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .rs-deliverable-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rs-deliverable-card {
+    min-height: 0;
+  }
+}
