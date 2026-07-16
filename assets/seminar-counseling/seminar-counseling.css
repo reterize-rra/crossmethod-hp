@@ -16,3 +16,143 @@
 @media(max-width:1180px){.scn-header-inner{align-items:flex-start;flex-direction:column;padding:14px 0}.scn-nav{justify-content:flex-start}.scn-hero-body{grid-template-columns:1fr}.scn-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.scn-seminar-grid,.scn-travel-grid,.scn-format-grid,.scn-flow-grid,.scn-related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.scn-travel-hero{grid-template-columns:1fr}}
 @media(max-width:760px){.scn-shell{width:min(100% - 24px,1220px)}.scn-company-logo{width:126px}.scn-brand-divider,.scn-method-mark{display:none}.scn-method-name{font-size:15px}.scn-nav{width:100%;flex-wrap:nowrap;overflow-x:auto;padding-bottom:3px}.scn-nav a{flex:0 0 auto;min-height:36px;padding:0 12px;font-size:12px}.scn-hero{padding-top:48px}.scn-hero h1{font-size:clamp(27px,7.3vw,32px);line-height:1.43;letter-spacing:-.025em}.scn-title-line{width:auto;white-space:nowrap}.scn-hero-body{margin-top:26px}.scn-lead{font-size:15px;line-height:1.9}.scn-actions{display:grid;grid-template-columns:1fr}.scn-btn{width:100%}.scn-entry-grid{padding:18px;grid-template-columns:1fr;grid-template-areas:"counseling" "seminar" "travel"}.entry-travel{grid-template-columns:62px minmax(0,1fr)}.entry-travel>a{grid-column:1/-1;width:100%;justify-content:center}.scn-section,.scn-cta{padding:58px 0}.scn-section-head{margin-bottom:28px}.scn-section-head h2,.scn-cta-card h2,.scn-travel-copy h2,.scn-education-panel h2{font-size:clamp(25px,6.8vw,30px);line-height:1.5}.scn-section-head p,.scn-travel-copy>p:last-of-type,.scn-education-panel>div>p:last-child{font-size:15px;line-height:1.9}.scn-card-grid,.scn-seminar-grid,.scn-travel-grid,.scn-format-grid,.scn-flow-grid,.scn-related-grid{grid-template-columns:1fr}.scn-card,.scn-flow-card{min-height:0}.scn-counseling-result{grid-template-columns:1fr}.scn-room-grid{grid-template-columns:1fr}.scn-room-card{grid-template-columns:110px minmax(0,1fr);padding:21px}.scn-room-door{width:96px;height:140px}.scn-education-panel{grid-template-columns:1fr}.scn-travel-visual{min-height:290px}.scn-footer-inner{align-items:flex-start;flex-direction:column}.scn-footer nav{justify-content:flex-start}}
 @media(prefers-reduced-motion:reduce){.scn-cta-rings{animation:none!important}}
+
+
+/* ==== 2026-07-16 final tune: travel title + richer visuals ==== */
+.scn-travel-copy{min-width:0}
+.scn-travel-copy h2{max-width:14ch}
+.scn-travel-copy h2 .scn-title-line{width:auto;white-space:normal}
+
+.scn-travel-hero{
+  grid-template-columns:minmax(0,1fr) minmax(420px,.92fr);
+  gap:clamp(28px,3.6vw,44px);
+}
+.scn-travel-visual{
+  min-height:360px;
+  background:
+    radial-gradient(circle at 18% 16%,rgba(255,255,255,.94),transparent 20%),
+    radial-gradient(circle at 83% 10%,rgba(255,255,255,.82),transparent 18%),
+    linear-gradient(180deg,#eef7fb 0 60%,#edf4ef 60% 100%);
+  border:1px solid rgba(16,47,71,.08);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 22px 60px rgba(16,47,71,.08);
+}
+.scn-travel-visual::before,
+.scn-travel-visual::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+}
+.scn-travel-visual::before{
+  width:220px;height:220px;left:-40px;top:-55px;
+  background:radial-gradient(circle,rgba(17,173,182,.16),rgba(17,173,182,0) 68%);
+}
+.scn-travel-visual::after{
+  width:260px;height:260px;right:-80px;bottom:-90px;
+  background:radial-gradient(circle,rgba(210,164,63,.16),rgba(210,164,63,0) 70%);
+}
+.scn-travel-building{
+  left:9%;bottom:17%;width:48%;height:56%;
+  border:2px solid rgba(16,47,71,.16);
+  border-radius:22px 22px 0 0;
+  background:linear-gradient(180deg,rgba(255,255,255,.98) 0%,rgba(249,252,252,.96) 100%);
+  box-shadow:0 16px 36px rgba(16,47,71,.10);
+  overflow:hidden;
+}
+.scn-travel-building::before{
+  content:"";
+  position:absolute;left:0;right:0;top:0;height:16%;
+  background:linear-gradient(90deg,rgba(222,130,108,.22) 0 28%,rgba(79,153,213,.20) 28% 58%,rgba(101,185,90,.20) 58% 100%);
+}
+.scn-travel-building::after{
+  content:"";
+  position:absolute;left:8%;right:8%;bottom:14%;height:2px;
+  background:rgba(16,47,71,.09);
+  box-shadow:0 -20px 0 rgba(16,47,71,.07),0 20px 0 rgba(16,47,71,.05);
+}
+.scn-travel-building>span{
+  top:22%;width:15%;height:18%;border-radius:8px;
+  background:linear-gradient(180deg,rgba(79,153,213,.18),rgba(79,153,213,.10));
+}
+.scn-travel-building>i{
+  bottom:0;width:13%;height:24%;border-radius:7px 7px 0 0;
+  background:linear-gradient(180deg,rgba(17,173,182,.15),rgba(17,173,182,.10));
+}
+.scn-travel-board{
+  right:8%;top:12%;width:36%;height:36%;padding:18px 18px 0;
+  border:1px solid rgba(16,47,71,.08);
+  border-radius:22px;background:rgba(255,255,255,.95);
+  box-shadow:0 18px 38px rgba(16,47,71,.10);
+}
+.scn-travel-board::before{
+  content:"TODAY'S THEME";
+  display:block;
+  color:#9baeb8;
+  font-size:10px;font-weight:900;letter-spacing:.18em;
+}
+.scn-travel-board span{height:10px;margin-top:16px}
+.scn-travel-board span:first-of-type{margin-top:14px}
+.scn-travel-people{
+  right:10%;bottom:15%;gap:18px;
+}
+.scn-travel-people b{
+  width:48px;height:66px;border-radius:24px 24px 14px 14px;
+  background:linear-gradient(180deg,rgba(231,213,204,.95),rgba(243,227,220,.9));
+  box-shadow:0 14px 24px rgba(16,47,71,.07);
+}
+.scn-travel-people b::before{
+  top:-19px;width:31px;height:31px;background:#fff;
+}
+.scn-travel-people b::after{
+  content:"";
+  position:absolute;left:50%;bottom:10px;width:22px;height:20px;
+  border-radius:12px 12px 6px 6px;
+  background:rgba(255,255,255,.26);
+  transform:translateX(-50%);
+}
+
+.scn-room-card{overflow:hidden}
+.scn-room-door{
+  position:relative;overflow:hidden;
+  background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(247,250,252,.98));
+  border:2px solid rgba(16,47,71,.11);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.75),0 18px 32px rgba(16,47,71,.10);
+}
+.scn-room-door::before{
+  content:"";
+  position:absolute;left:14px;right:14px;top:20px;bottom:20px;
+  border-radius:58px 58px 10px 10px;
+  background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.42) 32%,rgba(255,255,255,.18) 100%);
+  border:1px solid rgba(255,255,255,.5);
+}
+.scn-room-door::after{
+  content:"";
+  position:absolute;left:22px;right:22px;top:34px;height:40%;
+  border-radius:42px;
+  background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0));
+}
+.room-counseling .scn-room-door{
+  background:
+    radial-gradient(circle at 30% 18%,rgba(255,255,255,.75),transparent 26%),
+    linear-gradient(180deg,rgba(17,173,182,.26),rgba(17,173,182,.08) 48%,rgba(255,255,255,.96) 100%);
+}
+.room-seminar .scn-room-door{
+  background:
+    radial-gradient(circle at 30% 18%,rgba(255,255,255,.78),transparent 26%),
+    linear-gradient(180deg,rgba(79,153,213,.24),rgba(145,113,188,.09) 48%,rgba(255,255,255,.96) 100%);
+}
+.scn-room-door span{
+  right:18px;top:50%;width:12px;height:12px;
+  background:linear-gradient(180deg,#dcb85f,#b6861c);
+  box-shadow:0 0 0 4px rgba(220,184,95,.15);
+}
+
+@media(max-width:1180px){
+  .scn-travel-copy h2{max-width:none}
+  .scn-travel-copy h2 .scn-title-line{white-space:nowrap;width:fit-content}
+}
+@media(max-width:760px){
+  .scn-travel-hero{grid-template-columns:1fr}
+  .scn-travel-visual{min-height:300px}
+  .scn-room-door::before{left:10px;right:10px;top:14px;bottom:14px}
+}
