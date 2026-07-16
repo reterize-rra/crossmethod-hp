@@ -1469,3 +1469,51 @@ section[data-managed-background] > .rs-shell {
     animation: none !important;
   }
 }
+
+
+/* Report diagram labels */
+.rs-report-flow i {
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  text-align: center;
+}
+
+.rs-report-flow i span {
+  color: var(--rs-navy);
+  font-size: 13px;
+  line-height: 1.35;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+
+.rs-report-flow .report-step-current {
+  background: var(--rs-coral-soft);
+}
+
+.rs-report-flow .report-step-priority {
+  background: var(--rs-blue-soft);
+}
+
+.rs-report-flow .report-step-improve {
+  background: var(--rs-green-soft);
+}
+
+@media (max-width: 760px) {
+  .rs-report-flow {
+    gap: 9px;
+  }
+
+  .rs-report-flow i {
+    width: 68px;
+    height: 68px;
+    padding: 6px;
+  }
+
+  .rs-report-flow i span {
+    font-size: 12px;
+  }
+}
