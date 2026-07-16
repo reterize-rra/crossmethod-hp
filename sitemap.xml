@@ -31,8 +31,8 @@
 <url>
   <loc>https://www.tsunagari-jp.com/healthy-food/</loc>
 </url>
-GitHubへコピー/
-└ GitHubへ追記/
-   └ sitemap.xml_追加行.xml
-   
+<url>
+  <loc>https://www.tsunagari-jp.com/risk-safety/</loc>
+</url>
+
 </urlset>

@@ -1026,6 +1026,10 @@ section[data-managed-background] > .rs-shell {
   box-shadow: var(--rs-shadow-soft);
 }
 
+.rs-deliverable-card .rs-card-icon {
+  margin-bottom: 14px;
+}
+
 .rs-deliverable-card h3 {
   margin: 0;
   color: var(--rs-navy);

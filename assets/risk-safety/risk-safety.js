@@ -327,49 +327,57 @@
         "order": 1,
         "title": "安全管理の現在地",
         "text": "体制、手順、記録、共有の状態を整理します。",
-        "tone": "blue"
+        "tone": "blue",
+        "icon": "data"
       },
       {
         "order": 2,
         "title": "優先リスク",
         "text": "先に確認・改善する危険や詰まりを示します。",
-        "tone": "coral"
+        "tone": "coral",
+        "icon": "warning"
       },
       {
         "order": 3,
         "title": "緊急時対応フロー",
         "text": "初動、連絡、判断の流れを整理します。",
-        "tone": "aqua"
+        "tone": "aqua",
+        "icon": "emergency"
       },
       {
         "order": 4,
         "title": "連絡体制",
         "text": "誰が誰へ連絡するかを明確にします。",
-        "tone": "purple"
+        "tone": "purple",
+        "icon": "communication"
       },
       {
         "order": 5,
         "title": "確認チェックリスト",
         "text": "日常・緊急時の確認項目を整理します。",
-        "tone": "green"
+        "tone": "green",
+        "icon": "manual"
       },
       {
         "order": 6,
         "title": "改善行動計画",
         "text": "担当、期限、確認方法を含めて整理します。",
-        "tone": "gold"
+        "tone": "gold",
+        "icon": "improve"
       },
       {
         "order": 7,
         "title": "振り返り記録",
         "text": "起きた事実と改善内容を残します。",
-        "tone": "coral"
+        "tone": "coral",
+        "icon": "record"
       },
       {
         "order": 8,
         "title": "再確認ポイント",
         "text": "改善後に確かめる変化を示します。",
-        "tone": "blue"
+        "tone": "blue",
+        "icon": "continuity"
       }
     ]
   },
@@ -411,6 +419,16 @@
   const ICONS = {"manual": "<svg viewBox=\"0 0 64 64\"><path d=\"M14 10h36v44H14z\"/><path d=\"M22 22h20M22 31h20M22 40h13\"/><path d=\"M42 40h8M46 36v8\"/></svg>", "handover": "<svg viewBox=\"0 0 64 64\"><path d=\"M10 18h19v28H10zM35 18h19v28H35z\"/><path d=\"M29 25h6M29 39h6\"/><path d=\"m24 31 5-5 5 5M40 33l-5 5-5-5\"/></svg>", "report": "<svg viewBox=\"0 0 64 64\"><path d=\"M10 14h44v30H31L19 54V44h-9z\"/><path d=\"M21 27h22M21 35h15\"/></svg>", "manager": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"19\" r=\"9\"/><path d=\"M16 52c1-14 7-22 16-22s15 8 16 22\"/><path d=\"M9 39h10M45 39h10M13 34v10M51 34v10\"/></svg>", "facility": "<svg viewBox=\"0 0 64 64\"><path d=\"M9 52V18h46v34\"/><path d=\"M17 27h8v8h-8zM39 27h8v8h-8z\"/><path d=\"M24 52V41h16v11M6 52h52\"/></svg>", "busy": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"22\"/><path d=\"M32 18v15l10 6\"/><path d=\"M12 12l8 8M52 12l-8 8\"/></svg>", "customer": "<svg viewBox=\"0 0 64 64\"><circle cx=\"25\" cy=\"20\" r=\"8\"/><path d=\"M10 52c1-14 7-22 15-22s14 8 15 22\"/><path d=\"M43 25h12v20H43z\"/></svg>", "worker": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"19\" r=\"9\"/><path d=\"M16 52c1-14 7-22 16-22s15 8 16 22\"/><path d=\"M22 12h20\"/></svg>", "data": "<svg viewBox=\"0 0 64 64\"><rect x=\"12\" y=\"27\" width=\"40\" height=\"28\" rx=\"6\"/><path d=\"M21 27v-8c0-7 5-12 11-12s11 5 11 12v8\"/><circle cx=\"32\" cy=\"40\" r=\"4\"/></svg>", "continuity": "<svg viewBox=\"0 0 64 64\"><path d=\"M14 29c2-11 11-18 22-18 7 0 13 3 17 8\"/><path d=\"m44 10 9 9-12 3\"/><path d=\"M50 35c-2 11-11 18-22 18-7 0-13-3-17-8\"/><path d=\"m20 54-9-9 12-3\"/></svg>", "warning": "<svg viewBox=\"0 0 64 64\"><path d=\"M32 8 57 54H7z\"/><path d=\"M32 23v14M32 45h.1\"/></svg>", "emergency": "<svg viewBox=\"0 0 64 64\"><path d=\"M12 52h40\"/><path d=\"M19 42c0-13 5-25 13-25s13 12 13 25\"/><path d=\"M32 9v8M12 23l7 4M52 23l-7 4\"/></svg>", "communication": "<svg viewBox=\"0 0 64 64\"><path d=\"M9 13h46v31H32L20 54V44H9z\"/><path d=\"M20 26h24M20 34h16\"/></svg>", "record": "<svg viewBox=\"0 0 64 64\"><path d=\"M14 10h28l8 8v36H14z\"/><path d=\"M42 10v10h10M22 31h20M22 40h20\"/></svg>", "hygiene": "<svg viewBox=\"0 0 64 64\"><path d=\"M17 43c11 3 24-2 28-15 3 16-8 27-22 27-8 0-14-4-17-10 4 0 8-1 11-2z\"/><path d=\"M43 13h10l-8 10h10\"/></svg>", "dignity": "<svg viewBox=\"0 0 64 64\"><path d=\"M32 53C21 44 11 37 11 26c0-7 5-12 12-12 4 0 8 2 9 6 2-4 5-6 10-6 7 0 12 5 12 12 0 11-10 18-22 27z\"/><path d=\"M23 34h18\"/></svg>", "improve": "<svg viewBox=\"0 0 64 64\"><path d=\"M14 29c2-11 11-18 22-18 7 0 13 3 17 8\"/><path d=\"m44 10 9 9-12 3\"/><path d=\"M50 35c-2 11-11 18-22 18-7 0-13-3-17-8\"/><path d=\"m20 54-9-9 12-3\"/></svg>", "restaurant": "<svg viewBox=\"0 0 64 64\"><path d=\"M10 38h44c0 11-8 18-22 18S10 49 10 38z\"/><path d=\"M18 32c0-6 4-8 4-14M32 32c0-6 4-8 4-14M46 32c0-6 4-8 4-14\"/></svg>", "hotel": "<svg viewBox=\"0 0 64 64\"><path d=\"M8 50V22h48v28M14 36h36M16 22v-8h16v8M32 22v-8h16v8\"/><path d=\"M6 50h52\"/></svg>", "care": "<svg viewBox=\"0 0 64 64\"><path d=\"M11 49V27h42v22\"/><path d=\"M19 27V16h26v11M8 49h48\"/><path d=\"M32 31v12M26 37h12\"/></svg>", "education": "<svg viewBox=\"0 0 64 64\"><path d=\"M8 20 32 8l24 12-24 12z\"/><path d=\"M16 26v17c8 7 24 7 32 0V26\"/></svg>"};
   const BRAND_PATTERN = /クロスメソッド™︎?/g;
   const BRAND_NAME = "クロスメソッド™";
+  const DELIVERABLE_FALLBACK_ICONS = [
+    "data",
+    "warning",
+    "emergency",
+    "communication",
+    "manual",
+    "improve",
+    "record",
+    "continuity"
+  ];
   const $ = (selector) => document.querySelector(selector);
 
   const MOBILE_TITLES = {
@@ -616,6 +634,12 @@
     return ICONS[type] || ICONS.warning;
   }
 
+  function deliverableIcon(item, index) {
+    return item && item.icon
+      ? item.icon
+      : DELIVERABLE_FALLBACK_ICONS[index] || "warning";
+  }
+
   function renderCards(items, selector, className, renderer) {
     const wrap = $(selector);
     if (!wrap) return;
@@ -672,7 +696,8 @@
       <p>${brandHtml(item.text)}</p>
     `);
 
-    renderCards(cards.deliverables, "#deliverables-list", "rs-deliverable-card", (item) => `
+    renderCards(cards.deliverables, "#deliverables-list", "rs-deliverable-card", (item, index) => `
+      <div class="rs-card-icon" aria-hidden="true">${iconSvg(deliverableIcon(item, index))}</div>
       <h3>${brandHtml(item.title)}</h3>
       <p>${brandHtml(item.text)}</p>
     `);
