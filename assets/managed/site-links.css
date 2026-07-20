@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+/* CrossMethod unified service directory */
+.cm-service-directory{
+  position:relative;
+  padding:72px 0;
+  border-top:1px solid rgba(16,47,71,.08);
+  background:
+    radial-gradient(circle at 8% 15%,rgba(17,174,183,.09),transparent 24%),
+    radial-gradient(circle at 90% 84%,rgba(101,185,90,.08),transparent 22%),
+    linear-gradient(180deg,#f9fcfd,#fff);
+  overflow:hidden;
+}
+.cm-service-directory__shell{
+  width:min(1180px,calc(100% - 44px));
+  margin:0 auto;
+}
+.cm-service-directory__head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:28px;
+  margin-bottom:28px;
+}
+.cm-service-directory__eyebrow{
+  margin:0 0 7px;
+  color:#0fa8b1;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.cm-service-directory__head h2{
+  margin:0;
+  color:#102f47;
+  font-family:"Noto Sans JP",sans-serif;
+  font-size:clamp(29px,3.6vw,44px);
+  line-height:1.45;
+  letter-spacing:-.035em;
+}
+.cm-service-directory__head p{
+  max-width:590px;
+  margin:0;
+  color:#607986;
+  font-size:14px;
+  line-height:1.85;
+}
+.cm-service-directory__grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+}
+.cm-service-link{
+  min-height:178px;
+  padding:19px;
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr);
+  gap:15px;
+  align-items:center;
+  border:1px solid rgba(16,47,71,.09);
+  border-radius:25px;
+  color:#102f47;
+  background:#fff;
+  box-shadow:0 13px 34px rgba(16,47,71,.07);
+  text-decoration:none;
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.cm-service-link:hover{
+  transform:translateY(-3px);
+  border-color:rgba(15,170,180,.25);
+  box-shadow:0 20px 44px rgba(16,47,71,.11);
+}
+.cm-service-link.is-current{
+  border-color:rgba(15,170,180,.42);
+  box-shadow:0 0 0 3px rgba(15,170,180,.10),0 20px 44px rgba(16,47,71,.10);
+}
+.cm-service-link__icon{
+  width:54px;
+  height:54px;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  color:var(--cm-accent,#0fa8b1);
+  background:var(--cm-soft,#e7f8f8);
+}
+.cm-service-link__icon svg{
+  width:34px;
+  height:34px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.cm-service-link small{
+  display:block;
+  color:var(--cm-accent,#0fa8b1);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+}
+.cm-service-link strong{
+  display:block;
+  margin-top:4px;
+  font-size:16px;
+  line-height:1.5;
+}
+.cm-service-link span:last-child{
+  display:block;
+  margin-top:5px;
+  color:#6a808b;
+  font-size:12px;
+  line-height:1.65;
+}
+.cm-service-link[data-route="/customer-voice/"]{--cm-accent:#3b91ce;--cm-soft:#eaf5ff}
+.cm-service-link[data-route="/employee-voice/"]{--cm-accent:#0fa8b1;--cm-soft:#e7f8f8}
+.cm-service-link[data-route="/health-management/"]{--cm-accent:#57a94d;--cm-soft:#edf8eb}
+.cm-service-link[data-route="/stress-check/"]{--cm-accent:#8467b1;--cm-soft:#f4effc}
+.cm-service-link[data-route="/employee-retention/"]{--cm-accent:#d09c35;--cm-soft:#fff6db}
+.cm-service-link[data-route="/healthy-food/"]{--cm-accent:#40a764;--cm-soft:#eef9f0}
+.cm-service-link[data-route="/risk-safety/"]{--cm-accent:#dc7b63;--cm-soft:#fff0eb}
+.cm-service-link[data-route="/seminar-counseling/"]{--cm-accent:#b18024;--cm-soft:#fff7df}
+
+@media(max-width:980px){
+  .cm-service-directory__head{align-items:flex-start;flex-direction:column}
+  .cm-service-directory__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .cm-service-directory{padding:54px 0}
+  .cm-service-directory__shell{width:min(100% - 28px,1180px)}
+  .cm-service-directory__head h2{font-size:30px}
+  .cm-service-directory__grid{grid-template-columns:1fr}
+  .cm-service-link{min-height:142px}
+}

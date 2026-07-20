@@ -82,6 +82,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/managed/site-links.css">
 </head>
 
 <body>
@@ -106,9 +107,9 @@
         <a href="#experience">無料体験診断</a>
         <a href="#visible-voices">視える化できる声</a>
         <a href="#stresscheck">ストレスチェック</a>
-        <a href="#healthyfood">健康食</a>
-        <a href="#certification">認定支援</a>
-        <a href="#virtualrooms">カウンセリング・セミナー</a>
+        <a href="/healthy-food/">健康食</a>
+        <a href="/health-management/#recognition">認定支援</a>
+        <a href="/seminar-counseling/">カウンセリング・セミナー</a>
         <button type="button" class="nav-consult" data-open-contact="総合相談">相談はこちら</button>
       </nav>
     </div>
@@ -173,9 +174,9 @@
             <a class="float-action fa-free" href="#experience">無料体験診断</a>
             <a class="float-action fa-voice" href="#visible-voices">視える化できる声</a>
             <button class="float-action fa-stress" type="button" data-open-contact="ストレスチェック相談">ストレスチェック</button>
-            <a class="float-action fa-food" href="#healthyfood">健康食</a>
-            <a class="float-action fa-cert" href="#certification">認定支援</a>
-            <a class="float-action fa-room" href="#virtualrooms">カウンセリング・セミナー</a>
+            <a class="float-action fa-food" href="/healthy-food/">健康食</a>
+            <a class="float-action fa-cert" href="/health-management/#recognition">認定支援</a>
+            <a class="float-action fa-room" href="/seminar-counseling/">カウンセリング・セミナー</a>
           </div>
         </div>
       </div>
@@ -192,7 +193,17 @@
           <p>最新のご案内や受付情報をお届けします。</p>
         </div>
 
-        <div class="news-list" id="news-list" aria-live="polite">
+        <div class="featured-topics-shell" id="featured-topics-shell" hidden>
+        <div class="featured-topics-head">
+          <div>
+            <p class="featured-topics-eyebrow">Featured Topics</p>
+            <h3>注目トピック</h3>
+          </div>
+          <p>重要表示に設定した記事を、優先してご案内します。</p>
+        </div>
+        <div class="featured-topics" id="featured-topics"></div>
+      </div>
+      <div class="news-list" id="news-list" aria-live="polite">
           <article class="news-item news-loading">
             <time>----.--.--</time>
             <span class="news-category">読み込み中</span>
@@ -377,11 +388,11 @@
           </div>
           <div class="menu-shelf">
             <article class="menu-panel blue"><span>01</span><h3><span class="menu-icon">📊</span>診断・レポート</h3><p>声を集め、強み・課題・優先順位を整理。</p><a href="#diagnostics">診断を見る</a></article>
-            <article class="menu-panel teal" id="stresscheck"><span>02</span><h3><span class="menu-icon">💚</span>ストレスチェック</h3><p>制度対応だけでなく、職場改善へ。</p><button type="button" data-open-contact="ストレスチェック相談">相談する</button></article>
-            <article class="menu-panel green"><span>03</span><h3><span class="menu-icon">🍱</span>健康食・社食</h3><p>福利厚生を、毎日の食事から。</p><a href="#healthyfood">健康食を見る</a></article>
-            <article class="menu-panel gold"><span>04</span><h3><span class="menu-icon">📜</span>認定支援</h3><p>現状整理・申請準備を支援。</p><a href="#certification">認定を見る</a></article>
+            <article class="menu-panel teal" id="stresscheck"><span>02</span><h3><span class="menu-icon">💚</span>ストレスチェック</h3><p>制度対応だけでなく、職場改善へ。</p><a href="/stress-check/">ストレスチェックを見る</a></article>
+            <article class="menu-panel green"><span>03</span><h3><span class="menu-icon">🍱</span>健康食・社食</h3><p>福利厚生を、毎日の食事から。</p><a href="/healthy-food/">健康食を見る</a></article>
+            <article class="menu-panel gold"><span>04</span><h3><span class="menu-icon">📜</span>認定支援</h3><p>現状整理・申請準備を支援。</p><a href="/health-management/#recognition">認定を見る</a></article>
             <article class="menu-panel purple"><span>05</span><h3><span class="menu-icon">💬</span>面接・面談・評価</h3><p>人と組織を重ねる評価で、育成と定着へ。</p><a href="/employee-retention/">人材定着・人事評価を見る</a></article>
-            <article class="menu-panel coral"><span>06</span><h3><span class="menu-icon">🛡️</span>リスク予防</h3><p>BCP、虐待防止、個人情報、ヒヤリハット。</p></article>
+            <article class="menu-panel coral"><span>06</span><h3><span class="menu-icon">🛡️</span>リスク予防</h3><p>BCP、虐待防止、個人情報、ヒヤリハット。</p><a href="/risk-safety/">リスク予防を見る</a></article>
           </div>
         </div>
       </div>
@@ -405,24 +416,24 @@
             <a class="center-trial-button" href="#experience">まずは体験から</a>
           </div>
 
-          <div class="orbit-node n01"><b>1</b>お客様は満足して帰ったか</div>
-          <div class="orbit-node n02"><b>2</b>従業員は今、幸せか</div>
-          <div class="orbit-node n03"><b>3</b>ここで働き続けたいか</div>
-          <div class="orbit-node n04"><b>4</b>会社を理解して頑張れているか</div>
-          <div class="orbit-node n05"><b>5</b>頑張りが報われる仕組みか</div>
-          <div class="orbit-node n06"><b>6</b>現場はどこで詰まっているか</div>
-          <div class="orbit-node n07"><b>7</b>管理者は抱え込んでいないか</div>
-          <div class="orbit-node n08"><b>8</b>新人は本音を言えているか</div>
-          <div class="orbit-node n09"><b>9</b>その人の本質はなにか</div>
-          <div class="orbit-node n10"><b>10</b>面談で本音を引き出せているか</div>
-          <div class="orbit-node n11"><b>11</b>面接で本質を見抜けているか</div>
-          <div class="orbit-node n12"><b>12</b>会社の魅力は伝わっているか</div>
-          <div class="orbit-node n13"><b>13</b>評価は行動変化につながっているか</div>
-          <div class="orbit-node n14"><b>14</b>緊急時に本当に動ける準備があるか</div>
-          <div class="orbit-node n15"><b>15</b>相談できる空気と初動体制があるか</div>
-          <div class="orbit-node n16"><b>16</b>尊厳を守るケアが続いているか</div>
-          <div class="orbit-node n17"><b>17</b>記録と情報共有の安全が守られているか</div>
-          <div class="orbit-node n18"><b>18</b>ヒヤリが再発防止に変わっているか</div>
+          <a class="orbit-node n01" href="/customer-voice/"><b>1</b>お客様は満足して帰ったか</a>
+          <a class="orbit-node n02" href="/employee-voice/"><b>2</b>従業員は今、幸せか</a>
+          <a class="orbit-node n03" href="/employee-retention/"><b>3</b>ここで働き続けたいか</a>
+          <a class="orbit-node n04" href="/employee-voice/"><b>4</b>会社を理解して頑張れているか</a>
+          <a class="orbit-node n05" href="/employee-retention/"><b>5</b>頑張りが報われる仕組みか</a>
+          <a class="orbit-node n06" href="/employee-voice/"><b>6</b>現場はどこで詰まっているか</a>
+          <a class="orbit-node n07" href="/employee-retention/"><b>7</b>管理者は抱え込んでいないか</a>
+          <a class="orbit-node n08" href="/employee-retention/"><b>8</b>新人は本音を言えているか</a>
+          <a class="orbit-node n09" href="/employee-retention/"><b>9</b>その人の本質はなにか</a>
+          <a class="orbit-node n10" href="/employee-retention/"><b>10</b>面談で本音を引き出せているか</a>
+          <a class="orbit-node n11" href="/employee-retention/"><b>11</b>面接で本質を見抜けているか</a>
+          <a class="orbit-node n12" href="/employee-retention/"><b>12</b>会社の魅力は伝わっているか</a>
+          <a class="orbit-node n13" href="/employee-retention/"><b>13</b>評価は行動変化につながっているか</a>
+          <a class="orbit-node n14" href="/risk-safety/"><b>14</b>緊急時に本当に動ける準備があるか</a>
+          <a class="orbit-node n15" href="/health-management/"><b>15</b>相談できる空気と初動体制があるか</a>
+          <a class="orbit-node n16" href="/risk-safety/"><b>16</b>尊厳を守るケアが続いているか</a>
+          <a class="orbit-node n17" href="/risk-safety/"><b>17</b>記録と情報共有の安全が守られているか</a>
+          <a class="orbit-node n18" href="/risk-safety/"><b>18</b>ヒヤリが再発防止に変わっているか</a>
         </div>
       </div>
     </section>
@@ -479,6 +490,7 @@
         <div class="food-action-row">
           <button class="food-shape-button leaf" type="button" data-open-contact="社食導入相談">社食を相談する</button>
           <button class="food-shape-button bento" type="button" id="open-order-modal">注文する</button>
+          <a class="food-shape-button food-detail-link" href="/healthy-food/">健康食ページを見る</a>
         </div>
       </div>
     </section>
@@ -491,6 +503,7 @@
             <h2 class="cert-title"><span>認定取得に向けた</span><span>現状整理・申請準備を</span><span>支援します。</span></h2>
             <p>制度の取得を保証するものではありません。公式情報・審査基準に沿って、取り組み状況の整理、足りない項目の確認、申請準備を支援します。</p>
             <button class="button primary" type="button" data-open-contact="認定支援相談">認定支援を相談する</button>
+            <a class="button white" href="/health-management/#recognition">健康経営支援ページを見る</a>
           </div>
           <div class="cert-list" aria-label="認定支援候補">
             <article><b>健康経営優良法人</b><span>健康経営の取り組み整理</span><a class="cert-detail-link" href="https://www.meti.go.jp/policy/mono_info_service/healthcare/kenkoukeiei_yuryouhouzin.html" target="_blank" rel="noopener">詳細はこちら</a></article>
@@ -595,7 +608,7 @@
       </span>
       <span>無料体験</span>
     </a>
-    <a class="mobile-bottom-link mobile-bottom-food" href="#healthyfood" data-mobile-target="healthyfood">
+    <a class="mobile-bottom-link mobile-bottom-food" href="/healthy-food/" data-mobile-target="healthyfood">
       <span class="mobile-bottom-icon" aria-hidden="true">
         <svg viewBox="0 0 32 32">
           <path d="M7 17h18c0 6-4 10-9 10S7 23 7 17Z"/>
@@ -605,7 +618,7 @@
       </span>
       <span>健康食</span>
     </a>
-    <a class="mobile-bottom-link mobile-bottom-online" href="#virtualrooms" data-mobile-target="virtualrooms">
+    <a class="mobile-bottom-link mobile-bottom-online" href="/seminar-counseling/" data-mobile-target="virtualrooms">
       <span class="mobile-bottom-icon" aria-hidden="true">
         <svg viewBox="0 0 32 32">
           <rect x="5" y="7" width="22" height="16" rx="2"/>
@@ -653,6 +666,14 @@
           <label>メール<input name="email" type="email" required></label>
           <label>電話番号<input name="phone" type="tel"></label>
           <label class="full">配送先住所<textarea name="address" rows="3"></textarea></label>
+          <label class="full payment-method-field">支払い方法
+            <select name="paymentMethod" required>
+              <option value="">選択してください</option>
+              <option value="口座振込">口座振込</option>
+              <option value="クレジットカード">クレジットカード</option>
+            </select>
+            <small>口座情報または決済方法は、注文内容確認後にご案内します。</small>
+          </label>
           <label class="full">備考<textarea name="message" rows="3"></textarea></label>
         </div>
         <button class="button primary full-button" type="submit">注文を依頼する</button>
@@ -748,5 +769,6 @@
 <script src="/assets/faq/faq-top.js"></script>
 <script src="/assets/content/aio-content.js"></script>
 <script src="/assets/analytics/ga4-events.js"></script>
+  <script src="/assets/managed/site-links.js"></script>
 </body>
 </html>

@@ -68,6 +68,7 @@
     ]
   }
   </script>
+  <link rel="stylesheet" href="/assets/managed/site-links.css">
 </head>
 
 <body>
@@ -340,7 +341,53 @@
     </section>
   </main>
 
-  <footer class="hm-footer">
+  <section class="cm-service-directory" aria-labelledby="cm-service-directory-title">
+  <div class="cm-service-directory__shell">
+    <div class="cm-service-directory__head">
+      <div>
+        <p class="cm-service-directory__eyebrow">Cross Method Services</p>
+        <h2 id="cm-service-directory-title">声から、次の支援へつなげる。</h2>
+      </div>
+      <p>課題は一つとは限りません。現在の声に近い支援を選び、必要なページへ進めます。</p>
+    </div>
+    <div class="cm-service-directory__grid">
+      <a class="cm-service-link" data-route="/customer-voice/" href="/customer-voice/">
+        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M9 12h46v31H31L18 54V43H9z"/><path d="M18 23h28M18 31h20"/></svg></span>
+        <span><small>Customer Voice</small><strong>お客様の声・顧客体験</strong><span>満足、接客、動線、再来につながる声。</span></span>
+      </a>
+      <a class="cm-service-link" data-route="/employee-voice/" href="/employee-voice/">
+        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><circle cx="23" cy="22" r="9"/><circle cx="43" cy="25" r="8"/><path d="M8 54c2-14 8-22 15-22s13 8 15 22M34 54c2-12 6-19 12-19 7 0 11 7 13 19"/></svg></span>
+        <span><small>Employee Voice</small><strong>従業員の声・組織診断</strong><span>幸福感、定着意向、管理者負担を確認。</span></span>
+      </a>
+      <a class="cm-service-link" data-route="/health-management/" href="/health-management/">
+        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M32 55C18 44 9 36 9 25c0-8 6-14 14-14 5 0 8 2 10 7 2-5 6-7 11-7 8 0 14 6 14 14 0 11-10 19-26 30z"/><path d="M16 34h10l4-9 7 18 5-9h8"/></svg></span>
+        <span><small>Health Management</small><strong>健康経営支援</strong><span>健康、両立、相談体制、組織改善へ。</span></span>
+      </a>
+      <a class="cm-service-link" data-route="/stress-check/" href="/stress-check/">
+        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="23"/><path d="M17 40a18 18 0 0 1 30 0M32 34l10-11"/><circle cx="32" cy="34" r="3"/></svg></span>
+        <span><small>Stress Check</small><strong>ストレスチェック</strong><span>実施、集団分析、職場改善まで。</span></span>
+      </a>
+      <a class="cm-service-link" data-route="/employee-retention/" href="/employee-retention/">
+        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><circle cx="22" cy="21" r="8"/><path d="M8 52V41c0-9 5-14 14-14s14 5 14 14v11"/><rect x="38" y="14" width="18" height="28" rx="3"/><path d="M43 22h8M43 28h8M43 34h5"/></svg></span>
+        <span><small>Evaluation</small><strong>人材定着・人事評価</strong><span>個人と組織を重ね、育成と定着へ。</span></span>
+      </a>
+      <a class="cm-service-link" data-route="/healthy-food/" href="/healthy-food/">
+        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M10 31h44c0 15-9 23-22 23S10 46 10 31z"/><path d="M16 31c2-10 9-17 16-17s14 7 16 17M22 22c4 3 6 5 10 9M42 21c-3 3-5 5-9 10"/></svg></span>
+        <span><small>Healthy Food</small><strong>健康食・社食</strong><span>毎日の食事から福利厚生を整える。</span></span>
+      </a>
+      <a class="cm-service-link" data-route="/risk-safety/" href="/risk-safety/">
+        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M32 7 54 15v16c0 14-9 22-22 28C19 53 10 45 10 31V15z"/><path d="m22 31 7 7 14-17"/></svg></span>
+        <span><small>Risk & Safety</small><strong>リスク予防</strong><span>BCP、情報、尊厳、安全、再発防止。</span></span>
+      </a>
+      <a class="cm-service-link" data-route="/seminar-counseling/" href="/seminar-counseling/">
+        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M6 14h23v18H17l-7 7v-7H6zM35 9h23v18H46l-7 7v-7h-4z"/><path d="M14 53V41h14v12M38 53V39h15v14M9 53h24M34 53h24"/></svg></span>
+        <span><small>Consulting</small><strong>カウンセリング・セミナー</strong><span>制度導入、面談、研修、組織改善相談。</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="hm-footer">
     <div class="hm-shell hm-footer-inner">
       <a class="hm-footer-brand" href="/">
         <img src="/assets/images/brand/company_logo.png" alt="TSUNAGARI">
@@ -358,5 +405,6 @@
 
   <script src="/assets/health-management/health-management.js"></script>
   <script src="/assets/managed/section-ambient.js"></script>
+  <script src="/assets/managed/site-links.js"></script>
 </body>
 </html>

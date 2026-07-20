@@ -357,6 +357,15 @@ function setupOrderModal() {
     const orderItems = getOrderItems();
     if (orderItems.length === 0) { alert("商品個数を1つ以上入力してください。"); return; }
     const formData = new FormData(form);
+    /* CROSSMETHOD_PAYMENT_METHOD_V1 */
+    const customer = Object.fromEntries(formData.entries());
+    const paymentMethod = String(customer.paymentMethod || "").trim();
+    if (!paymentMethod) {
+      alert("支払い方法を選択してください。");
+      return;
+    }
+    customer.paymentMethod = paymentMethod;
+    customer.message = `【支払い方法】${paymentMethod}${customer.message ? "\n" + customer.message : ""}`;
     const subtotal = calcSubtotal(orderItems);
     const shipping = calcShipping(subtotal);
     const payload = {
@@ -366,7 +375,8 @@ function setupOrderModal() {
       subtotal,
       shipping,
       total: subtotal + shipping,
-      customer: Object.fromEntries(formData.entries()),
+      customer,
+      paymentMethod,
       requestId: createRequestId(),
       createdAt: new Date().toISOString()
     };
@@ -1128,6 +1138,8 @@ function normalizeNewsPayload(payload) {
 async function setupNewsSection() {
   const section = document.getElementById("news");
   const list = document.getElementById("news-list");
+  const featuredShell = document.getElementById("featured-topics-shell");
+  const featured = document.getElementById("featured-topics");
   if (!section || !list) return;
 
   if (SITE_CONFIG.showNewsSection === false) {
@@ -1145,11 +1157,7 @@ async function setupNewsSection() {
         method: "GET",
         cache: "no-store"
       });
-
-      if (!response.ok) {
-        throw new Error(`お知らせ取得エラー: ${response.status}`);
-      }
-
+      if (!response.ok) throw new Error(`お知らせ取得エラー: ${response.status}`);
       const payload = await response.json();
       const fetchedItems = normalizeNewsPayload(payload);
       if (fetchedItems.length) items = fetchedItems;
@@ -1163,13 +1171,35 @@ async function setupNewsSection() {
     return;
   }
 
-  list.innerHTML = items.slice(0, 5).map((item) => {
+  const normalizedItems = normalizeNewsPayload(items);
+  const importantItems = normalizedItems.filter((item) => item.important).slice(0, 8);
+  const regularItems = normalizedItems.filter((item) => !item.important).slice(0, 5);
+  const latestItems = regularItems.length ? regularItems : normalizedItems.slice(0, 5);
+
+  if (featuredShell && featured && importantItems.length) {
+    featuredShell.hidden = false;
+    featured.innerHTML = importantItems.map((item, index) => {
+      const href = item.url ? ` href="${escapeHtml(item.url)}"` : "";
+      const tag = item.url ? "a" : "article";
+      return `
+        <${tag} class="featured-topic-card"${href}>
+          <span class="featured-topic-index">${String(index + 1).padStart(2, "0")}</span>
+          <span class="featured-topic-category">${escapeHtml(item.category || "注目")}</span>
+          <strong>${escapeHtml(item.title)}</strong>
+          ${item.text ? `<p>${escapeHtml(item.text)}</p>` : ""}
+          ${item.url ? '<span class="featured-topic-arrow" aria-hidden="true">→</span>' : ""}
+        </${tag}>
+      `;
+    }).join("");
+  } else if (featuredShell) {
+    featuredShell.hidden = true;
+  }
+
+  list.innerHTML = latestItems.map((item) => {
     const tag = item.url ? "a" : "article";
     const href = item.url ? ` href="${escapeHtml(item.url)}"` : "";
-    const importantClass = item.important ? " is-important" : "";
-
     return `
-      <${tag} class="news-item${importantClass}"${href}>
+      <${tag} class="news-item"${href}>
         <time>${escapeHtml(item.date || "----.--.--")}</time>
         <span class="news-category">${escapeHtml(item.category)}</span>
         <div class="news-copy">
