@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>クロスメソッド™ 電子パンフレット</title>
+  <meta name="description" content="オンライン商談用のクロスメソッド™電子パンフレットです。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/brochure/brochure.css">
+</head>
+<body>
+  <noscript>
+    <div class="noscript-message">この電子パンフレットの閲覧にはJavaScriptが必要です。</div>
+  </noscript>
+
+  <section class="access-gate" id="access-gate" aria-labelledby="access-title">
+    <div class="access-orb orb-a" aria-hidden="true"></div>
+    <div class="access-orb orb-b" aria-hidden="true"></div>
+    <div class="access-panel">
+      <div class="access-brand">
+        <img src="../assets/images/brand/company_logo.png" alt="TSUNAGARI">
+        <span class="brand-divider" aria-hidden="true"></span>
+        <img class="method-logo" src="../assets/images/brand/crossmethod_logo.png" alt="クロスメソッド™">
+      </div>
+      <p class="access-eyebrow">PRIVATE DIGITAL BROCHURE</p>
+      <h1 id="access-title">電子パンフレットを開く</h1>
+      <p class="access-copy">ご案内したアクセスコードを入力してください。認証後、このブラウザを閉じるまで閲覧できます。</p>
+      <form id="access-form" class="access-form" novalidate>
+        <label for="access-code">アクセスコード</label>
+        <div class="code-field">
+          <input id="access-code" name="access-code" type="password" inputmode="text" autocomplete="one-time-code" placeholder="アクセスコードを入力" required>
+          <button type="button" class="toggle-code" id="toggle-code" aria-label="アクセスコードを表示する">表示</button>
+        </div>
+        <p class="access-error" id="access-error" role="alert" aria-live="polite"></p>
+        <button type="submit" class="access-submit">パンフレットを開く</button>
+      </form>
+      <a class="return-link" href="../">トップページへ戻る</a>
+      <p class="access-note">このページは検索結果に表示しない設定です。</p>
+    </div>
+  </section>
+
+  <main class="brochure-app" id="brochure-app" hidden>
+    <header class="brochure-toolbar" aria-label="電子パンフレット操作">
+      <div class="toolbar-brand">
+        <img src="../assets/images/brand/company_logo.png" alt="TSUNAGARI">
+        <span></span>
+        <b>クロスメソッド™ 電子パンフレット</b>
+      </div>
+      <div class="toolbar-actions">
+        <button type="button" id="contents-button" aria-haspopup="dialog" aria-controls="contents-panel">目次</button>
+        <button type="button" id="print-button">PDF・印刷</button>
+        <button type="button" id="fullscreen-button">全画面</button>
+        <a href="../#contact">相談する</a>
+      </div>
+    </header>
+
+    <div class="book-workspace">
+      <button class="page-nav page-nav-prev" id="prev-button" type="button" aria-label="前のページ">
+        <span aria-hidden="true">‹</span>
+      </button>
+
+      <div class="book-viewport" id="book-viewport">
+        <div class="book-stage" id="book-stage" aria-live="polite">
+
+          <article class="brochure-page cover-page is-current" data-title="表紙" aria-label="1ページ目 表紙">
+            <div class="cover-visual" aria-hidden="true"></div>
+            <div class="cover-glow" aria-hidden="true"></div>
+            <div class="cover-content">
+              <div class="page-brand cover-brand">
+                <img src="../assets/images/brand/company_logo.png" alt="TSUNAGARI">
+                <span></span>
+                <img src="../assets/images/brand/crossmethod_logo.png" alt="クロスメソッド™">
+              </div>
+              <p class="eyebrow">VOICE ASSET METHOD</p>
+              <h2>声は、組織を変える。<br><span>資産になる。</span></h2>
+              <p class="cover-lead">お客様・従業員・現場の声を集め、見えない損失のサインを視える化し、経営判断と改善行動へつなげます。</p>
+              <div class="cover-tag-row">
+                <span>組織診断</span><span>人材定着</span><span>健康経営</span><span>リスク予防</span>
+              </div>
+              <p class="cover-edition">DIGITAL BROCHURE / 2026</p>
+            </div>
+          </article>
+
+          <article class="brochure-page" data-title="声を資産に変える" aria-label="2ページ目 声を資産に変える">
+            <div class="page-inner split-page">
+              <section>
+                <p class="eyebrow">WHY VOICE MATTERS</p>
+                <h2>感覚だった課題を、<br>判断できる材料へ。</h2>
+                <p class="lead">組織の中には、数字になる前の小さなサインがあります。声を丁寧に集めることで、強み・課題・優先順位が見えてきます。</p>
+                <div class="quote-card">
+                  <span>「退職理由を聞いた時には、もう遅かった。」</span>
+                  <span>「管理者が限界なのに、誰にも言えていない。」</span>
+                  <span>「満足されているはずなのに、紹介が増えない。」</span>
+                </div>
+              </section>
+              <section class="before-after-panel">
+                <p class="panel-label">BEFORE / AFTER</p>
+                <div class="state-card muted-state">
+                  <b>声を拾う前</b>
+                  <div class="scattered-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                  <p>課題が点在し、何から手をつけるか判断しにくい</p>
+                </div>
+                <div class="flow-arrow" aria-hidden="true">↓</div>
+                <div class="state-card vivid-state">
+                  <b>声を資産に変えた後</b>
+                  <div class="priority-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                  <p>改善の順番が見え、次の行動を決められる</p>
+                </div>
+              </section>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>02</b></footer>
+          </article>
+
+          <article class="brochure-page" data-title="見えない損失" aria-label="3ページ目 見えない損失">
+            <div class="page-inner">
+              <p class="eyebrow">HIDDEN LOSS</p>
+              <h2>見えない損失は、<br>声にならないところから始まります。</h2>
+              <p class="lead narrow">離職・口コミ低下・事故・採用難・管理者の疲弊。その前には、確認できる小さな違和感があります。</p>
+              <div class="loss-grid">
+                <article class="loss-card cyan"><span>01</span><h3>顧客体験</h3><p>再来店・紹介・口コミへつながらない理由</p><b>売上機会の損失</b></article>
+                <article class="loss-card blue"><span>02</span><h3>人材定着</h3><p>本音・納得感・相談環境の不足</p><b>採用・教育コスト</b></article>
+                <article class="loss-card green"><span>03</span><h3>現場運営</h3><p>二度手間・属人化・業務の詰まり</p><b>時間と人件費</b></article>
+                <article class="loss-card gold"><span>04</span><h3>健康・両立</h3><p>不調や家庭事情を抱えたまま働く状態</p><b>休職・離職リスク</b></article>
+                <article class="loss-card coral"><span>05</span><h3>管理者負担</h3><p>育成・判断・欠員対応の集中</p><b>組織の停滞</b></article>
+                <article class="loss-card purple"><span>06</span><h3>安全・尊厳</h3><p>ヒヤリ・記録・初動・再発防止の弱さ</p><b>事故と信用低下</b></article>
+              </div>
+              <div class="page-message">責めるためではなく、取り戻せる可能性を見つけるために。</div>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>03</b></footer>
+          </article>
+
+          <article class="brochure-page" data-title="クロスメソッド™とは" aria-label="4ページ目 クロスメソッドとは">
+            <div class="page-inner">
+              <p class="eyebrow">CROSS METHOD</p>
+              <h2>診断で終わらせず、<br>改善の判断へつなげる。</h2>
+              <div class="method-flow">
+                <article><span>01</span><div class="method-icon voice-icon" aria-hidden="true"></div><h3>声を集める</h3><p>目的に合った対象者から、答えやすい形で声を受け取ります。</p></article>
+                <i aria-hidden="true">→</i>
+                <article><span>02</span><div class="method-icon chart-icon" aria-hidden="true"></div><h3>状態を整理する</h3><p>強み・課題・認識差・負担を、判断できる形へ変換します。</p></article>
+                <i aria-hidden="true">→</i>
+                <article><span>03</span><div class="method-icon priority-icon" aria-hidden="true"></div><h3>優先順位を決める</h3><p>すぐ整えることと、中長期で取り組むことを分けます。</p></article>
+                <i aria-hidden="true">→</i>
+                <article><span>04</span><div class="method-icon action-icon" aria-hidden="true"></div><h3>改善へつなげる</h3><p>レポートを起点に、教育・制度・環境・運用を整えます。</p></article>
+              </div>
+              <div class="method-bottom">
+                <div><b>個人を責めない</b><span>人と組織を分けて整理</span></div>
+                <div><b>断定しすぎない</b><span>可能性と確認事項を提示</span></div>
+                <div><b>声を放置しない</b><span>次の行動まで設計</span></div>
+              </div>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>04</b></footer>
+          </article>
+
+          <article class="brochure-page voices-page" data-title="18の声" aria-label="5ページ目 18の声">
+            <div class="page-inner">
+              <p class="eyebrow">18 VOICES</p>
+              <h2>どの声を視える化しますか？</h2>
+              <p class="lead voice-intro">中心にあるのは、問いです。周囲の声を拾うことで、組織の状態が立体的に見えてきます。</p>
+              <div class="voice-grid">
+                <article><b>1</b><span>お客様は満足して帰ったか</span></article>
+                <article><b>2</b><span>従業員は今、幸せか</span></article>
+                <article><b>3</b><span>ここで働き続けたいか</span></article>
+                <article><b>4</b><span>会社を理解して頑張れているか</span></article>
+                <article><b>5</b><span>頑張りが報われる仕組みか</span></article>
+                <article><b>6</b><span>現場はどこで詰まっているか</span></article>
+                <article><b>7</b><span>管理者は抱え込んでいないか</span></article>
+                <article><b>8</b><span>新人は本音を言えているか</span></article>
+                <article><b>9</b><span>その人の本質はなにか</span></article>
+                <article><b>10</b><span>面談で本音を引き出せているか</span></article>
+                <article><b>11</b><span>面接で本質を見抜けているか</span></article>
+                <article><b>12</b><span>会社の魅力は伝わっているか</span></article>
+                <article><b>13</b><span>評価は行動変化につながっているか</span></article>
+                <article><b>14</b><span>緊急時に本当に動ける準備があるか</span></article>
+                <article><b>15</b><span>相談できる空気と初動体制があるか</span></article>
+                <article><b>16</b><span>尊厳を守るケアが続いているか</span></article>
+                <article><b>17</b><span>記録と情報共有の安全が守られているか</span></article>
+                <article><b>18</b><span>ヒヤリが再発防止に変わっているか</span></article>
+              </div>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>05</b></footer>
+          </article>
+
+          <article class="brochure-page" data-title="お客様の声" aria-label="6ページ目 お客様の声">
+            <div class="page-inner service-page customer-service">
+              <div class="service-heading">
+                <p class="eyebrow">CUSTOMER EXPERIENCE</p>
+                <h2>お客様の声を、<br>選ばれる理由へ。</h2>
+                <p class="lead">総合満足だけでは分からない、接点ごとの体験を確認します。個人を責めず、教育・役割分担・説明方法・業務導線を整える材料に変えます。</p>
+              </div>
+              <div class="journey-line" aria-label="顧客体験の流れ">
+                <article><span>01</span><b>検索・予約</b><p>情報の分かりやすさ</p></article>
+                <i>→</i>
+                <article><span>02</span><b>来店・受付</b><p>第一印象と安心感</p></article>
+                <i>→</i>
+                <article><span>03</span><b>利用・接客</b><p>説明・待ち時間・品質</p></article>
+                <i>→</i>
+                <article><span>04</span><b>会計・退店</b><p>最後まで残る印象</p></article>
+                <i>→</i>
+                <article><span>05</span><b>再利用・紹介</b><p>継続意向と口コミ</p></article>
+              </div>
+              <div class="service-results">
+                <article><b>接客教育</b><span>どこでばらつきが生まれているか</span></article>
+                <article><b>業務導線</b><span>待ち時間や説明不足の原因</span></article>
+                <article><b>売上機会</b><span>再来店・紹介へつながる改善余地</span></article>
+              </div>
+              <div class="service-note"><b>新規体験を準備予定</b><span>企業情報入力 → 簡易スクリーニング → 見えない損失と改善シミュレーションをその場で表示</span></div>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>06</b></footer>
+          </article>
+
+          <article class="brochure-page" data-title="従業員の声・組織診断" aria-label="7ページ目 従業員の声と組織診断">
+            <div class="page-inner service-page employee-service">
+              <div class="service-heading">
+                <p class="eyebrow">EMPLOYEE VOICE</p>
+                <h2>従業員の声を、<br>組織改善の判断材料へ。</h2>
+                <p class="lead">満足度の平均だけではなく、声同士の関係を見ながら、強み・詰まり・負担・認識差を整理します。</p>
+              </div>
+              <div class="four-layer">
+                <article><span>PERSON</span><h3>個人の状態</h3><p>幸福感・働く力・本音・成長</p></article>
+                <article><span>TEAM</span><h3>チームの状態</h3><p>関係性・相談・連携・心理的安全</p></article>
+                <article><span>WORK</span><h3>仕事の状態</h3><p>詰まり・属人化・役割・業務負担</p></article>
+                <article><span>ORG</span><h3>組織の状態</h3><p>理念・評価・管理者支援・仕組み</p></article>
+              </div>
+              <div class="comparison-panel">
+                <div class="comparison muted-compare"><b>一般的なアンケート</b><p>満足度や平均点を集計し、現在の状態を把握する</p></div>
+                <div class="comparison-arrow">→</div>
+                <div class="comparison vivid-compare"><b>クロスメソッド™</b><p>声の関係を整理し、改善の優先順位と次の行動を決める</p></div>
+              </div>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>07</b></footer>
+          </article>
+
+          <article class="brochure-page" data-title="人材定着・人事評価" aria-label="8ページ目 人材定着と人事評価">
+            <div class="page-inner evaluation-page">
+              <p class="eyebrow">RETENTION × EVALUATION</p>
+              <h2>評価を、査定で終わらせない。<br>人が育ち、組織に残る仕組みへ。</h2>
+              <div class="cross-evaluation">
+                <div class="cross-axis horizontal"><span>個人の成果・行動・成長</span></div>
+                <div class="cross-axis vertical"><span>組織の支援・環境・仕組み</span></div>
+                <div class="cross-center"><b>クロス式™</b><span>人事評価制度</span></div>
+                <div class="cross-label top">方向づけ・承認</div>
+                <div class="cross-label right">成果・役割</div>
+                <div class="cross-label bottom">支援・働く環境</div>
+                <div class="cross-label left">行動・顧客価値</div>
+              </div>
+              <div class="evaluation-points">
+                <article><span>01</span><b>役割に応じた評価</b><p>一般従業員と役職者の視点を分ける</p></article>
+                <article><span>02</span><b>従業員の声</b><p>改善提案と困りごとを確認する</p></article>
+                <article><span>03</span><b>育成・改善テーマ</b><p>強みと伸ばしたい点を整理する</p></article>
+                <article><span>04</span><b>報酬判断の参考</b><p>企業の方針と最終判断を支える</p></article>
+              </div>
+              <p class="privacy-strip">本人専用ログインと企業管理画面を分け、個人攻撃や不利益な利用を防ぐ設計を重視します。</p>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>08</b></footer>
+          </article>
+
+          <article class="brochure-page" data-title="健康・安全・周辺支援" aria-label="9ページ目 健康と安全と周辺支援">
+            <div class="page-inner support-page">
+              <p class="eyebrow">CONNECTED SUPPORT</p>
+              <h2>声から、必要な支援へつなげる。</h2>
+              <p class="lead narrow">組織課題は一つとは限りません。診断結果と現在地に応じて、制度・健康・安全・相談環境まで整えます。</p>
+              <div class="support-grid">
+                <article class="support-card green"><span>01</span><h3>健康経営支援</h3><p>健康診断、両立支援、管理職支援、働き方改善へ。</p><b>声15と接続</b></article>
+                <article class="support-card teal"><span>02</span><h3>ストレスチェック</h3><p>制度対応だけで終わらせず、集団分析と職場改善へ。</p><b>法定制度と組織診断は別運用</b></article>
+                <article class="support-card coral"><span>03</span><h3>リスク・安全管理</h3><p>初動、記録、共有、尊厳、再発防止を仕組みに変える。</p><b>声14・16・17・18と接続</b></article>
+                <article class="support-card purple"><span>04</span><h3>相談・セミナー</h3><p>個別相談、管理職支援、職場研修をオンライン・訪問で。</p><b>必要な学びを現場へ</b></article>
+                <article class="support-card gold"><span>05</span><h3>健康食・社食</h3><p>福利厚生を、毎日の食事と健康づくりから支援。</p><b>別料金</b></article>
+                <article class="support-card blue"><span>06</span><h3>認定取得支援</h3><p>公式情報に沿った現状整理、足りない項目、申請準備。</p><b>別料金・取得保証ではありません</b></article>
+              </div>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>09</b></footer>
+          </article>
+
+          <article class="brochure-page" data-title="導入とレポート" aria-label="10ページ目 導入とレポート">
+            <div class="page-inner report-page">
+              <p class="eyebrow">IMPLEMENTATION & REPORT</p>
+              <h2>声を集めて終わらせない、<br>導入から再確認までの流れ。</h2>
+              <div class="implementation-flow">
+                <article><b>01</b><span>ご相談</span><small>課題・目的・対象者</small></article>
+                <i>→</i><article><b>02</b><span>診断設計</span><small>確認する声を選定</small></article>
+                <i>→</i><article><b>03</b><span>回答実施</span><small>専用URLから回答</small></article>
+                <i>→</i><article><b>04</b><span>集計・分析</span><small>強み・課題・優先順位</small></article>
+                <i>→</i><article><b>05</b><span>レポート</span><small>判断できる形へ</small></article>
+                <i>→</i><article><b>06</b><span>改善・再確認</span><small>変化を見て次へ</small></article>
+              </div>
+              <div class="report-preview">
+                <div class="mock-report">
+                  <div class="mock-head"><span>クロスメソッド™ REPORT</span><b>組織診断結果</b></div>
+                  <div class="mock-score"><strong>72</strong><span>/ 100</span><em>B</em></div>
+                  <div class="mock-chart"><i style="height:76%"></i><i style="height:54%"></i><i style="height:68%"></i><i style="height:42%"></i><i style="height:82%"></i><i style="height:60%"></i></div>
+                  <div class="mock-lines"><i></i><i></i><i></i></div>
+                </div>
+                <div class="report-list">
+                  <article><span>01</span><div><b>強み</b><p>現在、組織の力になっている点</p></div></article>
+                  <article><span>02</span><div><b>改善優先</b><p>先に確認・整備したい領域</p></div></article>
+                  <article><span>03</span><div><b>認識差</b><p>立場によって見え方が異なる点</p></div></article>
+                  <article><span>04</span><div><b>次の行動</b><p>現場で実行する改善テーマ</p></div></article>
+                </div>
+              </div>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>10</b></footer>
+          </article>
+
+          <article class="brochure-page pricing-page" data-title="料金" aria-label="11ページ目 料金">
+            <div class="page-inner">
+              <p class="eyebrow">PRICING</p>
+              <h2>料金のご案内</h2>
+              <div class="pricing-layout">
+                <section class="price-table-wrap">
+                  <div class="price-table">
+                    <article class="price-row contract-row">
+                      <div><span>初回</span><h3>契約金</h3><p>ご契約時に発生します</p></div>
+                      <strong>従業員数 × <em>11,000円</em></strong>
+                    </article>
+                    <article class="price-row voice-row">
+                      <div><span>月額</span><h3>各種声の診断</h3><p>声の収集・集計・分析・レポート</p></div>
+                      <strong><em>33,000円</em>／月</strong>
+                    </article>
+                    <article class="price-row evaluation-row">
+                      <div><span>月額</span><h3>クロス式™ 人事評価制度</h3><p>月額最低利用料金 33,000円</p></div>
+                      <strong>従業員数 × <em>1,100円</em>／月</strong>
+                    </article>
+                  </div>
+                  <div class="contract-terms">
+                    <b>料金はすべて税込・1年契約です。</b>
+                    <p>契約期間中に途中解約される場合は、残りの契約期間分を一括でご請求します。</p>
+                    <p>健康食・社食および認定取得支援は、上記料金に含まれない別料金です。</p>
+                  </div>
+                </section>
+                <section class="price-simulator" aria-labelledby="simulator-title">
+                  <p class="panel-label">QUICK SIMULATION</p>
+                  <h3 id="simulator-title">従業員数で概算を確認</h3>
+                  <label for="employee-count">従業員数</label>
+                  <div class="employee-input"><input id="employee-count" type="number" min="1" max="10000" step="1" value="30"><span>名</span></div>
+                  <div class="plan-checks">
+                    <label><input id="voice-plan" type="checkbox" checked><span>各種声の診断を利用</span></label>
+                    <label><input id="evaluation-plan" type="checkbox" checked><span>人事評価制度を利用</span></label>
+                  </div>
+                  <dl class="simulation-result">
+                    <div><dt>契約金</dt><dd id="contract-fee">330,000円</dd></div>
+                    <div><dt>月額利用料</dt><dd id="monthly-fee">66,000円</dd></div>
+                    <div class="annual-total"><dt>1年目概算</dt><dd id="annual-fee">1,122,000円</dd></div>
+                  </dl>
+                  <p class="simulation-note">概算は入力人数と選択内容をもとに自動計算しています。契約内容・対象範囲により、正式なご案内が異なる場合があります。</p>
+                </section>
+              </div>
+            </div>
+            <footer class="page-footer"><span>クロスメソッド™</span><b>11</b></footer>
+          </article>
+
+          <article class="brochure-page" data-title="商談・導入相談" aria-label="12ページ目 商談と導入相談">
+            <div class="page-inner final-page">
+              <div class="final-glow" aria-hidden="true"></div>
+              <div class="final-content">
+                <div class="page-brand final-brand">
+                  <img src="../assets/images/brand/company_logo.png" alt="TSUNAGARI">
+                  <span></span>
+                  <img src="../assets/images/brand/crossmethod_logo.png" alt="クロスメソッド™">
+                </div>
+                <p class="eyebrow">NEXT STEP</p>
+                <h2>まずは、あなたの組織に眠る声を<br>一緒に確認しませんか？</h2>
+                <p class="lead">現在の課題、対象者、実施したい診断、運用できる範囲から整理します。制度を入れること自体ではなく、声を改善へつなげられる状態をつくります。</p>
+                <div class="final-actions">
+                  <a class="primary-action" href="../#contact">導入について相談する</a>
+                  <a class="secondary-action" href="../">ホームページを見る</a>
+                </div>
+                <div class="final-info">
+                  <div><span>運営会社</span><b>合同会社 TSUNAGARI</b></div>
+                  <div><span>提供サービス</span><b>組織診断・人材定着・健康経営支援</b></div>
+                </div>
+              </div>
+            </div>
+            <footer class="page-footer"><span>© TSUNAGARI All Rights Reserved.</span><b>12</b></footer>
+          </article>
+
+        </div>
+      </div>
+
+      <button class="page-nav page-nav-next" id="next-button" type="button" aria-label="次のページ">
+        <span aria-hidden="true">›</span>
+      </button>
+    </div>
+
+    <footer class="brochure-controller">
+      <div class="page-indicator"><b id="current-page">1</b><span>/</span><span id="total-pages">12</span></div>
+      <div class="progress-track" aria-hidden="true"><i id="progress-bar"></i></div>
+      <p id="current-title">表紙</p>
+      <div class="controller-hint">← → キー・画面左右のボタンでページをめくれます</div>
+    </footer>
+  </main>
+
+  <div class="contents-dialog" id="contents-panel" role="dialog" aria-modal="true" aria-labelledby="contents-title" hidden>
+    <div class="contents-backdrop" data-close-contents></div>
+    <div class="contents-card">
+      <div class="contents-head"><div><p class="eyebrow">CONTENTS</p><h2 id="contents-title">目次</h2></div><button type="button" data-close-contents aria-label="目次を閉じる">×</button></div>
+      <div class="contents-grid" id="contents-grid"></div>
+    </div>
+  </div>
+
+  <script src="../assets/brochure/brochure.js"></script>
+</body>
+</html>
