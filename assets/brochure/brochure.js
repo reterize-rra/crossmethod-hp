@@ -52,7 +52,7 @@
     toggleCode?.addEventListener("click", togglePasswordVisibility);
     prevButton?.addEventListener("click", () => turnTo(currentIndex - 1));
     nextButton?.addEventListener("click", () => turnTo(currentIndex + 1));
-    printButton?.addEventListener("click", () => window.print());
+    printButton?.addEventListener("click", handlePdfExport);
     fullscreenButton?.addEventListener("click", toggleFullscreen);
     contentsButton?.addEventListener("click", openContents);
     contentsPanel?.querySelectorAll("[data-close-contents]").forEach((node) => node.addEventListener("click", closeContents));
@@ -251,6 +251,106 @@
 
   function updateFullscreenLabel() {
     fullscreenButton.textContent = document.fullscreenElement ? "全画面を終了" : "全画面";
+  }
+
+
+
+  async function handlePdfExport() {
+    const originalLabel = printButton?.textContent || "PDF・印刷";
+    if (printButton) {
+      printButton.disabled = true;
+      printButton.textContent = "PDFを作成しています…";
+    }
+    try {
+      const libs = await ensurePdfLibraries();
+      if (!libs?.html2canvas || !libs?.jsPDF) throw new Error("pdf libraries unavailable");
+      await exportCurrentBrochureToPdf(libs.html2canvas, libs.jsPDF);
+    } catch (error) {
+      console.warn("PDF export failed. Falling back to print.", error);
+      window.print();
+    } finally {
+      if (printButton) {
+        printButton.disabled = false;
+        printButton.textContent = originalLabel;
+      }
+    }
+  }
+
+  async function ensurePdfLibraries() {
+    if (window.html2canvas && window.jspdf?.jsPDF) {
+      return { html2canvas: window.html2canvas, jsPDF: window.jspdf.jsPDF };
+    }
+    await loadScriptOnce("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js");
+    await loadScriptOnce("https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js");
+    return { html2canvas: window.html2canvas, jsPDF: window.jspdf?.jsPDF };
+  }
+
+  function loadScriptOnce(src) {
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[data-external-src="${src}"]`);
+      if (existing) {
+        if (existing.dataset.loaded === "true") return resolve();
+        existing.addEventListener("load", () => resolve(), { once: true });
+        existing.addEventListener("error", () => reject(new Error(`Failed to load ${src}`)), { once: true });
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.dataset.externalSrc = src;
+      script.addEventListener("load", () => { script.dataset.loaded = "true"; resolve(); }, { once: true });
+      script.addEventListener("error", () => reject(new Error(`Failed to load ${src}`)), { once: true });
+      document.head.appendChild(script);
+    });
+  }
+
+  async function exportCurrentBrochureToPdf(html2canvas, JsPdf) {
+    document.body.classList.add("pdf-capture-mode");
+    const previousIndex = currentIndex;
+    try {
+      pages.forEach((page) => page.classList.add("is-current"));
+      await nextFrame();
+      const canvases = [];
+      for (const page of pages) {
+        await nextFrame();
+        const canvas = await html2canvas(page, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          logging: false,
+          windowWidth: 1123,
+          windowHeight: 794
+        });
+        canvases.push(canvas);
+      }
+      const first = canvases[0];
+      const pdf = new JsPdf({
+        orientation: "landscape",
+        unit: "px",
+        format: [first.width, first.height],
+        compress: true
+      });
+      canvases.forEach((canvas, index) => {
+        if (index > 0) pdf.addPage([canvas.width, canvas.height], "landscape");
+        const img = canvas.toDataURL("image/jpeg", 0.98);
+        pdf.addImage(img, "JPEG", 0, 0, canvas.width, canvas.height, undefined, "FAST");
+      });
+      pdf.save("crossmethod-brochure.pdf");
+    } finally {
+      document.body.classList.remove("pdf-capture-mode");
+      pages.forEach((page, index) => {
+        page.classList.remove("is-current", "is-under", "turn-forward", "turn-backward");
+        if (index === previousIndex) page.classList.add("is-current");
+      });
+      currentIndex = previousIndex;
+      isTurning = false;
+      updateControls();
+      await nextFrame();
+    }
+  }
+
+  function nextFrame() {
+    return new Promise((resolve) => window.requestAnimationFrame(() => window.requestAnimationFrame(resolve)));
   }
 
   function initializePricing() {
