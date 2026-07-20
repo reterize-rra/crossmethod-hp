@@ -1000,3 +1000,291 @@ body.er-portal-open{overflow:hidden}
       "text";
   }
 }
+
+
+/* =========================================================
+   Employee Retention v3 — responsive typography refinement
+   ========================================================= */
+
+.er-responsive-line{
+  display:block;
+  max-width:100%;
+}
+.er-section-head,
+.er-section-head h2,
+.er-answer-card,
+.er-answer-card h2,
+.er-interview-card,
+.er-interview-card>div,
+.er-related-card,
+.er-related-card>*,
+.er-flow-list li,
+.er-flow-list li>div{
+  min-width:0;
+}
+.er-section-head h2,
+.er-answer-card h2,
+.er-interview-card h2,
+.er-cta-card h2{
+  max-width:100%;
+  white-space:normal;
+  word-break:normal;
+  overflow-wrap:normal;
+  text-wrap:pretty;
+}
+.er-section-head>p:last-child,
+.er-interview-card>div>p:last-child,
+.er-cta-card>p:not(.er-section-label){
+  max-width:100%;
+  word-break:normal;
+  overflow-wrap:anywhere;
+  line-break:strict;
+}
+
+/* Desktop headings: intentional, balanced lines */
+.er-answer-card h2{
+  font-size:clamp(31px,3.15vw,45px);
+  line-height:1.48;
+  letter-spacing:-.035em;
+}
+.er-quick-answer-title .er-responsive-line:first-child{
+  white-space:nowrap;
+}
+.er-interview-card{
+  overflow:hidden;
+}
+.er-interview-card>div{
+  overflow:hidden;
+}
+.er-interview-title{
+  font-size:clamp(34px,3.55vw,48px)!important;
+  line-height:1.5!important;
+}
+.er-interview-title .er-responsive-line{
+  white-space:nowrap;
+}
+.er-related .er-section-head h2{
+  font-size:clamp(33px,3.05vw,43px);
+}
+.er-next-step-title{
+  font-size:clamp(34px,3.5vw,48px)!important;
+}
+.er-trend-cross strong{
+  font-size:18px;
+  line-height:1.6;
+  word-break:normal;
+  overflow-wrap:anywhere;
+}
+
+/* Compact cross-map cards on narrow layouts */
+@media (max-width:820px){
+  .er-cross-map{
+    padding:18px;
+    gap:13px;
+  }
+  .cross-quadrant{
+    min-height:170px;
+    padding:19px 20px!important;
+  }
+  .cross-quadrant h3{
+    margin-top:12px;
+  }
+  .cross-quadrant p{
+    font-size:13px;
+    line-height:1.85;
+  }
+}
+
+/* Smartphone: titles must fit the viewport without horizontal clipping */
+@media (max-width:680px){
+  .er-section,.er-cta{
+    padding:54px 0;
+  }
+  .er-section-head{
+    margin-bottom:30px;
+  }
+  .er-section-head h2,
+  .er-cta-card h2,
+  .er-interview-card h2,
+  .er-answer-card h2{
+    width:100%;
+    font-size:clamp(27px,7.8vw,34px)!important;
+    line-height:1.55!important;
+    letter-spacing:-.045em;
+    white-space:normal!important;
+    word-break:normal!important;
+    overflow-wrap:anywhere!important;
+    text-wrap:pretty;
+  }
+  .er-responsive-line{
+    display:block;
+    width:100%;
+    white-space:normal!important;
+    word-break:normal!important;
+    overflow-wrap:anywhere!important;
+  }
+  .er-quick-answer-title{
+    font-size:clamp(25px,7vw,31px)!important;
+  }
+  .er-quick-answer-title .er-responsive-line:first-child{
+    white-space:normal!important;
+  }
+  .er-answer-card{
+    padding:24px 20px;
+  }
+  .er-answer-card p:last-child{
+    font-size:14px;
+    line-height:1.9;
+  }
+
+  .er-trend-track{
+    padding:20px;
+  }
+  .er-trend-cross{
+    padding:20px;
+    gap:14px;
+  }
+  .er-trend-cross>div:not(.er-trend-arrow){
+    min-height:auto;
+    padding:16px;
+  }
+  .er-trend-cross strong{
+    font-size:17px;
+    line-height:1.6;
+  }
+
+  .er-cross-map{
+    padding:14px;
+    gap:12px;
+  }
+  .cross-quadrant{
+    min-height:auto;
+    padding:18px!important;
+  }
+  .cross-quadrant>span{
+    width:38px;
+    height:38px;
+  }
+  .cross-quadrant h3{
+    font-size:22px;
+  }
+
+  .er-compare-row>div{
+    min-width:0;
+    overflow-wrap:anywhere;
+  }
+
+  .er-feature-card{
+    padding:23px 21px;
+  }
+
+  .er-flow-list li{
+    grid-template-columns:58px minmax(0,1fr);
+    padding:16px 14px 16px 0;
+  }
+  .er-flow-list h3{
+    font-size:18px;
+    line-height:1.5;
+    word-break:normal;
+    overflow-wrap:anywhere;
+  }
+  .er-flow-list p{
+    font-size:13px;
+    line-height:1.85;
+    word-break:normal;
+    overflow-wrap:anywhere;
+  }
+
+  .er-interview-card{
+    width:100%;
+    padding:24px 20px;
+    gap:24px;
+  }
+  .er-interview-title{
+    font-size:clamp(27px,7.6vw,33px)!important;
+  }
+  .er-interview-title .er-responsive-line{
+    white-space:normal!important;
+  }
+  .er-interview-card>div>p:last-child{
+    font-size:14px;
+    line-height:1.9;
+  }
+  .er-interview-note{
+    width:100%;
+    min-width:0;
+    padding:21px 18px;
+  }
+  .er-interview-note strong{
+    font-size:18px;
+    line-height:1.6;
+    word-break:normal;
+    overflow-wrap:anywhere;
+  }
+
+  .er-related .er-section-head h2{
+    font-size:clamp(27px,7.7vw,34px)!important;
+  }
+  .er-related-grid{
+    gap:16px;
+  }
+  .er-related-card{
+    display:block;
+    width:100%;
+    min-height:auto;
+    padding:22px 20px;
+  }
+  .er-related-visual{
+    width:82px;
+    height:82px;
+    margin:0 0 15px;
+  }
+  .er-related-card>span{
+    display:block;
+  }
+  .er-related-card h3{
+    margin-top:8px;
+    font-size:21px;
+    line-height:1.5;
+    white-space:normal!important;
+    word-break:normal!important;
+    overflow-wrap:anywhere!important;
+  }
+  .er-related-card p{
+    font-size:13px;
+    line-height:1.85;
+  }
+
+  .er-faq{
+    padding-top:48px;
+  }
+  .er-faq .er-section-head{
+    margin-bottom:24px;
+  }
+
+  .er-cta-card{
+    padding:32px 20px;
+  }
+  .er-next-step-title{
+    font-size:clamp(27px,7.5vw,33px)!important;
+  }
+  .er-cta-card p:not(.er-section-label){
+    font-size:14px;
+    line-height:1.9;
+  }
+}
+
+@media (max-width:390px){
+  .er-section-head h2,
+  .er-cta-card h2,
+  .er-interview-card h2,
+  .er-answer-card h2{
+    font-size:27px!important;
+  }
+  .er-quick-answer-title{
+    font-size:25px!important;
+  }
+  .er-related-card h3{
+    font-size:20px;
+  }
+}
