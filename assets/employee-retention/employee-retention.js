@@ -13,22 +13,34 @@
   const error = document.getElementById("er-login-error");
   const unconfigured = document.getElementById("er-login-unconfigured");
 
+  const portal = document.getElementById("er-app-portal");
+  const portalFrame = document.getElementById("er-app-frame");
+  const portalLoading = document.getElementById("er-portal-loading");
+  const portalRole = document.getElementById("er-portal-role");
+  const portalCompany = document.getElementById("er-portal-company");
+  const portalExternal = document.getElementById("er-portal-external");
+  const portalRefresh = document.getElementById("er-portal-refresh");
+  const portalClose = document.getElementById("er-portal-close");
+
   const PAGE_CONFIG = {
-    hrAppUrl: String(html.dataset.hrAppUrl || "").trim(),
+    hrAppUrl: String(html.dataset.hrAppUrl || "https://script.google.com/macros/s/AKfycbzjrFHuzgp7bpJrr8ek-rxqgp4lDVrJ7MjfZq925y78V3V1iEVYT67dk9DGK-XIDy244Q/exec").trim(),
     adminMode: "admin",
     personMode: "test"
   };
+
+  let currentPortalUrl = "";
 
   document.addEventListener("DOMContentLoaded", () => {
     setupImageFallbacks();
     setupReveal();
     setupMobileMenu();
     setupLoginDialog();
+    setupPortal();
     setupFaq();
   });
 
   function setupImageFallbacks() {
-    document.querySelectorAll(".er-company-logo, .er-footer-brand img").forEach((img) => {
+    document.querySelectorAll(".er-company-logo, .er-footer-brand img, .er-portal-brand img").forEach((img) => {
       img.addEventListener("error", () => {
         img.style.display = "none";
         const fallback = img.parentElement?.querySelector(".er-company-fallback");
@@ -62,12 +74,12 @@
         observer.unobserve(entry.target);
       });
     }, {
-      threshold: 0.12,
-      rootMargin: "0px 0px -5% 0px"
+      threshold: 0.1,
+      rootMargin: "0px 0px -4% 0px"
     });
 
     items.forEach((item, index) => {
-      item.style.transitionDelay = `${Math.min(index % 6, 5) * 55}ms`;
+      item.style.transitionDelay = `${Math.min(index % 6, 5) * 45}ms`;
       observer.observe(item);
     });
   }
@@ -94,10 +106,6 @@
     backdrop.addEventListener("click", () => setOpen(false));
     drawer.querySelectorAll("a, button").forEach((el) => {
       el.addEventListener("click", () => setOpen(false));
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") setOpen(false);
     });
   }
 
@@ -141,15 +149,14 @@
         return;
       }
 
-      const mode = modeInput.value === "person"
-        ? PAGE_CONFIG.personMode
-        : PAGE_CONFIG.adminMode;
-
+      const isPerson = modeInput.value === "person";
+      const mode = isPerson ? PAGE_CONFIG.personMode : PAGE_CONFIG.adminMode;
       const url = new URL(base);
       url.searchParams.set("mode", mode);
       url.searchParams.set("company", companyCode);
-      window.open(url.toString(), "_blank", "noopener");
+
       closeDialog();
+      openPortal(url.toString(), isPerson ? "person" : "admin", companyCode);
     });
   }
 
@@ -159,8 +166,8 @@
     title.textContent = isPerson ? "個人ログインへ" : "企業管理ページへ";
     description.textContent = "会社コードを入力してください。";
     help.textContent = isPerson
-      ? "次の画面で、個人評価IDと6桁PINを入力します。"
-      : "次の画面で、管理パスコードを入力します。";
+      ? "ポータル内で、個人評価IDと6桁PINを入力します。"
+      : "ポータル内で、管理パスコードを入力します。";
     error.textContent = "";
     unconfigured.hidden = true;
     companyCodeInput.value = "";
@@ -181,6 +188,63 @@
     } else {
       dialog.removeAttribute("open");
     }
+  }
+
+  function setupPortal() {
+    if (!portal || !portalFrame) return;
+
+    portalFrame.addEventListener("load", () => {
+      window.setTimeout(() => {
+        portalLoading?.classList.add("is-hidden");
+      }, 250);
+    });
+
+    portalClose?.addEventListener("click", closePortal);
+
+    portalRefresh?.addEventListener("click", () => {
+      if (!currentPortalUrl) return;
+      portalLoading?.classList.remove("is-hidden");
+      portalFrame.src = "about:blank";
+      window.setTimeout(() => {
+        portalFrame.src = currentPortalUrl;
+      }, 60);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !portal.hidden) {
+        closePortal();
+      }
+    });
+  }
+
+  function openPortal(url, mode, companyCode) {
+    currentPortalUrl = url;
+    portalRole.textContent = mode === "person" ? "従業員・役職者" : "企業管理者";
+    portalCompany.textContent = companyCode;
+    portalExternal.href = url;
+    portalLoading?.classList.remove("is-hidden");
+    portal.hidden = false;
+    portal.setAttribute("aria-hidden", "false");
+    body.classList.add("er-portal-open");
+    portalFrame.title = mode === "person"
+      ? "クロス式™ 人事評価制度 個人ログイン"
+      : "クロス式™ 人事評価制度 企業管理ページ";
+    requestAnimationFrame(() => {
+      portalFrame.src = url;
+      portalClose?.focus();
+    });
+  }
+
+  function closePortal() {
+    if (!portal || portal.hidden) return;
+    portal.hidden = true;
+    portal.setAttribute("aria-hidden", "true");
+    body.classList.remove("er-portal-open");
+    portalLoading?.classList.remove("is-hidden");
+    window.setTimeout(() => {
+      portalFrame.src = "about:blank";
+      currentPortalUrl = "";
+    }, 120);
   }
 
   function normalizeCompanyCode(value) {
