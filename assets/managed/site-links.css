@@ -164,6 +164,31 @@
   z-index:14!important;
 }
 
+/* サブページ内の番号付き「声」カードを、関連ページへ進めるリンクにする */
+.ev-voice-card[href],
+.hm-voice-card[href],
+.rs-voice-card[href]{
+  color:inherit!important;
+  text-decoration:none!important;
+  cursor:pointer!important;
+  outline:none;
+}
+.ev-voice-card[href],
+.rs-voice-card[href]{
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.ev-voice-card[href]:hover,
+.rs-voice-card[href]:hover{
+  transform:translateY(-3px);
+  border-color:rgba(15,170,180,.28);
+  box-shadow:0 18px 40px rgba(16,47,71,.12);
+}
+.ev-voice-card[href]:focus-visible,
+.hm-voice-card[href]:focus-visible,
+.rs-voice-card[href]:focus-visible{
+  box-shadow:0 0 0 4px rgba(15,170,180,.17),0 18px 40px rgba(16,47,71,.12)!important;
+}
+
 /* 支援メニュー6枚を、内容→ボタンの縦構成へ統一 */
 .services .menu-shelf{
   align-items:stretch!important;
