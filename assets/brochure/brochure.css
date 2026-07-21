@@ -643,3 +643,178 @@ body.premium-v6 .calculator small{font-size:7.4px;line-height:1.65}
     -webkit-print-color-adjust:exact!important;
   }
 }
+
+/* ===== v8: final layout and icon corrections ===== */
+/* Page 5: prevent single-character wrapping in the central bridge card */
+body.premium-v6 .evaluation-bridge-grid .bridge-core{
+  width:270px;
+  height:220px;
+  padding:25px 26px;
+  border-radius:38px;
+}
+body.premium-v6 .evaluation-bridge-grid .bridge-core>b{
+  display:grid;
+  gap:3px;
+  font-size:14px;
+  line-height:1.42;
+  letter-spacing:.01em;
+}
+body.premium-v6 .evaluation-bridge-grid .bridge-core>b>span{
+  display:block;
+  white-space:nowrap;
+}
+body.premium-v6 .evaluation-bridge-grid .bridge-core>span{
+  max-width:190px;
+  font-size:8.8px;
+}
+
+/* Page 8: remove screening promotion and use the freed space for the core customer-value story */
+body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-journey article{
+  min-height:190px;
+  padding:26px 19px 21px;
+}
+body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-journey svg{width:44px;height:44px}
+body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-journey b{font-size:14px}
+body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-journey p{font-size:9.7px}
+body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-value article{
+  min-height:154px;
+  padding:23px 21px;
+}
+body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-value svg{width:45px;height:45px}
+body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-value b{font-size:14px}
+body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-value p{font-size:10px;line-height:1.65}
+.customer-summary{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  gap:16px;
+  min-height:92px;
+  margin-top:2%;
+  padding:18px 22px;
+  border:1px solid rgba(201,168,91,.28);
+  border-radius:20px;
+  background:linear-gradient(90deg,#061827,#0d4d5e 57%,#176d70);
+  color:#fff;
+  box-shadow:0 18px 34px rgba(6,24,39,.16);
+}
+.customer-summary>svg{
+  width:46px;
+  height:46px;
+  fill:none;
+  stroke:#7be5e8;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.customer-summary b{display:block;color:#efd996;font-size:13px}
+.customer-summary p{margin:5px 0 0;color:#e7f5f6;font-size:9.5px;line-height:1.65;font-weight:600}
+
+/* Page 11: use real illustrations rather than empty number boxes */
+body.premium-v6 .report-insights article{
+  position:relative;
+  grid-template-columns:54px minmax(0,1fr);
+  align-items:start;
+  min-height:108px;
+  padding:18px 18px 16px;
+}
+.report-insight-icon{
+  display:grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  border:1px solid color-mix(in srgb,currentColor 24%,transparent);
+  background:rgba(255,255,255,.82);
+  box-shadow:0 10px 20px rgba(6,24,39,.07);
+}
+.report-insight-icon svg{
+  width:30px;
+  height:30px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.report-insight-number{
+  position:absolute;
+  right:14px;
+  top:11px;
+  color:color-mix(in srgb,currentColor 45%,transparent);
+  font-size:9px;
+  font-weight:900;
+}
+body.premium-v6 .report-insights b{font-size:12.2px;line-height:1.45}
+body.premium-v6 .report-insights p{font-size:9px;line-height:1.6}
+
+/* Page 13: emphasize monthly costs only */
+body.premium-v6 .calculator{
+  display:flex;
+  flex-direction:column;
+}
+body.premium-v6 .calculator dl{margin-bottom:0}
+body.premium-v6 .calculator .monthly-total{
+  margin-top:8px;
+  padding:18px 16px;
+  border:1px solid rgba(93,210,201,.25);
+  border-radius:14px;
+  background:linear-gradient(135deg,rgba(16,118,137,.24),rgba(201,168,91,.10));
+}
+body.premium-v6 .calculator .monthly-total dd{font-size:23px}
+body.premium-v6 .calculator>small{
+  display:block;
+  margin-top:auto;
+  padding-top:17px;
+  color:#bcd0d6;
+  border-top:1px solid rgba(255,255,255,.10);
+}
+
+/* Page 14: keep the three closing-card headings balanced */
+body.premium-v6 .final-cards b{
+  font-size:11.2px;
+  line-height:1.45;
+  word-break:keep-all;
+  overflow-wrap:normal;
+}
+body.premium-v6 .final-cards article:nth-child(3) b{white-space:nowrap}
+
+@media(max-width:720px){
+  body.premium-v6 .evaluation-bridge-grid .bridge-core{
+    width:min(100%,260px);
+    height:auto;
+    min-height:190px;
+    border-radius:30px;
+  }
+  body.premium-v6 .evaluation-bridge-grid .bridge-core>b{font-size:16px}
+  body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-journey article,
+  body.premium-v6 .brochure-page[data-title="お客様の声"] .customer-value article{min-height:0}
+  .customer-summary{padding:17px;grid-template-columns:42px 1fr}.customer-summary>svg{width:36px;height:36px}.customer-summary b{font-size:13px}.customer-summary p{font-size:10.5px}
+  body.premium-v6 .report-insights article{grid-template-columns:52px 1fr;min-height:0;padding:16px}
+  .report-insight-number{right:12px;top:9px}
+  body.premium-v6 .final-cards article:nth-child(3) b{white-space:normal}
+}
+
+@media print{
+  .customer-summary,.report-insight-icon,.report-insight-number,body.premium-v6 .calculator .monthly-total{
+    print-color-adjust:exact!important;
+    -webkit-print-color-adjust:exact!important;
+  }
+}
+.report-insights article>.report-insight-number{
+  display:block;
+  width:auto;
+  height:auto;
+  padding:0;
+  border-radius:0;
+  background:none!important;
+  color:color-mix(in srgb,currentColor 48%,transparent)!important;
+  -webkit-text-fill-color:currentColor!important;
+  line-height:1;
+}
+@media(max-width:720px){
+  body.premium-v6 .brochure-page[data-title="レポート"] .section-heading h2{
+    font-size:27px!important;
+    line-height:1.34!important;
+    letter-spacing:-.025em!important;
+  }
+}

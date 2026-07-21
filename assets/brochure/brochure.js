@@ -269,7 +269,6 @@
     const diagnosticFee = document.getElementById("diagnostic-fee");
     const evaluationFee = document.getElementById("evaluation-fee");
     const monthlyFee = document.getElementById("monthly-fee");
-    const annualFee = document.getElementById("annual-fee");
 
     const update = () => {
       const employees = clamp(parseInt(employeeCount.value, 10) || 1, 1, 10000);
@@ -285,16 +284,12 @@
       if (diagnostic === null) {
         diagnosticFee.textContent = "要相談";
         monthlyFee.textContent = "要相談";
-        annualFee.textContent = "要相談";
         monthlyFee.closest("div")?.classList.add("is-consultation");
-        annualFee.closest("div")?.classList.add("is-consultation");
       } else {
         diagnosticFee.textContent = formatYen(diagnostic);
         const monthly = diagnostic + evaluation;
         monthlyFee.textContent = formatYen(monthly);
-        annualFee.textContent = formatYen(contract + monthly * 12);
         monthlyFee.closest("div")?.classList.remove("is-consultation");
-        annualFee.closest("div")?.classList.remove("is-consultation");
       }
     };
 
