@@ -23,11 +23,15 @@
   const contentsPanel = document.getElementById("contents-panel");
   const contentsGrid = document.getElementById("contents-grid");
   const bookViewport = document.getElementById("book-viewport");
+  const workspace = document.querySelector(".workspace");
+  const toolbar = document.querySelector(".toolbar");
+  const controller = document.querySelector(".controller");
 
   let currentIndex = 0;
   let isTurning = false;
   let touchStartX = 0;
   let touchStartY = 0;
+  let fitRequest = 0;
 
   initialize();
 
@@ -37,6 +41,7 @@
     bindEvents();
     initializePricing();
     updateControls();
+    scheduleBookFit();
 
     const printMode = new URLSearchParams(window.location.search).has("print");
     if (printMode) {
@@ -95,8 +100,16 @@
       turnTo(deltaX < 0 ? currentIndex + 1 : currentIndex - 1);
     }, { passive: true });
 
-    document.addEventListener("fullscreenchange", updateFullscreenLabel);
-    window.matchMedia("(max-width: 720px)").addEventListener?.("change", () => resetPageClasses());
+    document.addEventListener("fullscreenchange", () => {
+      updateFullscreenLabel();
+      scheduleBookFit();
+    });
+    window.addEventListener("resize", scheduleBookFit, { passive: true });
+    window.visualViewport?.addEventListener("resize", scheduleBookFit, { passive: true });
+    window.matchMedia("(max-width: 720px)").addEventListener?.("change", () => {
+      resetPageClasses();
+      scheduleBookFit();
+    });
   }
 
   async function handleAccessSubmit(event) {
@@ -152,6 +165,46 @@
       window.setTimeout(() => { gate.hidden = true; }, 420);
     } else gate.hidden = true;
     updateControls();
+    scheduleBookFit();
+  }
+
+  function scheduleBookFit() {
+    window.cancelAnimationFrame(fitRequest);
+    fitRequest = window.requestAnimationFrame(fitBookToViewport);
+  }
+
+  function fitBookToViewport() {
+    if (!bookViewport || !workspace) return;
+
+    if (isMobile() || document.body.classList.contains("print-preview")) {
+      bookViewport.style.removeProperty("width");
+      bookViewport.style.removeProperty("height");
+      const stage = document.getElementById("book-stage");
+      stage?.style.removeProperty("transform");
+      return;
+    }
+
+    const stage = document.getElementById("book-stage");
+    if (!stage) return;
+
+    const style = window.getComputedStyle(workspace);
+    const horizontalPadding = parseFloat(style.paddingLeft || 0) + parseFloat(style.paddingRight || 0);
+    const verticalPadding = parseFloat(style.paddingTop || 0) + parseFloat(style.paddingBottom || 0);
+    const gap = parseFloat(style.columnGap || style.gap || 0);
+    const reservedNavigation = 64 * 2 + gap * 2;
+
+    const maxWidth = Math.max(320, workspace.clientWidth - horizontalPadding - reservedNavigation);
+    const maxHeight = Math.max(240, workspace.clientHeight - verticalPadding);
+    const designWidth = 1123;
+    const designHeight = 794;
+    const scale = Math.min(maxWidth / designWidth, maxHeight / designHeight, 1);
+
+    const fittedWidth = Math.floor(designWidth * scale);
+    const fittedHeight = Math.floor(designHeight * scale);
+
+    bookViewport.style.width = `${fittedWidth}px`;
+    bookViewport.style.height = `${fittedHeight}px`;
+    stage.style.transform = `scale(${scale})`;
   }
 
   function isMobile() {

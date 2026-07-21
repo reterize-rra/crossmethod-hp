@@ -818,3 +818,40 @@ body.premium-v6 .final-cards article:nth-child(3) b{white-space:nowrap}
     letter-spacing:-.025em!important;
   }
 }
+
+/* ===== v9: Windows 100%表示でも全ページを画面内に収める ===== */
+@media (min-width:721px){
+  html,body{height:100%;overflow:hidden}
+  .brochure-app{height:100dvh;min-height:0;overflow:hidden}
+  .toolbar{flex:0 0 auto}
+  .workspace{
+    flex:1 1 auto;
+    min-height:0;
+    grid-template-columns:64px minmax(0,1fr) 64px;
+    gap:12px;
+    padding:8px 10px;
+    overflow:hidden;
+  }
+  .controller{
+    flex:0 0 58px;
+    min-height:58px;
+    padding:6px clamp(18px,4vw,52px) 10px;
+  }
+  .book-viewport{
+    width:1123px;
+    height:794px;
+    max-width:none;
+    aspect-ratio:auto;
+    overflow:visible;
+    justify-self:center;
+    align-self:center;
+  }
+  .book-stage{
+    width:1123px;
+    height:794px;
+    inset:auto;
+    left:0;
+    top:0;
+    transform-origin:top left;
+  }
+}
