@@ -32,10 +32,6 @@
   initialize();
 
   function initialize() {
-    if (contentsPanel) {
-      contentsPanel.hidden = true;
-      contentsPanel.inert = true;
-    }
     totalPagesDisplay.textContent = String(pages.length);
     buildContents();
     bindEvents();
@@ -151,20 +147,10 @@
 
   function showBrochure(animate) {
     app.hidden = false;
-    app.inert = false;
-    gate.style.pointerEvents = "none";
-    gate.setAttribute("aria-hidden", "true");
-    gate.inert = true;
-    if (animate && typeof gate.animate === "function") {
+    if (animate) {
       gate.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 420, easing: "ease", fill: "forwards" });
-      window.setTimeout(() => {
-        gate.hidden = true;
-        gate.style.display = "none";
-      }, 420);
-    } else {
-      gate.hidden = true;
-      gate.style.display = "none";
-    }
+      window.setTimeout(() => { gate.hidden = true; }, 420);
+    } else gate.hidden = true;
     updateControls();
   }
 
@@ -252,16 +238,12 @@
 
   function openContents() {
     contentsPanel.hidden = false;
-    contentsPanel.inert = false;
-    contentsPanel.removeAttribute("aria-hidden");
     document.body.style.overflow = "hidden";
     (contentsGrid.querySelector("[aria-current='page']") || contentsGrid.querySelector("button"))?.focus();
   }
 
   function closeContents() {
     contentsPanel.hidden = true;
-    contentsPanel.inert = true;
-    contentsPanel.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
     contentsButton?.focus();
   }
