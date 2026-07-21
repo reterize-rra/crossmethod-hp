@@ -113,15 +113,15 @@
             "name": "従業員の回答は他の従業員に見られますか？",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "従業員は会社コード、個人評価ID、6桁PINで本人専用画面へログインします。他の従業員の回答や結果は表示されません。"
+              "text": "従業員ごとに本人専用の回答画面を用意し、他の従業員の回答や結果は表示されません。"
             }
           },
           {
             "@type": "Question",
-            "name": "組織向けPDFに個人名は掲載されますか？",
+            "name": "組織向けレポートに個人名は掲載されますか？",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "組織向けPDFには個人名、個人KPI、個人別報酬を掲載しません。個人を特定した攻撃や不利益な利用を防ぎ、組織改善に必要な傾向を中心に整理します。"
+              "text": "組織向けレポートでは、個人を責めるためではなく、組織の強み・課題・改善テーマを中心に整理します。"
             }
           },
           {
@@ -137,7 +137,7 @@
             "name": "スマートフォンから回答できますか？",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "はい。個人評価IDとPINを使い、スマートフォンまたはパソコンから回答できます。"
+              "text": "はい。案内された本人専用画面から、スマートフォンまたはパソコンで回答できます。"
             }
           },
           {
@@ -153,7 +153,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="/assets/managed/site-links.css">
+<link href="/assets/managed/site-links.css" rel="stylesheet"/>
 </head>
 <body>
 <div aria-hidden="true" class="er-ambient">
@@ -337,7 +337,7 @@
 </section>
 <section class="er-section er-cross-evaluation" data-managed-background="cross" id="cross-evaluation">
 <div class="er-shell">
-<div class="er-section-head reveal" id="cross-evaluation-title">
+<div class="er-section-head reveal">
 <p class="er-section-label">Cross Evaluation</p>
 <h2><span class="er-responsive-line">評価を管理するためではなく、</span><span class="er-responsive-line">人と組織の関係を整えるために。</span></h2>
 <p>
@@ -415,7 +415,7 @@
 <div role="cell"><strong>匿名性に配慮して傾向を確認</strong></div>
 </div>
 <div class="er-compare-row" role="row">
-<div role="cell">組織向けPDF</div>
+<div role="cell">組織向けレポート</div>
 <div role="cell">個人評価の一覧になりやすい</div>
 <div role="cell"><strong>個人を特定せず組織改善を中心に掲載</strong></div>
 </div>
@@ -457,37 +457,53 @@
 </article>
 <article class="er-feature-card tone-purple reveal">
 <div class="er-feature-visual"><svg aria-hidden="true" viewbox="0 0 96 96"><path d="M25 13h35l14 14v56H25z"></path><path d="M60 13v16h14"></path><path d="M35 68V53M46 68V43M57 68V57M68 68V36"></path><path d="M34 75h35"></path></svg></div>
-<h3>結果・PDF管理</h3>
-<p>組織結果を画面で確認し、プレビュー後に正式PDFとして保存できます。</p>
+<h3>結果の活用</h3>
+<p>結果を面談・育成・組織改善へつなげ、次に整えるテーマを共有できます。</p>
 </article>
 </div>
 </div>
 </section>
-<section class="er-section er-privacy" data-managed-background="privacy" id="privacy">
+<section class="er-section er-privacy er-role-results" data-managed-background="privacy" id="privacy">
 <div class="er-shell er-privacy-grid">
 <div class="er-section-head reveal">
-<p class="er-section-label">Privacy &amp; Access</p>
-<h2><span class="er-responsive-line">評価だからこそ、</span><span class="er-responsive-line">誰に何を見せるかを</span><span class="er-responsive-line">分ける。</span></h2>
-<p>
-            本人専用のログインと、企業管理者の画面を分けています。
-            組織改善のためのPDFでは、個人を特定した攻撃や不利益な利用を防ぐ設計を重視します。
-          </p>
+<p class="er-section-label">Results by Role</p>
+<h2><span class="er-responsive-line">評価を、</span><span class="er-responsive-line">本人・管理者・経営の</span><span class="er-responsive-line">共通言語へ。</span></h2>
+<p>同じ評価結果でも、立場によって確認したいことは異なります。クロス式™ 人事評価制度では、必要な情報をそれぞれの立場に合わせて整理し、評価を点数で終わらせず、本人の成長、管理者の育成、組織の改善へつなげます。</p>
+<div class="er-role-note">
+<strong>評価は、誰かを責めるためのものではありません。</strong>
+<span>人が育ち、組織がより良くなるために、結果を次の対話と行動へ活用します。</span>
 </div>
-<div class="er-privacy-panel reveal">
-<article>
-<span>本人ログイン</span>
-<strong>会社コード＋個人評価ID＋6桁PIN</strong>
-<p>本人の回答画面に、他の従業員の情報は表示しません。</p>
+</div>
+<div class="er-privacy-panel er-role-panel reveal">
+<article class="er-role-card er-role-person">
+<div aria-hidden="true" class="er-role-icon">
+<svg viewbox="0 0 96 96"><circle cx="38" cy="30" r="12"></circle><path d="M17 75V61c0-13 8-21 21-21s21 8 21 21v14"></path><path d="m63 36 7 7 14-17"></path><path d="M67 61h17M75.5 52.5v17"></path></svg>
+</div>
+<div>
+<span>従業員</span>
+<strong>自分の強みと、次に伸ばす力が分かる</strong>
+<p>何が評価されているのか、次に何を意識すればよいのかを確認。納得感を持って成長へ進める状態を整えます。</p>
+</div>
 </article>
-<article>
-<span>企業管理画面</span>
-<strong>評価期間・従業員・進捗・結果を管理</strong>
-<p>権限のある管理者が、必要な運用情報を確認します。</p>
+<article class="er-role-card er-role-manager">
+<div aria-hidden="true" class="er-role-icon">
+<svg viewbox="0 0 96 96"><circle cx="29" cy="31" r="10"></circle><circle cx="59" cy="31" r="10"></circle><path d="M12 70V60c0-12 7-19 17-19s17 7 17 19v10"></path><path d="M45 70V60c0-12 6-19 15-19 8 0 14 5 16 14"></path><path d="M58 14h26v23H72l-8 8v-8h-6z"></path></svg>
+</div>
+<div>
+<span>管理者</span>
+<strong>面談と育成で、何を支援するかが分かる</strong>
+<p>結果だけで判断せず、強み・成長課題・困りごとを整理。本人に合わせた声かけや育成につなげます。</p>
+</div>
 </article>
-<article>
-<span>組織向けPDF</span>
-<strong>個人名・個人KPI・個人別報酬を掲載しない</strong>
-<p>個人の特定ではなく、組織の強み・課題・改善を中心に整理します。</p>
+<article class="er-role-card er-role-company">
+<div aria-hidden="true" class="er-role-icon">
+<svg viewbox="0 0 96 96"><path d="M15 78h68"></path><path d="M22 78V29h35v49"></path><path d="M57 78V43h19v35"></path><path d="M31 40h8M31 51h8M31 62h8M47 40h5M47 51h5M47 62h5"></path><path d="m61 31 8-8 7 5 8-12"></path></svg>
+</div>
+<div>
+<span>経営者・企業</span>
+<strong>組織全体で、先に整える課題が分かる</strong>
+<p>評価傾向や立場による認識差を確認。教育・管理者支援・制度・働く環境の改善優先を整理します。</p>
+</div>
 </article>
 </div>
 </div>
@@ -501,11 +517,11 @@
 </div>
 <ol class="er-flow-list">
 <li class="reveal"><span>01</span><div><h3>導入相談・現状確認</h3><p>現在の評価制度、役割、従業員数、困っていることを整理します。</p></div></li>
-<li class="reveal"><span>02</span><div><h3>企業・従業員登録</h3><p>企業情報、従業員、役割、個人評価IDとPINを準備します。</p></div></li>
+<li class="reveal"><span>02</span><div><h3>企業・従業員登録</h3><p>企業情報、対象者、役割を登録し、回答の準備を整えます。</p></div></li>
 <li class="reveal"><span>03</span><div><h3>評価期間を設定</h3><p>半期・年次など、会社の運用に合わせて評価期間と対象者を設定します。</p></div></li>
 <li class="reveal"><span>04</span><div><h3>本人が個別ログイン</h3><p>スマートフォンまたはパソコンから、本人専用画面で回答します。</p></div></li>
 <li class="reveal"><span>05</span><div><h3>集計・結果確認</h3><p>個人評価、組織状態、従業員の声、改善テーマを確認します。</p></div></li>
-<li class="reveal"><span>06</span><div><h3>PDFを確定・保存</h3><p>組織向けレポートを目視確認し、正式PDFとして保存します。</p></div></li>
+<li class="reveal"><span>06</span><div><h3>組織レポートを確認</h3><p>強み・課題・認識差・次の行動を、組織レポートで確認します。</p></div></li>
 <li class="reveal"><span>07</span><div><h3>面談・育成・改善</h3><p>結果を査定だけで終わらせず、次の行動と再確認へつなげます。</p></div></li>
 </ol>
 </div>
@@ -515,19 +531,19 @@
 <div class="er-section-head er-section-head-center reveal">
 <p class="er-section-label">Contract Client Login</p>
 <h2>ご契約企業・従業員の方</h2>
-<p>会社コードを入力すると、このページの中に企業専用ポータルを開きます。別サイトへ移動せず、クロス式™の画面をそのまま利用できます。</p>
+<p>ご契約企業・従業員の方は、それぞれの専用画面からクロス式™ 人事評価制度をご利用いただけます。</p>
 </div>
 <div class="er-login-grid">
 <article class="er-login-card er-login-admin reveal">
 <div class="er-login-visual"><svg aria-hidden="true" viewbox="0 0 96 96"><rect height="46" rx="7" width="70" x="13" y="17"></rect><path d="M34 79h28M48 63v16"></path><circle cx="34" cy="36" r="7"></circle><path d="M22 55c3-8 8-12 12-12s9 4 12 12"></path><path d="M56 32h16M56 42h16M56 52h11"></path></svg></div><span class="er-login-role">企業管理者</span>
 <h3>評価を運用する</h3>
-<p>評価期間、従業員、個人ログイン、回答状況、結果、PDFを管理します。</p>
+<p>評価期間、対象者、回答状況、結果を確認します。</p>
 <button class="er-btn er-btn-primary" data-login-open="admin" type="button">企業管理ページへ</button>
 </article>
 <article class="er-login-card er-login-person reveal">
 <div class="er-login-visual"><svg aria-hidden="true" viewbox="0 0 96 96"><rect height="76" rx="8" width="42" x="27" y="10"></rect><circle cx="48" cy="32" r="8"></circle><path d="M36 56c3-9 7-13 12-13s9 4 12 13"></path><path d="M42 74h12"></path><path d="m66 59 8 8 11-15"></path></svg></div><span class="er-login-role">従業員・役職者</span>
 <h3>評価へ回答する</h3>
-<p>会社コード、個人評価ID、6桁PINを準備して、本人専用画面へ進みます。</p>
+<p>案内されたログイン情報を準備して、本人専用画面へ進みます。</p>
 <button class="er-btn er-btn-secondary" data-login-open="person" type="button">個人ログインへ</button>
 </article>
 </div>
@@ -605,11 +621,11 @@
 </details>
 <details class="reveal">
 <summary>従業員の回答は他の従業員に見られますか？</summary>
-<p>従業員は会社コード、個人評価ID、6桁PINで本人専用画面へログインします。他の従業員の回答や結果は表示されません。</p>
+<p>従業員ごとに本人専用の回答画面を用意し、他の従業員の回答や結果は表示されません。</p>
 </details>
 <details class="reveal">
-<summary>組織向けPDFに個人名は掲載されますか？</summary>
-<p>組織向けPDFには個人名、個人KPI、個人別報酬を掲載しません。個人を特定した攻撃や不利益な利用を防ぎ、組織改善に必要な傾向を中心に整理します。</p>
+<summary>組織向けレポートに個人名は掲載されますか？</summary>
+<p>組織向けレポートでは、個人を責めるためではなく、組織の強み・課題・改善テーマを中心に整理します。</p>
 </details>
 <details class="reveal">
 <summary>報酬や賞与の判断にも使えますか？</summary>
@@ -617,7 +633,7 @@
 </details>
 <details class="reveal">
 <summary>スマートフォンから回答できますか？</summary>
-<p>はい。個人評価IDとPINを使い、スマートフォンまたはパソコンから回答できます。</p>
+<p>はい。案内された本人専用画面から、スマートフォンまたはパソコンで回答できます。</p>
 </details>
 <details class="reveal">
 <summary>採用面接にも対応していますか？</summary>
@@ -641,52 +657,51 @@
 </div>
 </section>
 </main>
-<section class="cm-service-directory" aria-labelledby="cm-service-directory-title">
-  <div class="cm-service-directory__shell">
-    <div class="cm-service-directory__head">
-      <div>
-        <p class="cm-service-directory__eyebrow">Cross Method Services</p>
-        <h2 id="cm-service-directory-title">声から、次の支援へつなげる。</h2>
-      </div>
-      <p>課題は一つとは限りません。現在の声に近い支援を選び、必要なページへ進めます。</p>
-    </div>
-    <div class="cm-service-directory__grid">
-      <a class="cm-service-link" data-route="/customer-voice/" href="/customer-voice/">
-        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M9 12h46v31H31L18 54V43H9z"/><path d="M18 23h28M18 31h20"/></svg></span>
-        <span><small>Customer Voice</small><strong>お客様の声・顧客体験</strong><span>満足、接客、動線、再来につながる声。</span></span>
-      </a>
-      <a class="cm-service-link" data-route="/employee-voice/" href="/employee-voice/">
-        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><circle cx="23" cy="22" r="9"/><circle cx="43" cy="25" r="8"/><path d="M8 54c2-14 8-22 15-22s13 8 15 22M34 54c2-12 6-19 12-19 7 0 11 7 13 19"/></svg></span>
-        <span><small>Employee Voice</small><strong>従業員の声・組織診断</strong><span>幸福感、定着意向、管理者負担を確認。</span></span>
-      </a>
-      <a class="cm-service-link" data-route="/health-management/" href="/health-management/">
-        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M32 55C18 44 9 36 9 25c0-8 6-14 14-14 5 0 8 2 10 7 2-5 6-7 11-7 8 0 14 6 14 14 0 11-10 19-26 30z"/><path d="M16 34h10l4-9 7 18 5-9h8"/></svg></span>
-        <span><small>Health Management</small><strong>健康経営支援</strong><span>健康、両立、相談体制、組織改善へ。</span></span>
-      </a>
-      <a class="cm-service-link" data-route="/stress-check/" href="/stress-check/">
-        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="23"/><path d="M17 40a18 18 0 0 1 30 0M32 34l10-11"/><circle cx="32" cy="34" r="3"/></svg></span>
-        <span><small>Stress Check</small><strong>ストレスチェック</strong><span>実施、集団分析、職場改善まで。</span></span>
-      </a>
-      <a class="cm-service-link" data-route="/employee-retention/" href="/employee-retention/">
-        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><circle cx="22" cy="21" r="8"/><path d="M8 52V41c0-9 5-14 14-14s14 5 14 14v11"/><rect x="38" y="14" width="18" height="28" rx="3"/><path d="M43 22h8M43 28h8M43 34h5"/></svg></span>
-        <span><small>Evaluation</small><strong>人材定着・人事評価</strong><span>個人と組織を重ね、育成と定着へ。</span></span>
-      </a>
-      <a class="cm-service-link" data-route="/healthy-food/" href="/healthy-food/">
-        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M10 31h44c0 15-9 23-22 23S10 46 10 31z"/><path d="M16 31c2-10 9-17 16-17s14 7 16 17M22 22c4 3 6 5 10 9M42 21c-3 3-5 5-9 10"/></svg></span>
-        <span><small>Healthy Food</small><strong>健康食・社食</strong><span>毎日の食事から福利厚生を整える。</span></span>
-      </a>
-      <a class="cm-service-link" data-route="/risk-safety/" href="/risk-safety/">
-        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M32 7 54 15v16c0 14-9 22-22 28C19 53 10 45 10 31V15z"/><path d="m22 31 7 7 14-17"/></svg></span>
-        <span><small>Risk & Safety</small><strong>リスク予防</strong><span>BCP、情報、尊厳、安全、再発防止。</span></span>
-      </a>
-      <a class="cm-service-link" data-route="/seminar-counseling/" href="/seminar-counseling/">
-        <span class="cm-service-link__icon"><svg viewBox="0 0 64 64"><path d="M6 14h23v18H17l-7 7v-7H6zM35 9h23v18H46l-7 7v-7h-4z"/><path d="M14 53V41h14v12M38 53V39h15v14M9 53h24M34 53h24"/></svg></span>
-        <span><small>Consulting</small><strong>カウンセリング・セミナー</strong><span>制度導入、面談、研修、組織改善相談。</span></span>
-      </a>
-    </div>
-  </div>
+<section aria-labelledby="cm-service-directory-title" class="cm-service-directory">
+<div class="cm-service-directory__shell">
+<div class="cm-service-directory__head">
+<div>
+<p class="cm-service-directory__eyebrow">Cross Method Services</p>
+<h2 id="cm-service-directory-title">声から、次の支援へつなげる。</h2>
+</div>
+<p>課題は一つとは限りません。現在の声に近い支援を選び、必要なページへ進めます。</p>
+</div>
+<div class="cm-service-directory__grid">
+<a class="cm-service-link" data-route="/customer-voice/" href="/customer-voice/">
+<span class="cm-service-link__icon"><svg viewbox="0 0 64 64"><path d="M9 12h46v31H31L18 54V43H9z"></path><path d="M18 23h28M18 31h20"></path></svg></span>
+<span><small>Customer Voice</small><strong>お客様の声・顧客体験</strong><span>満足、接客、動線、再来につながる声。</span></span>
+</a>
+<a class="cm-service-link" data-route="/employee-voice/" href="/employee-voice/">
+<span class="cm-service-link__icon"><svg viewbox="0 0 64 64"><circle cx="23" cy="22" r="9"></circle><circle cx="43" cy="25" r="8"></circle><path d="M8 54c2-14 8-22 15-22s13 8 15 22M34 54c2-12 6-19 12-19 7 0 11 7 13 19"></path></svg></span>
+<span><small>Employee Voice</small><strong>従業員の声・組織診断</strong><span>幸福感、定着意向、管理者負担を確認。</span></span>
+</a>
+<a class="cm-service-link" data-route="/health-management/" href="/health-management/">
+<span class="cm-service-link__icon"><svg viewbox="0 0 64 64"><path d="M32 55C18 44 9 36 9 25c0-8 6-14 14-14 5 0 8 2 10 7 2-5 6-7 11-7 8 0 14 6 14 14 0 11-10 19-26 30z"></path><path d="M16 34h10l4-9 7 18 5-9h8"></path></svg></span>
+<span><small>Health Management</small><strong>健康経営支援</strong><span>健康、両立、相談体制、組織改善へ。</span></span>
+</a>
+<a class="cm-service-link" data-route="/stress-check/" href="/stress-check/">
+<span class="cm-service-link__icon"><svg viewbox="0 0 64 64"><circle cx="32" cy="32" r="23"></circle><path d="M17 40a18 18 0 0 1 30 0M32 34l10-11"></path><circle cx="32" cy="34" r="3"></circle></svg></span>
+<span><small>Stress Check</small><strong>ストレスチェック</strong><span>実施、集団分析、職場改善まで。</span></span>
+</a>
+<a class="cm-service-link" data-route="/employee-retention/" href="/employee-retention/">
+<span class="cm-service-link__icon"><svg viewbox="0 0 64 64"><circle cx="22" cy="21" r="8"></circle><path d="M8 52V41c0-9 5-14 14-14s14 5 14 14v11"></path><rect height="28" rx="3" width="18" x="38" y="14"></rect><path d="M43 22h8M43 28h8M43 34h5"></path></svg></span>
+<span><small>Evaluation</small><strong>人材定着・人事評価</strong><span>個人と組織を重ね、育成と定着へ。</span></span>
+</a>
+<a class="cm-service-link" data-route="/healthy-food/" href="/healthy-food/">
+<span class="cm-service-link__icon"><svg viewbox="0 0 64 64"><path d="M10 31h44c0 15-9 23-22 23S10 46 10 31z"></path><path d="M16 31c2-10 9-17 16-17s14 7 16 17M22 22c4 3 6 5 10 9M42 21c-3 3-5 5-9 10"></path></svg></span>
+<span><small>Healthy Food</small><strong>健康食・社食</strong><span>毎日の食事から福利厚生を整える。</span></span>
+</a>
+<a class="cm-service-link" data-route="/risk-safety/" href="/risk-safety/">
+<span class="cm-service-link__icon"><svg viewbox="0 0 64 64"><path d="M32 7 54 15v16c0 14-9 22-22 28C19 53 10 45 10 31V15z"></path><path d="m22 31 7 7 14-17"></path></svg></span>
+<span><small>Risk &amp; Safety</small><strong>リスク予防</strong><span>BCP、情報、尊厳、安全、再発防止。</span></span>
+</a>
+<a class="cm-service-link" data-route="/seminar-counseling/" href="/seminar-counseling/">
+<span class="cm-service-link__icon"><svg viewbox="0 0 64 64"><path d="M6 14h23v18H17l-7 7v-7H6zM35 9h23v18H46l-7 7v-7h-4z"></path><path d="M14 53V41h14v12M38 53V39h15v14M9 53h24M34 53h24"></path></svg></span>
+<span><small>Consulting</small><strong>カウンセリング・セミナー</strong><span>制度導入、面談、研修、組織改善相談。</span></span>
+</a>
+</div>
+</div>
 </section>
-
 <footer class="er-footer">
 <div class="er-shell er-footer-inner">
 <a class="er-footer-brand" href="/">
@@ -766,6 +781,6 @@
 </section>
 <script src="/assets/employee-retention/employee-retention.js"></script>
 <script src="/assets/managed/section-ambient.js"></script>
-  <script src="/assets/managed/site-links.js"></script>
+<script src="/assets/managed/site-links.js"></script>
 </body>
 </html>

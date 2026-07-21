@@ -855,3 +855,116 @@ body.premium-v6 .final-cards article:nth-child(3) b{white-space:nowrap}
     transform-origin:top left;
   }
 }
+
+
+/* v12 verified: cover/final text uses stable solid colors; no gradient rectangles */
+body.premium-v6 .cover-brand .method-wordmark,
+body.premium-v6 .final-brand .method-wordmark {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #e8cd75 !important;
+  color: #e8cd75 !important;
+  text-shadow: none !important;
+}
+body.premium-v6 .cover-copy h2 span,
+body.premium-v6 .final-copy h2 span {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #7fe6e0 !important;
+  color: #7fe6e0 !important;
+  text-shadow: none !important;
+}
+@media print {
+  body.premium-v6 .cover-brand .method-wordmark,
+  body.premium-v6 .final-brand .method-wordmark {
+    background: none !important;
+    -webkit-text-fill-color: #e8cd75 !important;
+    color: #e8cd75 !important;
+  }
+  body.premium-v6 .cover-copy h2 span,
+  body.premium-v6 .final-copy h2 span {
+    background: none !important;
+    -webkit-text-fill-color: #7fe6e0 !important;
+    color: #7fe6e0 !important;
+  }
+}
+
+
+/* v13 verified: gradient text without rectangular artifacts + fixed final buttons */
+body.premium-v6 .cover-brand .method-wordmark,
+body.premium-v6 .final-brand .method-wordmark,
+body.premium-v6 .cover-copy h2 span,
+body.premium-v6 .final-copy h2 span {
+  display: inline-block !important;
+  background: linear-gradient(90deg,#2f68c3 0%,#169bd0 24%,#22b2ac 48%,#73b84e 72%,#d2ad42 100%) !important;
+  background-size: 100% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  text-shadow: none !important;
+}
+body.premium-v6 .final-actions {
+  display: grid !important;
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+  align-items: stretch !important;
+  gap: 14px !important;
+  width: min(100%,460px) !important;
+  margin-top: 3% !important;
+}
+body.premium-v6 .final-actions a {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 52px !important;
+  margin: 0 !important;
+  padding: 0 18px !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+@media (max-width:680px) {
+  body.premium-v6 .final-actions {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+  body.premium-v6 .final-actions a {
+    height: 50px !important;
+  }
+}
+
+
+/* v14: align closing card text with the number marker */
+body.premium-v6 .final-cards article{
+  grid-template-columns:44px minmax(0,1fr)!important;
+  column-gap:8px!important;
+  row-gap:4px!important;
+  padding:18px 14px!important;
+}
+body.premium-v6 .final-cards svg{
+  width:34px!important;
+  height:34px!important;
+  margin:0!important;
+}
+body.premium-v6 .final-cards b{
+  margin:0!important;
+  padding:0!important;
+  white-space:normal!important;
+  text-align:left!important;
+  line-height:1.4!important;
+}
+body.premium-v6 .final-cards p{
+  grid-column:2!important;
+  margin:2px 0 0!important;
+  padding:0!important;
+  text-align:left!important;
+}
+body.premium-v6 .final-cards article:nth-child(3) b{
+  white-space:normal!important;
+  font-size:10.4px!important;
+}
