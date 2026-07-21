@@ -106,7 +106,9 @@ const ORDER_SETTINGS = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  positionPrioritySections();
   await setupManagedSite();
+  positionPrioritySections();
   setupMobileNavigation();
   setupMobileMotion();
   setupExperienceFrame();
@@ -762,6 +764,11 @@ function closeAllModals() {
    ========================================================== */
 (function initAmbientChartBackgrounds() {
   const sectionConfigs = [
+    {
+      selector: ".evaluation-feature",
+      scene: "evaluation",
+      shapes: ["line", "radar", "bars", "progress", "network", "donut"]
+    },
     {
       selector: ".news-section",
       scene: "news",
@@ -1576,12 +1583,29 @@ function applySectionManagement(sections) {
   // 管理表に未登録の既存セクションは削除せず、問い合わせの直前へ残します。
   sectionElements.forEach((section) => {
     const id = section.dataset.sectionId;
-    if (!managedIds.has(id) && id !== "hero" && id !== "contact" && contact) {
+    const isDirectFixed = section.dataset.sectionFixed === "true";
+    if (!managedIds.has(id) && !isDirectFixed && id !== "hero" && id !== "contact" && contact) {
       main.insertBefore(section, contact);
     }
   });
 
+  positionPrioritySections();
   rebuildManagedNavigation(sections);
+}
+
+/**
+ * トップページ上部の重要導線は、管理表の並び替え後も固定します。
+ * 表示順：ファーストビュー → 人事評価制度 → 無料体験診断 → その他
+ */
+function positionPrioritySections() {
+  const main = document.querySelector("main");
+  const hero = document.querySelector('main > section[data-section-id="hero"]');
+  const evaluation = document.getElementById("evaluation-feature");
+  const experience = document.getElementById("experience");
+  if (!main || !hero || !evaluation) return;
+
+  hero.insertAdjacentElement("afterend", evaluation);
+  if (experience) evaluation.insertAdjacentElement("afterend", experience);
 }
 
 function rebuildManagedNavigation(sections) {
