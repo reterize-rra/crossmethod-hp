@@ -5643,3 +5643,165 @@ a.news-item:hover {
   .evaluation-result-arrow,
   .evaluation-result-bars i { animation:none!important; }
 }
+
+/* ==========================================================
+   クロス式™ 人事評価制度 注目セクション 微調整
+   見出し改行・3カード配色・図解内文字切れ対策
+   ========================================================== */
+.evaluation-feature-shell{
+  grid-template-columns:minmax(0,1.08fr) minmax(460px,.92fr);
+  gap:clamp(38px,4.5vw,68px);
+}
+.evaluation-feature-copy{min-width:0}
+.evaluation-feature h2{
+  max-width:720px;
+  font-size:clamp(36px,3.55vw,52px);
+  line-height:1.24;
+  letter-spacing:-.045em;
+  text-wrap:initial;
+  word-break:normal;
+  overflow-wrap:normal;
+}
+.evaluation-feature h2 .evaluation-title-line{
+  display:block;
+  white-space:nowrap;
+}
+.evaluation-feature h2 .evaluation-title-ending{display:inline}
+.evaluation-feature-lead{
+  max-width:720px;
+  font-size:clamp(15px,1.22vw,18px);
+  line-height:1.9;
+  text-wrap:pretty;
+  word-break:normal;
+}
+.evaluation-feature-lead span{display:block}
+.evaluation-feature-lead span+span{margin-top:7px}
+
+.evaluation-feature-points>div{
+  border-width:1px 1px 1px 6px;
+  background:#fff;
+  box-shadow:0 15px 32px rgba(11,40,64,.075);
+}
+.evaluation-feature-points>.evaluation-point-1{
+  border-color:rgba(0,104,183,.20);
+  border-left-color:#0876c1;
+  background:linear-gradient(135deg,#eaf5ff 0%,#f7fbff 58%,#fff 100%);
+}
+.evaluation-feature-points>.evaluation-point-2{
+  border-color:rgba(15,170,180,.20);
+  border-left-color:#0faab4;
+  background:linear-gradient(135deg,#e7f8f8 0%,#f0fbf7 58%,#fff 100%);
+}
+.evaluation-feature-points>.evaluation-point-3{
+  border-color:rgba(210,162,67,.24);
+  border-left-color:#d2a243;
+  background:linear-gradient(135deg,#fff6db 0%,#fff1eb 58%,#fff 100%);
+}
+.evaluation-feature-points>.evaluation-point-1 i{
+  background:linear-gradient(135deg,#0876c1,#3d91d0);
+  box-shadow:0 9px 18px rgba(8,118,193,.24);
+}
+.evaluation-feature-points>.evaluation-point-2 i{
+  background:linear-gradient(135deg,#0faab4,#62b758);
+  box-shadow:0 9px 18px rgba(15,170,180,.24);
+}
+.evaluation-feature-points>.evaluation-point-3 i{
+  background:linear-gradient(135deg,#d2a243,#df8169);
+  box-shadow:0 9px 18px rgba(210,162,67,.25);
+}
+.evaluation-feature-points>.evaluation-point-1 b{color:#175f97}
+.evaluation-feature-points>.evaluation-point-2 b{color:#087f87}
+.evaluation-feature-points>.evaluation-point-3 b{color:#9a691f}
+
+.evaluation-cross-visual,
+.evaluation-cross-visual>*{min-width:0}
+.evaluation-result-card{
+  grid-template-columns:minmax(250px,1.08fr) minmax(135px,.5fr) minmax(225px,.9fr);
+  gap:18px;
+}
+.evaluation-result-title strong{
+  font-size:clamp(17px,1.4vw,20px);
+  line-height:1.45;
+  white-space:nowrap;
+  overflow:visible;
+}
+.evaluation-result-outcomes{min-width:0}
+.evaluation-result-outcomes span{
+  min-width:0;
+  white-space:nowrap;
+}
+
+@media(max-width:1100px){
+  .evaluation-feature-shell{grid-template-columns:1fr}
+  .evaluation-feature h2{max-width:760px}
+  .evaluation-feature-lead{max-width:780px}
+}
+
+@media(max-width:767px){
+  .evaluation-feature h2{
+    max-width:100%;
+    font-size:clamp(23px,7.2vw,32px);
+    line-height:1.38;
+    letter-spacing:-.035em;
+  }
+  .evaluation-feature h2 .evaluation-title-line{
+    display:block;
+    white-space:nowrap;
+  }
+  .evaluation-feature h2 span+span::before{content:none}
+  .evaluation-feature-lead{
+    max-width:100%;
+    font-size:13px;
+    line-height:1.86;
+  }
+  .evaluation-feature-lead span+span{margin-top:8px}
+  .evaluation-feature-points>div{
+    grid-template-columns:34px minmax(0,1fr);
+    gap:11px;
+    padding:13px 13px;
+  }
+  .evaluation-feature-points i{width:31px;height:31px}
+  .evaluation-feature-points b{font-size:14px}
+  .evaluation-feature-points span{font-size:11.5px;line-height:1.55}
+  .evaluation-cross-visual{
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+  }
+  .evaluation-result-card{
+    grid-template-columns:1fr;
+    gap:12px;
+    width:100%;
+    max-width:100%;
+  }
+  .evaluation-result-title strong{
+    font-size:17px;
+    white-space:nowrap;
+  }
+  .evaluation-result-outcomes{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    width:100%;
+  }
+  .evaluation-result-outcomes span{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width:0;
+    padding:7px 3px 7px 15px;
+    font-size:8.5px;
+    white-space:nowrap;
+  }
+  .evaluation-result-outcomes span::before{left:4px}
+}
+
+@media(max-width:430px){
+  .evaluation-feature h2{font-size:clamp(25px,7.1vw,29px)}
+  .evaluation-feature h2 .evaluation-title-ending{display:block}
+}
+
+@media(max-width:360px){
+  .evaluation-feature h2{font-size:22px}
+  .evaluation-feature-points span{font-size:11px}
+  .evaluation-result-title strong{font-size:15px}
+  .evaluation-result-outcomes span{font-size:7.8px}
+}

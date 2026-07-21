@@ -1288,3 +1288,11 @@ body.er-portal-open{overflow:hidden}
     font-size:20px;
   }
 }
+
+/* トップページから人事評価制度へ移動した際、見出しを固定ヘッダー直下へ合わせる */
+html{scroll-padding-top:0}
+#cross-evaluation-title{scroll-margin-top:94px}
+@media(max-width:767px){
+  html{scroll-padding-top:0}
+  #cross-evaluation-title{scroll-margin-top:80px}
+}

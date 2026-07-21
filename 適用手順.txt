@@ -1,0 +1,49 @@
+クロス式™ 人事評価制度・トップ注目セクション 微調整版　適用手順
+
+【今回の修正内容】
+1. 大見出しの不自然な自動改行を修正
+   PC：2行で表示
+   スマホ：3行に制御して横切れを防止
+2. 説明文を2段落に分け、読みやすく修正
+3. 3つの特徴カードを、それぞれ別の配色へ変更
+   1枚目：ブルー
+   2枚目：ターコイズ・グリーン
+   3枚目：ゴールド・コーラル
+4. 図解下部の「クロス式™ 人事評価制度」と3つの効果が切れないよう調整
+5. 「詳しく見る」の移動先を、サブページの見出し位置へ変更
+6. サブページでは、固定ヘッダー直下に見出しが表示されるよう調整
+7. 既存の背景外余白グラフ演出は変更せず維持
+
+【上書きする4ファイル】
+1. index.html
+2. style.css
+3. employee-retention/index.html
+4. assets/employee-retention/employee-retention.css
+
+【Finderでの作業】
+1. ZIPをダブルクリックして解凍します。
+2. 解凍した index.html を、crossmethod-hp/index.html へ上書きします。
+3. 解凍した style.css を、crossmethod-hp/style.css へ上書きします。
+4. 解凍した employee-retention/index.html を、crossmethod-hp/employee-retention/index.html へ上書きします。
+5. 解凍した assets/employee-retention/employee-retention.css を、crossmethod-hp/assets/employee-retention/employee-retention.css へ上書きします。
+6. フォルダごと置き換えず、4ファイルだけ上書きしてください。
+
+【GitHub Desktop】
+1. Current Repository が crossmethod-hp であることを確認します。
+2. Changesに次の4ファイルだけが表示されることを確認します。
+   index.html
+   style.css
+   employee-retention/index.html
+   assets/employee-retention/employee-retention.css
+3. Summaryへ次を入力します。
+   人事評価制度セクションの改行とリンク位置を修正
+4. Commit to main を押します。
+5. Push origin を押します。
+
+【公開後の確認】
+1. command + shift + R で強制再読み込みします。
+2. PCの大見出しが2行で自然に表示されることを確認します。
+3. スマホの大見出しが3行で表示され、右側が切れないことを確認します。
+4. 3つの特徴カードが異なる色になっていることを確認します。
+5. 下部の図解文字が途中で切れていないことを確認します。
+6. 「詳しく見る」を押すと、サブページの「Cross Evaluation」見出しが画面上部に表示されることを確認します。
