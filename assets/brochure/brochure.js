@@ -263,27 +263,55 @@
 
   function initializePricing() {
     const employeeCount = document.getElementById("employee-count");
-    const voicePlan = document.getElementById("voice-plan");
+    const diagnosticPlan = document.getElementById("diagnostic-plan");
     const evaluationPlan = document.getElementById("evaluation-plan");
     const contractFee = document.getElementById("contract-fee");
+    const diagnosticFee = document.getElementById("diagnostic-fee");
+    const evaluationFee = document.getElementById("evaluation-fee");
     const monthlyFee = document.getElementById("monthly-fee");
     const annualFee = document.getElementById("annual-fee");
+
     const update = () => {
       const employees = clamp(parseInt(employeeCount.value, 10) || 1, 1, 10000);
       employeeCount.value = String(employees);
+
       const contract = employees * 11000;
-      const voice = voicePlan.checked ? 33000 : 0;
+      const diagnostic = diagnosticPlan.checked ? getDiagnosticSupportFee(employees) : 0;
       const evaluation = evaluationPlan.checked ? Math.max(employees * 1100, 33000) : 0;
-      const monthly = voice + evaluation;
+
       contractFee.textContent = formatYen(contract);
-      monthlyFee.textContent = formatYen(monthly);
-      annualFee.textContent = formatYen(contract + monthly * 12);
+      evaluationFee.textContent = formatYen(evaluation);
+
+      if (diagnostic === null) {
+        diagnosticFee.textContent = "要相談";
+        monthlyFee.textContent = "要相談";
+        annualFee.textContent = "要相談";
+        monthlyFee.closest("div")?.classList.add("is-consultation");
+        annualFee.closest("div")?.classList.add("is-consultation");
+      } else {
+        diagnosticFee.textContent = formatYen(diagnostic);
+        const monthly = diagnostic + evaluation;
+        monthlyFee.textContent = formatYen(monthly);
+        annualFee.textContent = formatYen(contract + monthly * 12);
+        monthlyFee.closest("div")?.classList.remove("is-consultation");
+        annualFee.closest("div")?.classList.remove("is-consultation");
+      }
     };
-    [employeeCount, voicePlan, evaluationPlan].forEach((element) => {
+
+    [employeeCount, diagnosticPlan, evaluationPlan].forEach((element) => {
       element?.addEventListener("input", update);
       element?.addEventListener("change", update);
     });
     update();
+  }
+
+  function getDiagnosticSupportFee(employees) {
+    if (employees <= 30) return 33000;
+    if (employees <= 50) return 55000;
+    if (employees <= 100) return 110000;
+    if (employees <= 150) return 150000;
+    if (employees < 200) return 200000;
+    return null;
   }
 
   function formatYen(value) { return `${new Intl.NumberFormat("ja-JP").format(value)}円`; }
