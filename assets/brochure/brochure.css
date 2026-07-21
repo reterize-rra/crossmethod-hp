@@ -1,3 +1,11 @@
+
+/* control overlay safety fix */
+.access-gate[hidden],
+.brochure-app[hidden],
+.contents-dialog[hidden]{
+  display:none!important;
+  pointer-events:none!important;
+}
 :root{
   --navy:#0b2b43;--ink:#17384e;--muted:#607986;--line:#dce9ea;--paper:#fff;
   --blue:#2f7cc4;--cyan:#12a8c5;--teal:#2bb5a8;--green:#65b65b;--gold:#d3ad42;
@@ -95,3 +103,14 @@
   @page{size:A4 landscape;margin:0}html,body{width:297mm;height:auto;background:#fff;overflow:visible!important}.access-gate,.toolbar,.page-nav,.controller,.contents-dialog,.ambient{display:none!important}.brochure-app{display:block!important;min-height:0!important;background:#fff!important}.workspace,.book-viewport,.book-stage{display:block!important;position:static!important;width:297mm!important;height:auto!important;aspect-ratio:auto!important;padding:0!important;margin:0!important;filter:none!important;perspective:none!important;overflow:visible!important}.book-stage::before{display:none!important}.brochure-page,.brochure-page.is-current,.brochure-page.is-under{display:block!important;position:relative!important;inset:auto!important;width:297mm!important;height:210mm!important;overflow:hidden!important;border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;filter:none!important;opacity:1!important;page-break-after:always;break-after:page}.brochure-page:last-child{page-break-after:auto;break-after:auto}.page-footer{bottom:5mm}.method-wordmark,.cover-copy h2 span,.final-copy h2 span{-webkit-print-color-adjust:exact;print-color-adjust:exact}.page-shell,.color-card-row article,.voice-cards article,.customer-journey article,.customer-value article,.experience-banner,.employee-visual article,.cross-visual article,.evaluation-points article,.report-paper,.report-insights article,.simulation-strip,.support-orbit article,.implementation-timeline article,.flow-message,.before-panel,.after-panel,.change-quotes span,.price-card,.calculator,.final-cards article{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* mobile navigation buttons must stay clickable above the fixed controller */
+@media(max-width:720px){
+  .controller{pointer-events:none!important;}
+  .page-nav{z-index:140!important;pointer-events:auto!important;touch-action:manipulation;}
+}
+
+/* keep the table-of-contents control available on phones */
+@media(max-width:720px){
+  .toolbar-actions #contents-button{display:inline-flex!important;}
+}
