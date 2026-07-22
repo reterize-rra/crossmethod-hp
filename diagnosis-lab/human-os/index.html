@@ -289,8 +289,49 @@
       width:94%;height:93%;
       object-fit:contain;
       object-position:center bottom;
-      opacity:.93;
+      opacity:0;
+      visibility:hidden;
       filter:saturate(.92) contrast(1.04) drop-shadow(0 25px 35px rgba(0,0,0,.22));
+      transition:opacity .35s ease;
+    }
+
+    .human-image.ready{
+      opacity:.93;
+      visibility:visible;
+    }
+
+    .human-fallback{
+      position:absolute;
+      inset:15% 20% 5%;
+      opacity:.24;
+      pointer-events:none;
+      filter:drop-shadow(0 0 28px rgba(121,231,228,.28));
+    }
+
+    .human-fallback::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:5%;
+      width:25%;
+      aspect-ratio:1;
+      transform:translateX(-50%);
+      border:1px solid rgba(121,231,228,.58);
+      border-radius:50%;
+      background:radial-gradient(circle,rgba(121,231,228,.16),transparent 68%);
+    }
+
+    .human-fallback::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:29%;
+      width:57%;
+      height:66%;
+      transform:translateX(-50%);
+      border:1px solid rgba(121,231,228,.48);
+      border-radius:48% 48% 32% 32% / 25% 25% 18% 18%;
+      background:linear-gradient(180deg,rgba(121,231,228,.10),rgba(121,231,228,.025));
     }
 
     .scan-line{
@@ -585,6 +626,7 @@
       <aside class="visual" aria-hidden="true">
         <div class="visual-orbit"></div>
         <div class="glass-box">
+          <div id="humanFallback" class="human-fallback"></div>
           <img id="humanImage" class="human-image" alt="">
           <div class="scan-glow"></div>
           <div class="scan-line"></div>
@@ -647,21 +689,75 @@
 
     function applyAssets(){
       const assets = state.runtime && state.runtime.assets ? state.runtime.assets : {};
-      const humanUrl = assets.human_os_scan_url || assets.default_illustration_url || '';
-      const logoUrl = assets.crossmethod_logo_url || '';
 
-      if(humanUrl){
-        document.getElementById('humanImage').src = humanUrl;
-      }
+      const humanCandidates = uniqueValues([
+        assets.human_os_scan_data_uri,
+        assets.human_os_scan_url,
+        assets.default_illustration_url
+      ]);
 
-      if(logoUrl){
-        const logo = document.getElementById('crossLogo');
-        logo.src = logoUrl;
-        logo.onload = function(){
-          logo.classList.add('ready');
+      const logoCandidates = uniqueValues([
+        assets.crossmethod_logo_data_uri,
+        assets.crossmethod_logo_url
+      ]);
+
+      loadImageCandidates(
+        document.getElementById('humanImage'),
+        humanCandidates,
+        function(img){
+          img.classList.add('ready');
+          const fallback = document.getElementById('humanFallback');
+          if(fallback) fallback.style.display = 'none';
+        }
+      );
+
+      const logo = document.getElementById('crossLogo');
+      loadImageCandidates(
+        logo,
+        logoCandidates,
+        function(img){
+          img.classList.add('ready');
           document.getElementById('brandFallback').style.display = 'none';
+        }
+      );
+    }
+
+    function uniqueValues(values){
+      const result = [];
+      (values || []).forEach(function(value){
+        const safe = String(value || '').trim();
+        if(safe && result.indexOf(safe) < 0) result.push(safe);
+      });
+      return result;
+    }
+
+    function loadImageCandidates(img,candidates,onReady){
+      if(!img || !Array.isArray(candidates) || !candidates.length) return;
+
+      let index = 0;
+
+      const tryNext = function(){
+        if(index >= candidates.length){
+          img.removeAttribute('src');
+          img.classList.remove('ready');
+          return;
+        }
+
+        const candidate = candidates[index++];
+        img.onload = function(){
+          img.onload = null;
+          img.onerror = null;
+          if(typeof onReady === 'function') onReady(img);
         };
-      }
+        img.onerror = function(){
+          img.onload = null;
+          img.onerror = null;
+          tryNext();
+        };
+        img.src = candidate;
+      };
+
+      tryNext();
     }
 
     function displayTitle(){
