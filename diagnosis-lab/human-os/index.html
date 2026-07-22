@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="referrer" content="no-referrer">
-  <title>人間OS｜保存接続試験</title>
+  <title>人間OS｜実施回URL試験</title>
   <style>
     :root{
       --ink:#0b2234;
@@ -711,6 +711,38 @@
 
     @keyframes spin{to{transform:rotate(360deg)}}
 
+    .run-company{
+      margin:0 0 16px;
+      padding:13px 16px;
+      border:1px solid rgba(111,227,229,.24);
+      border-radius:16px;
+      color:#d9f7ff;
+      background:rgba(111,227,229,.08);
+      font-size:14px;
+      line-height:1.65;
+    }
+
+    .issued-url{
+      width:100%;
+      min-height:108px;
+      margin-top:14px;
+      padding:14px 16px;
+      border:1px solid rgba(111,227,229,.38);
+      border-radius:16px;
+      color:#f4fbff;
+      background:rgba(5,18,34,.62);
+      overflow-wrap:anywhere;
+      user-select:all;
+      line-height:1.65;
+    }
+
+    .copy-status{
+      min-height:22px;
+      margin-top:9px;
+      color:#8fe7dc;
+      font-size:12px;
+    }
+
     .save-consent{
       margin-top:18px;
       padding:15px 17px;
@@ -912,7 +944,7 @@
     </div>
     <div class="header-right">
       <div class="header-tag">Cross Method</div>
-      <div class="preview-badge">保存接続試験｜テストデータとして保存</div>
+      <div class="preview-badge">実施回URL試験｜テストデータとして保存</div>
     </div>
   </header>
 
@@ -949,7 +981,10 @@
         job_department:''
       },
       currentIndex:0,
+      clientRegistrationId:createSubmissionId(),
       clientSubmissionId:createSubmissionId(),
+      runToken:getRunTokenFromUrl(),
+      run:null,
       saveResult:null,
       submitting:false
     };
@@ -992,12 +1027,47 @@
         }
 
         applyAssets();
+
+        if(state.runToken){
+          await resolveRunFromUrl();
+        }
+
         renderStart();
       }catch(error){
         renderError(error && error.message
           ? error.message
           : '人間OSの読み込みに失敗しました。');
       }
+    }
+
+    async function resolveRunFromUrl(){
+      const response = await fetch(API_ENDPOINT,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          action:'resolve_human_os_run_test',
+          run_token:state.runToken
+        })
+      });
+
+      const raw = await response.text();
+      let result;
+
+      try{
+        result = JSON.parse(raw);
+      }catch(error){
+        throw new Error('実施回情報がJSONで返りませんでした。');
+      }
+
+      if(!response.ok || !result || !result.ok){
+        throw new Error(
+          result && result.message
+            ? result.message
+            : '実施回URLを読み込めませんでした。'
+        );
+      }
+
+      state.run = result.run || null;
     }
 
     function applyAssets(){
@@ -1154,11 +1224,21 @@
     }
 
     function renderStart(){
+      const runInfo = state.run
+        ? `
+          <div class="run-company">
+            <strong>${escapeHtml(state.run.company_name || '')}</strong><br>
+            実施回：${escapeHtml(state.run.run_name || '')}
+          </div>
+        `
+        : '';
+
       screenHtml(`
         <div class="stage">
           <div class="card">
             <div class="pill">Human OS｜内面構造の確認</div>
             <h1 class="hero-title">${escapeHtml(displayTitle())}</h1>
+            ${runInfo}
             <p>
               この診断は、あなたの考え方・反応・行動の傾向を整理するためのものです。
               正解や不正解はありません。
@@ -1171,8 +1251,8 @@
               <button class="btn-primary btn-start" type="button" onclick="renderBasic()">はじめる</button>
             </div>
             <div class="preview-note">
-              今回は保存接続試験です。会社名には自動で「【HP保存試験】」が付き、
-              本番管理スプレッドシートへテストデータとして保存されます。
+              今回は企業専用の実施回URL発行試験です。
+              保存会社名には「【HP実施回試験】」が自動で付きます。
             </div>
           </div>
         </div>
@@ -1180,26 +1260,46 @@
     }
 
     function renderBasic(){
+      const companyBlock = state.run
+        ? `
+          <div class="run-company">
+            会社・事業所：
+            <strong>${escapeHtml(state.run.company_name || '')}</strong><br>
+            実施回：${escapeHtml(state.run.run_name || '')}
+          </div>
+        `
+        : `
+          <div class="field full">
+            <label for="companyName">会社名・店舗名・事業所名</label>
+            <input
+              id="companyName"
+              type="text"
+              value="${escapeAttr(state.basic.company_name)}"
+              placeholder="例：株式会社〇〇">
+          </div>
+          <div class="field full">
+            <label for="runName">実施回名 任意</label>
+            <input
+              id="runName"
+              type="text"
+              placeholder="例：初回確認 / 2026年夏季">
+          </div>
+        `;
+
       screenHtml(`
         <div class="stage">
           <div class="card">
             <div class="pill">基本情報</div>
-            <h2>基本情報を入力してください</h2>
+            <h2>${state.run ? '回答者情報を入力してください' : '企業情報を入力してください'}</h2>
             <p>
-              保存動作を確認するためのテスト情報を入力してください。
-              会社名には保存時に「【HP保存試験】」が自動で付きます。
+              ${state.run
+                ? '会社情報は実施回URLから読み込んでいます。'
+                : '企業情報を登録すると、同じ実施回を共有できる専用URLを発行します。'}
             </p>
 
-            <div class="form-grid">
-              <div class="field full">
-                <label for="companyName">会社名・店舗名・事業所名</label>
-                <input
-                  id="companyName"
-                  type="text"
-                  value="${escapeAttr(state.basic.company_name)}"
-                  placeholder="例：株式会社〇〇">
-              </div>
+            ${companyBlock}
 
+            <div class="form-grid">
               <div class="field">
                 <label for="personName">お名前</label>
                 <input
@@ -1223,15 +1323,19 @@
 
             <div class="actions">
               <button class="btn-secondary" type="button" onclick="renderStart()">戻る</button>
-              <button class="btn-primary" type="button" onclick="saveBasic()">設問へ進む</button>
+              <button id="basicNextButton" class="btn-primary" type="button" onclick="saveBasic()">
+                ${state.run ? '設問へ進む' : '専用URLを発行する'}
+              </button>
             </div>
           </div>
         </div>
       `,'screen');
     }
 
-    function saveBasic(){
-      const companyName = valueOf('companyName');
+    async function saveBasic(){
+      const companyName = state.run
+        ? String(state.run.company_name || '').trim()
+        : valueOf('companyName');
       const personName = valueOf('personName');
       const department = valueOf('department');
 
@@ -1246,7 +1350,124 @@
         job_department:department
       };
 
-      renderQuestion(0);
+      if(state.run){
+        renderQuestion(0);
+        return;
+      }
+
+      const button = document.getElementById('basicNextButton');
+      if(button){
+        button.disabled = true;
+        button.textContent = 'URL発行中...';
+      }
+
+      try{
+        const response = await fetch(API_ENDPOINT,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            action:'prepare_human_os_run_test',
+            test_mode:'human_os_run_url_test_v1',
+            client_registration_id:state.clientRegistrationId,
+            run_name:valueOf('runName'),
+            company:{
+              company_name:companyName,
+              respondent_name:personName,
+              job_department:department
+            }
+          })
+        });
+
+        const raw = await response.text();
+        let result;
+
+        try{
+          result = JSON.parse(raw);
+        }catch(error){
+          throw new Error('URL発行APIからJSONではない応答が返りました。');
+        }
+
+        if(!response.ok || !result || !result.ok){
+          throw new Error(
+            result && result.message
+              ? result.message
+              : '専用URLを発行できませんでした。'
+          );
+        }
+
+        state.run = result.run || null;
+
+        if(!state.run || !state.run.public_url){
+          throw new Error('発行された専用URLを確認できません。');
+        }
+
+        state.runToken = getRunTokenFromUrl(state.run.public_url);
+        renderRunIssued();
+      }catch(error){
+        if(button){
+          button.disabled = false;
+          button.textContent = '専用URLを発行する';
+        }
+
+        showError(
+          'basicError',
+          error && error.message
+            ? error.message
+            : '専用URLの発行に失敗しました。'
+        );
+      }
+    }
+
+    function renderRunIssued(){
+      screenHtml(`
+        <div class="stage">
+          <div class="card">
+            <div class="pill">企業専用URL発行完了</div>
+            <h2>同じ実施回を共有できます</h2>
+            <p>
+              2人目以降は、下のURLを開くと会社情報を入力せずに人間OSを始められます。
+            </p>
+
+            <div class="summary">
+              ${summaryRow('会社',state.run.company_name || '')}
+              ${summaryRow('実施回',state.run.run_name || '')}
+              ${summaryRow('run_id',state.run.run_id || '')}
+            </div>
+
+            <div id="issuedUrl" class="issued-url">${escapeHtml(state.run.public_url || '')}</div>
+            <div id="copyStatus" class="copy-status"></div>
+
+            <div class="actions">
+              <button class="btn-secondary" type="button" onclick="copyIssuedUrl()">
+                URLをコピーする
+              </button>
+              <button class="btn-primary" type="button" onclick="renderQuestion(0)">
+                このまま診断を始める
+              </button>
+            </div>
+          </div>
+        </div>
+      `,'screen');
+    }
+
+    async function copyIssuedUrl(){
+      const url = String(state.run && state.run.public_url || '').trim();
+      const status = document.getElementById('copyStatus');
+
+      if(!url){
+        if(status) status.textContent = 'コピーするURLがありません。';
+        return;
+      }
+
+      try{
+        await navigator.clipboard.writeText(url);
+        if(status) status.textContent = 'URLをコピーしました。';
+      }catch(error){
+        if(status){
+          status.textContent =
+            '自動コピーできないため、URLを選択してコピーしてください。';
+        }
+      }
     }
 
     function renderQuestion(index){
@@ -1409,13 +1630,14 @@
             <div class="pill">保存前確認</div>
             <h2>テスト回答を保存します</h2>
             <p>
-              既存の本番診断保存処理へ接続し、企業管理と回答データへ保存します。
+              企業専用の実施回URLに紐づけて回答を保存します。
               集計・レポート・PDFはまだ実行しません。
             </p>
 
             <div class="summary">
               ${summaryRow('診断',displayTitle())}
-              ${summaryRow('保存先会社名','【HP保存試験】' + state.basic.company_name.replace(/^【HP保存試験】/,'') )}
+              ${summaryRow('保存先会社名',state.run ? state.run.company_name : state.basic.company_name)}
+              ${state.run ? summaryRow('実施回',state.run.run_name || '') : ''}
               ${summaryRow('お名前',state.basic.respondent_name)}
               ${state.basic.job_department
                 ? summaryRow('職種・部署',state.basic.job_department)
@@ -1426,7 +1648,7 @@
             <label class="save-consent">
               <input id="saveConsent" type="checkbox">
               <span>
-                本番管理スプレッドシートへ、テスト会社・テスト回答として
+                企業専用の実施回URLに紐づくテスト回答として
                 保存されることを確認しました。
               </span>
             </label>
@@ -1444,8 +1666,8 @@
                 id="submitButton"
                 class="btn-primary"
                 type="button"
-                onclick="submitSaveTest()">
-                テスト回答を保存する
+                onclick="submitRunTest()">
+                実施回へ回答を保存する
               </button>
             </div>
           </div>
@@ -1453,8 +1675,13 @@
       `,'screen');
     }
 
-    async function submitSaveTest(){
+    async function submitRunTest(){
       if(state.submitting){
+        return;
+      }
+
+      if(!state.runToken || !state.run){
+        showError('submitError','実施回URLを確認できません。');
         return;
       }
 
@@ -1462,7 +1689,7 @@
       if(!consent || !consent.checked){
         showError(
           'submitError',
-          'テスト保存への確認にチェックを入れてください。'
+          '実施回へのテスト保存確認にチェックを入れてください。'
         );
         return;
       }
@@ -1494,12 +1721,12 @@
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({
-            action:'submit_human_os_save_test',
-            test_mode:'human_os_save_connection_v1',
+            action:'submit_human_os_run_test',
+            test_mode:'human_os_run_url_test_v1',
+            run_token:state.runToken,
             client_submission_id:state.clientSubmissionId,
             submitted_client_at:new Date().toISOString(),
-            company:{
-              company_name:state.basic.company_name,
+            respondent:{
               respondent_name:state.basic.respondent_name,
               job_department:state.basic.job_department
             },
@@ -1520,7 +1747,7 @@
           throw new Error(
             result && result.message
               ? result.message
-              : 'テスト回答を保存できませんでした。'
+              : '実施回へ回答を保存できませんでした。'
           );
         }
 
@@ -1531,7 +1758,7 @@
 
         if(button){
           button.disabled = false;
-          button.textContent = 'テスト回答を保存する';
+          button.textContent = '実施回へ回答を保存する';
         }
 
         showError(
@@ -1550,22 +1777,25 @@
         <div class="stage">
           <div class="card">
             <div class="complete-mark">✓</div>
-            <div class="pill">保存接続試験成功</div>
-            <h2>テスト回答を保存しました</h2>
+            <div class="pill">実施回URL試験成功</div>
+            <h2>実施回へ回答を保存しました</h2>
             <p>
-              独自ドメインから既存の本番診断保存処理を通り、
-              企業管理と回答データへ保存されています。
+              企業専用URLから既存の本番診断保存処理を通り、
+              同じ企業・同じ実施回として保存されています。
             </p>
 
             <div class="save-result">
               ${saveResultRow('受付ID',result.response_id || '')}
               ${saveResultRow('企業ID',result.company_id || '')}
               ${saveResultRow('保存会社名',result.saved_company_name || '')}
-              ${saveResultRow('保存回答数',String(result.saved_answer_count || 0) + '件')}
+              ${saveResultRow('run_id',result.run_id || '')}
+              ${saveResultRow('実施回',result.run_name || '')}
+              ${saveResultRow('実施回回答数',String(result.run_answer_count || 0) + '人')}
+              ${saveResultRow('保存回答行',String(result.saved_answer_rows || 0) + '行')}
             </div>
 
             <div class="note">
-              次にスプレッドシートの「01_企業管理」と「05_回答データ」を確認してください。
+              次に「25_診断実施URL管理」と「05_回答データ」を確認してください。
               集計・レポート・PDFはまだ実行されていません。
             </div>
           </div>
@@ -1576,7 +1806,10 @@
     function resetPreview(){
       state.answers = {};
       state.currentIndex = 0;
+      state.clientRegistrationId = createSubmissionId();
       state.clientSubmissionId = createSubmissionId();
+      state.runToken = getRunTokenFromUrl();
+      state.run = null;
       state.saveResult = null;
       state.submitting = false;
       renderStart();
@@ -1622,6 +1855,18 @@
           <span>${escapeHtml(value)}</span>
         </div>
       `;
+    }
+
+    function getRunTokenFromUrl(url){
+      try{
+        const target = url
+          ? new URL(url,window.location.href)
+          : new URL(window.location.href);
+
+        return String(target.searchParams.get('run') || '').trim();
+      }catch(error){
+        return '';
+      }
     }
 
     function saveResultRow(label,value){
