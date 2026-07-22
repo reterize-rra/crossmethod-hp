@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="referrer" content="no-referrer">
-  <title>人間OS｜表示試験</title>
+  <title>人間OS｜保存接続試験</title>
   <style>
     :root{
       --ink:#0b2234;
@@ -711,6 +711,51 @@
 
     @keyframes spin{to{transform:rotate(360deg)}}
 
+    .save-consent{
+      margin-top:18px;
+      padding:15px 17px;
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      border:1px solid rgba(211,166,63,.30);
+      border-radius:16px;
+      color:#e9dbb8;
+      background:rgba(211,166,63,.075);
+      font-size:13px;
+      line-height:1.65;
+      cursor:pointer;
+    }
+
+    .save-consent input{
+      width:19px;
+      height:19px;
+      min-height:0;
+      margin:2px 0 0;
+      flex:0 0 19px;
+      accent-color:#10b6bd;
+    }
+
+    .save-result{
+      margin-top:18px;
+      display:grid;
+      gap:7px;
+    }
+
+    .save-result-row{
+      display:grid;
+      grid-template-columns:150px 1fr;
+      gap:12px;
+      padding:9px 0;
+      border-bottom:1px solid rgba(255,255,255,.09);
+      color:#bfd4e3;
+      font-size:13px;
+      overflow-wrap:anywhere;
+    }
+
+    .save-result-row strong{
+      color:#f4fbff;
+    }
+
     .complete-mark{
       width:68px;
       height:68px;
@@ -867,7 +912,7 @@
     </div>
     <div class="header-right">
       <div class="header-tag">Cross Method</div>
-      <div class="preview-badge">表示試験｜回答は保存されません</div>
+      <div class="preview-badge">保存接続試験｜テストデータとして保存</div>
     </div>
   </header>
 
@@ -903,7 +948,10 @@
         respondent_name:'',
         job_department:''
       },
-      currentIndex:0
+      currentIndex:0,
+      clientSubmissionId:createSubmissionId(),
+      saveResult:null,
+      submitting:false
     };
 
     boot();
@@ -1123,7 +1171,8 @@
               <button class="btn-primary btn-start" type="button" onclick="renderBasic()">はじめる</button>
             </div>
             <div class="preview-note">
-              現在は独自ドメイン上での表示・操作試験です。入力内容は保存されません。
+              今回は保存接続試験です。会社名には自動で「【HP保存試験】」が付き、
+              本番管理スプレッドシートへテストデータとして保存されます。
             </div>
           </div>
         </div>
@@ -1137,8 +1186,8 @@
             <div class="pill">基本情報</div>
             <h2>基本情報を入力してください</h2>
             <p>
-              本番画面の入力動作を確認するための項目です。
-              この表示試験では外部へ送信されません。
+              保存動作を確認するためのテスト情報を入力してください。
+              会社名には保存時に「【HP保存試験】」が自動で付きます。
             </p>
 
             <div class="form-grid">
@@ -1357,15 +1406,16 @@
       screenHtml(`
         <div class="stage">
           <div class="card">
-            <div class="pill">回答確認</div>
-            <h2>表示試験の確認</h2>
+            <div class="pill">保存前確認</div>
+            <h2>テスト回答を保存します</h2>
             <p>
-              人間OSの設問表示、選択肢、戻る・次へ、確認画面までの動作を確認できました。
+              既存の本番診断保存処理へ接続し、企業管理と回答データへ保存します。
+              集計・レポート・PDFはまだ実行しません。
             </p>
 
             <div class="summary">
               ${summaryRow('診断',displayTitle())}
-              ${summaryRow('会社名',state.basic.company_name)}
+              ${summaryRow('保存先会社名','【HP保存試験】' + state.basic.company_name.replace(/^【HP保存試験】/,'') )}
               ${summaryRow('お名前',state.basic.respondent_name)}
               ${state.basic.job_department
                 ? summaryRow('職種・部署',state.basic.job_department)
@@ -1373,9 +1423,15 @@
               ${summaryRow('回答数',answered + ' / ' + state.questions.length)}
             </div>
 
-            <div class="note">
-              「表示試験を完了する」を押しても回答内容は保存されません。
-            </div>
+            <label class="save-consent">
+              <input id="saveConsent" type="checkbox">
+              <span>
+                本番管理スプレッドシートへ、テスト会社・テスト回答として
+                保存されることを確認しました。
+              </span>
+            </label>
+
+            <div id="submitError" class="error"></div>
 
             <div class="actions">
               <button
@@ -1384,8 +1440,12 @@
                 onclick="renderQuestion(${Math.max(state.questions.length - 1,0)})">
                 回答を修正する
               </button>
-              <button class="btn-primary" type="button" onclick="renderComplete()">
-                表示試験を完了する
+              <button
+                id="submitButton"
+                class="btn-primary"
+                type="button"
+                onclick="submitSaveTest()">
+                テスト回答を保存する
               </button>
             </div>
           </div>
@@ -1393,25 +1453,120 @@
       `,'screen');
     }
 
-    function renderComplete(){
+    async function submitSaveTest(){
+      if(state.submitting){
+        return;
+      }
+
+      const consent = document.getElementById('saveConsent');
+      if(!consent || !consent.checked){
+        showError(
+          'submitError',
+          'テスト保存への確認にチェックを入れてください。'
+        );
+        return;
+      }
+
+      const answers = state.questions
+        .map(function(question){
+          return state.answers[question.question_id];
+        })
+        .filter(Boolean);
+
+      if(answers.length !== state.questions.length){
+        showError(
+          'submitError',
+          '未回答の設問があります。回答を確認してください。'
+        );
+        return;
+      }
+
+      state.submitting = true;
+      const button = document.getElementById('submitButton');
+
+      if(button){
+        button.disabled = true;
+        button.textContent = '保存中...';
+      }
+
+      try{
+        const response = await fetch(API_ENDPOINT,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            action:'submit_human_os_save_test',
+            test_mode:'human_os_save_connection_v1',
+            client_submission_id:state.clientSubmissionId,
+            submitted_client_at:new Date().toISOString(),
+            company:{
+              company_name:state.basic.company_name,
+              respondent_name:state.basic.respondent_name,
+              job_department:state.basic.job_department
+            },
+            answers:answers
+          })
+        });
+
+        const raw = await response.text();
+        let result;
+
+        try{
+          result = JSON.parse(raw);
+        }catch(error){
+          throw new Error('保存APIからJSONではない応答が返りました。');
+        }
+
+        if(!response.ok || !result || !result.ok){
+          throw new Error(
+            result && result.message
+              ? result.message
+              : 'テスト回答を保存できませんでした。'
+          );
+        }
+
+        state.saveResult = result;
+        renderSavedComplete(result);
+      }catch(error){
+        state.submitting = false;
+
+        if(button){
+          button.disabled = false;
+          button.textContent = 'テスト回答を保存する';
+        }
+
+        showError(
+          'submitError',
+          error && error.message
+            ? error.message
+            : '保存時に通信エラーが発生しました。'
+        );
+      }
+    }
+
+    function renderSavedComplete(result){
+      state.submitting = false;
+
       screenHtml(`
         <div class="stage">
           <div class="card">
             <div class="complete-mark">✓</div>
-            <div class="pill">表示試験完了</div>
-            <h2>人間OSのHP表示試験が完了しました</h2>
+            <div class="pill">保存接続試験成功</div>
+            <h2>テスト回答を保存しました</h2>
             <p>
-              本番診断マスターの設問を、独自ドメイン上で最後まで操作できています。
+              独自ドメインから既存の本番診断保存処理を通り、
+              企業管理と回答データへ保存されています。
             </p>
 
-            <div class="note">
-              回答保存はまだ行っていません。次の工程で既存の回答保存処理へ接続します。
+            <div class="save-result">
+              ${saveResultRow('受付ID',result.response_id || '')}
+              ${saveResultRow('企業ID',result.company_id || '')}
+              ${saveResultRow('保存会社名',result.saved_company_name || '')}
+              ${saveResultRow('保存回答数',String(result.saved_answer_count || 0) + '件')}
             </div>
 
-            <div class="actions">
-              <button class="btn-primary" type="button" onclick="resetPreview()">
-                最初から確認する
-              </button>
+            <div class="note">
+              次にスプレッドシートの「01_企業管理」と「05_回答データ」を確認してください。
+              集計・レポート・PDFはまだ実行されていません。
             </div>
           </div>
         </div>
@@ -1421,6 +1576,9 @@
     function resetPreview(){
       state.answers = {};
       state.currentIndex = 0;
+      state.clientSubmissionId = createSubmissionId();
+      state.saveResult = null;
+      state.submitting = false;
       renderStart();
     }
 
@@ -1464,6 +1622,30 @@
           <span>${escapeHtml(value)}</span>
         </div>
       `;
+    }
+
+    function saveResultRow(label,value){
+      return `
+        <div class="save-result-row">
+          <strong>${escapeHtml(label)}</strong>
+          <span>${escapeHtml(value)}</span>
+        </div>
+      `;
+    }
+
+    function createSubmissionId(){
+      if(
+        window.crypto &&
+        typeof window.crypto.randomUUID === 'function'
+      ){
+        return window.crypto.randomUUID();
+      }
+
+      return [
+        Date.now().toString(36),
+        Math.random().toString(36).slice(2),
+        Math.random().toString(36).slice(2)
+      ].join('_');
     }
 
     function escapeHtml(value){
