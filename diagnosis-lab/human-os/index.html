@@ -587,6 +587,19 @@
       transition:width .25s ease;
     }
 
+    .question-camera-anchor{
+      scroll-margin-top:24px;
+    }
+
+    .question-view .card{
+      animation:questionFade .20s ease both;
+    }
+
+    @keyframes questionFade{
+      from{opacity:.68}
+      to{opacity:1}
+    }
+
     .question-number{
       margin-bottom:15px;
       color:#d3a63f;
@@ -1047,9 +1060,49 @@
       ) || 'あなたの人間OS';
     }
 
-    function screenHtml(html){
-      document.getElementById('screen').innerHTML = html;
-      window.scrollTo({top:0,behavior:'auto'});
+    function screenHtml(html,cameraMode){
+      const screen = document.getElementById('screen');
+      screen.innerHTML = html;
+
+      if(!cameraMode || cameraMode === 'keep'){
+        return;
+      }
+
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          moveCamera(cameraMode);
+        });
+      });
+    }
+
+    function moveCamera(cameraMode){
+      let target = null;
+
+      if(cameraMode === 'question'){
+        target = document.getElementById('questionCameraAnchor');
+      }else if(cameraMode === 'screen'){
+        target = document.getElementById('screen');
+      }
+
+      if(!target){
+        return;
+      }
+
+      const reducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+
+      const mobile = window.matchMedia('(max-width: 1080px)').matches;
+      const offset = mobile ? 14 : 22;
+      const top =
+        target.getBoundingClientRect().top +
+        window.pageYOffset -
+        offset;
+
+      window.scrollTo({
+        top:Math.max(0,top),
+        behavior:reducedMotion ? 'auto' : 'smooth'
+      });
     }
 
     function renderStart(){
@@ -1074,7 +1127,7 @@
             </div>
           </div>
         </div>
-      `);
+      `,'screen');
     }
 
     function renderBasic(){
@@ -1125,7 +1178,7 @@
             </div>
           </div>
         </div>
-      `);
+      `,'screen');
     }
 
     function saveBasic(){
@@ -1182,10 +1235,13 @@
                 <button
                   class="choice ${selected ? 'selected' : ''}"
                   type="button"
+                  data-choice-value="${escapeAttr(choice.value)}"
+                  aria-pressed="${selected ? 'true' : 'false'}"
                   onclick="selectChoice(
                     '${escapeAttr(question.question_id)}',
                     '${escapeAttr(choice.value)}',
-                    '${escapeAttr(choice.label)}'
+                    '${escapeAttr(choice.label)}',
+                    this
                   )">
                   <span class="choice-dot"></span>
                   <span>${escapeHtml(choice.label)}</span>
@@ -1197,8 +1253,8 @@
       }
 
       screenHtml(`
-        <div class="stage">
-          <div>
+        <div class="stage question-view">
+          <div id="questionCameraAnchor" class="question-camera-anchor">
             <div class="progress-wrap">
               <div class="progress-meta">
                 <span>${current} / ${total}</span>
@@ -1226,10 +1282,10 @@
             </div>
           </div>
         </div>
-      `);
+      `,'question');
     }
 
-    function selectChoice(questionId,value,label){
+    function selectChoice(questionId,value,label,clickedButton){
       const question = state.questions[state.currentIndex];
 
       state.answers[questionId] = {
@@ -1239,7 +1295,20 @@
         answer_type:question.answer_type
       };
 
-      renderQuestion(state.currentIndex);
+      document.querySelectorAll('.choice').forEach(function(button){
+        const selected =
+          button === clickedButton ||
+          String(button.dataset.choiceValue || '') === String(value);
+
+        button.classList.toggle('selected',selected);
+        button.setAttribute('aria-pressed',selected ? 'true' : 'false');
+      });
+
+      const error = document.getElementById('questionError');
+      if(error){
+        error.textContent = '';
+        error.classList.remove('show');
+      }
     }
 
     function nextQuestion(){
@@ -1321,7 +1390,7 @@
             </div>
           </div>
         </div>
-      `);
+      `,'screen');
     }
 
     function renderComplete(){
@@ -1346,7 +1415,7 @@
             </div>
           </div>
         </div>
-      `);
+      `,'screen');
     }
 
     function resetPreview(){
@@ -1369,7 +1438,7 @@
             </div>
           </div>
         </div>
-      `);
+      `,'screen');
     }
 
     function valueOf(id){
