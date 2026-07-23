@@ -767,27 +767,6 @@
       accent-color:#10b6bd;
     }
 
-    .save-result{
-      margin-top:18px;
-      display:grid;
-      gap:7px;
-    }
-
-    .save-result-row{
-      display:grid;
-      grid-template-columns:150px 1fr;
-      gap:12px;
-      padding:9px 0;
-      border-bottom:1px solid rgba(255,255,255,.09);
-      color:#bfd4e3;
-      font-size:13px;
-      overflow-wrap:anywhere;
-    }
-
-    .save-result-row strong{
-      color:#f4fbff;
-    }
-
     .complete-mark{
       width:68px;
       height:68px;
@@ -1431,7 +1410,6 @@
             <div class="summary">
               ${summaryRow('会社',state.run.company_name || '')}
               ${summaryRow('実施回',state.run.run_name || '')}
-              ${summaryRow('run_id',state.run.run_id || '')}
             </div>
 
             <div id="issuedUrl" class="issued-url">${escapeHtml(state.run.public_url || '')}</div>
@@ -1777,26 +1755,16 @@
         <div class="stage">
           <div class="card">
             <div class="complete-mark">✓</div>
-            <div class="pill">実施回URL試験成功</div>
-            <h2>実施回へ回答を保存しました</h2>
+            <div class="pill">回答完了</div>
+            <h2>ご回答ありがとうございました</h2>
             <p>
-              企業専用URLから既存の本番診断保存処理を通り、
-              同じ企業・同じ実施回として保存されています。
+              回答を受け付けました。
+              この画面を閉じて終了してください。
             </p>
 
-            <div class="save-result">
-              ${saveResultRow('受付ID',result.response_id || '')}
-              ${saveResultRow('企業ID',result.company_id || '')}
-              ${saveResultRow('保存会社名',result.saved_company_name || '')}
-              ${saveResultRow('run_id',result.run_id || '')}
-              ${saveResultRow('実施回',result.run_name || '')}
-              ${saveResultRow('実施回回答数',String(result.run_answer_count || 0) + '人')}
-              ${saveResultRow('保存回答行',String(result.saved_answer_rows || 0) + '行')}
-            </div>
-
             <div class="note">
-              次に「25_診断実施URL管理」と「05_回答データ」を確認してください。
-              集計・レポート・PDFはまだ実行されていません。
+              ご回答は、組織の状態を確認し、
+              今後のよりよい環境づくりへ活かすために取り扱います。
             </div>
           </div>
         </div>
@@ -1867,15 +1835,6 @@
       }catch(error){
         return '';
       }
-    }
-
-    function saveResultRow(label,value){
-      return `
-        <div class="save-result-row">
-          <strong>${escapeHtml(label)}</strong>
-          <span>${escapeHtml(value)}</span>
-        </div>
-      `;
     }
 
     function createSubmissionId(){
