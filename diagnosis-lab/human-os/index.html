@@ -722,6 +722,13 @@
       line-height:1.65;
     }
 
+    .note strong{
+      display:inline-block;
+      margin-bottom:5px;
+      color:#f4fbff;
+      font-size:1.08em;
+    }
+
     .issued-url{
       width:100%;
       min-height:108px;
@@ -923,7 +930,7 @@
     </div>
     <div class="header-right">
       <div class="header-tag">Cross Method</div>
-      <div class="preview-badge">実施回URL試験｜テストデータとして保存</div>
+      <div class="preview-badge">動作確認中</div>
     </div>
   </header>
 
@@ -1149,6 +1156,13 @@
       tryNext();
     }
 
+    function publicCompanyName(value){
+      return String(value || '')
+        .replace(/^【HP実施回試験】/,'')
+        .replace(/^【HP保存試験】/,'')
+        .trim();
+    }
+
     function displayTitle(){
       return (
         state.runtime &&
@@ -1206,8 +1220,7 @@
       const runInfo = state.run
         ? `
           <div class="run-company">
-            <strong>${escapeHtml(state.run.company_name || '')}</strong><br>
-            実施回：${escapeHtml(state.run.run_name || '')}
+            <strong>${escapeHtml(publicCompanyName(state.run.company_name || ''))}</strong>
           </div>
         `
         : '';
@@ -1230,8 +1243,7 @@
               <button class="btn-primary btn-start" type="button" onclick="renderBasic()">はじめる</button>
             </div>
             <div class="preview-note">
-              今回は企業専用の実施回URL発行試験です。
-              保存会社名には「【HP実施回試験】」が自動で付きます。
+              画面の動作確認中です。入力内容は診断の確認にのみ使用します。
             </div>
           </div>
         </div>
@@ -1243,8 +1255,7 @@
         ? `
           <div class="run-company">
             会社・事業所：
-            <strong>${escapeHtml(state.run.company_name || '')}</strong><br>
-            実施回：${escapeHtml(state.run.run_name || '')}
+            <strong>${escapeHtml(publicCompanyName(state.run.company_name || ''))}</strong>
           </div>
         `
         : `
@@ -1256,24 +1267,17 @@
               value="${escapeAttr(state.basic.company_name)}"
               placeholder="例：株式会社〇〇">
           </div>
-          <div class="field full">
-            <label for="runName">実施回名 任意</label>
-            <input
-              id="runName"
-              type="text"
-              placeholder="例：初回確認 / 2026年夏季">
-          </div>
         `;
 
       screenHtml(`
         <div class="stage">
           <div class="card">
             <div class="pill">基本情報</div>
-            <h2>${state.run ? '回答者情報を入力してください' : '企業情報を入力してください'}</h2>
+            <h2>${state.run ? 'お名前を入力してください' : '会社情報を入力してください'}</h2>
             <p>
               ${state.run
-                ? '会社情報は実施回URLから読み込んでいます。'
-                : '企業情報を登録すると、同じ実施回を共有できる専用URLを発行します。'}
+                ? '会社情報は専用URLから読み込まれています。'
+                : 'はじめに、会社名とお名前を入力してください。'}
             </p>
 
             ${companyBlock}
@@ -1298,12 +1302,18 @@
               </div>
             </div>
 
+            ${state.run ? '' : `
+              <div class="note">
+                入力後、ほかの方にも共有できる会社専用の診断URLが表示されます。
+              </div>
+            `}
+
             <div id="basicError" class="error"></div>
 
             <div class="actions">
               <button class="btn-secondary" type="button" onclick="renderStart()">戻る</button>
               <button id="basicNextButton" class="btn-primary" type="button" onclick="saveBasic()">
-                ${state.run ? '設問へ進む' : '専用URLを発行する'}
+                ${state.run ? '設問へ進む' : '次へ'}
               </button>
             </div>
           </div>
@@ -1348,7 +1358,7 @@
             action:'prepare_human_os_run_test',
             test_mode:'human_os_run_url_test_v1',
             client_registration_id:state.clientRegistrationId,
-            run_name:valueOf('runName'),
+            run_name:'',
             company:{
               company_name:companyName,
               respondent_name:personName,
@@ -1385,7 +1395,7 @@
       }catch(error){
         if(button){
           button.disabled = false;
-          button.textContent = '専用URLを発行する';
+          button.textContent = '次へ';
         }
 
         showError(
@@ -1401,15 +1411,18 @@
       screenHtml(`
         <div class="stage">
           <div class="card">
-            <div class="pill">企業専用URL発行完了</div>
-            <h2>同じ実施回を共有できます</h2>
-            <p>
-              2人目以降は、下のURLを開くと会社情報を入力せずに人間OSを始められます。
-            </p>
+            <div class="pill">診断URLのご案内</div>
+            <h2>会社専用の診断URLを発行しました</h2>
 
-            <div class="summary">
-              ${summaryRow('会社',state.run.company_name || '')}
-              ${summaryRow('実施回',state.run.run_name || '')}
+            <div class="run-company">
+              会社・事業所：
+              <strong>${escapeHtml(publicCompanyName(state.run.company_name || ''))}</strong>
+            </div>
+
+            <div class="note">
+              <strong>2人目以降の方へ</strong><br>
+              下のURLをそのまま共有してください。<br>
+              URLを受け取った方は、会社名を入力せずに診断を始められます。
             </div>
 
             <div id="issuedUrl" class="issued-url">${escapeHtml(state.run.public_url || '')}</div>
@@ -1420,8 +1433,13 @@
                 URLをコピーする
               </button>
               <button class="btn-primary" type="button" onclick="renderQuestion(0)">
-                このまま診断を始める
+                この画面から診断へ進む
               </button>
+            </div>
+
+            <div class="preview-note">
+              1人目の方は、この画面からそのまま進めます。
+              発行されたURLを開き直す必要はありません。
             </div>
           </div>
         </div>
@@ -1608,14 +1626,16 @@
             <div class="pill">保存前確認</div>
             <h2>テスト回答を保存します</h2>
             <p>
-              企業専用の実施回URLに紐づけて回答を保存します。
+              会社専用の診断URLに紐づけて回答を保存します。
               集計・レポート・PDFはまだ実行しません。
             </p>
 
             <div class="summary">
               ${summaryRow('診断',displayTitle())}
-              ${summaryRow('保存先会社名',state.run ? state.run.company_name : state.basic.company_name)}
-              ${state.run ? summaryRow('実施回',state.run.run_name || '') : ''}
+              ${summaryRow(
+                '会社・事業所',
+                publicCompanyName(state.run ? state.run.company_name : state.basic.company_name)
+              )}
               ${summaryRow('お名前',state.basic.respondent_name)}
               ${state.basic.job_department
                 ? summaryRow('職種・部署',state.basic.job_department)
@@ -1626,7 +1646,7 @@
             <label class="save-consent">
               <input id="saveConsent" type="checkbox">
               <span>
-                企業専用の実施回URLに紐づくテスト回答として
+                会社専用の診断URLに紐づく回答として
                 保存されることを確認しました。
               </span>
             </label>
@@ -1645,7 +1665,7 @@
                 class="btn-primary"
                 type="button"
                 onclick="submitRunTest()">
-                実施回へ回答を保存する
+                回答を送信する
               </button>
             </div>
           </div>
@@ -1659,7 +1679,7 @@
       }
 
       if(!state.runToken || !state.run){
-        showError('submitError','実施回URLを確認できません。');
+        showError('submitError','診断URLを確認できません。');
         return;
       }
 
@@ -1667,7 +1687,7 @@
       if(!consent || !consent.checked){
         showError(
           'submitError',
-          '実施回へのテスト保存確認にチェックを入れてください。'
+          '回答の送信確認にチェックを入れてください。'
         );
         return;
       }
@@ -1725,7 +1745,7 @@
           throw new Error(
             result && result.message
               ? result.message
-              : '実施回へ回答を保存できませんでした。'
+              : '回答を送信できませんでした。'
           );
         }
 
@@ -1736,7 +1756,7 @@
 
         if(button){
           button.disabled = false;
-          button.textContent = '実施回へ回答を保存する';
+          button.textContent = '回答を送信する';
         }
 
         showError(
