@@ -18,7 +18,6 @@
   const portalLoading = document.getElementById("er-portal-loading");
   const portalRole = document.getElementById("er-portal-role");
   const portalCompany = document.getElementById("er-portal-company");
-  const portalExternal = document.getElementById("er-portal-external");
   const portalRefresh = document.getElementById("er-portal-refresh");
   const portalClose = document.getElementById("er-portal-close");
 
@@ -221,7 +220,6 @@
     currentPortalUrl = url;
     portalRole.textContent = mode === "person" ? "従業員・役職者" : "企業管理者";
     portalCompany.textContent = companyCode;
-    portalExternal.href = url;
     portalLoading?.classList.remove("is-hidden");
     portal.hidden = false;
     portal.setAttribute("aria-hidden", "false");
