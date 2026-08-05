@@ -82,8 +82,11 @@
   }
 
   function applySettings(settings) {
+    const companyName = String(settings.company_name || "合同会社TSUNAGARI")
+      .trim()
+      .replace(/^合同会社\s+TSUNAGARI$/i, "合同会社TSUNAGARI");
     document.querySelectorAll('[data-managed-setting="company_name"]').forEach((element) => {
-      element.textContent = settings.company_name || "合同会社 TSUNAGARI";
+      element.textContent = companyName;
     });
     document.querySelectorAll('[data-managed-setting="company_address"]').forEach((element) => {
       element.textContent = settings.company_address

@@ -48,8 +48,11 @@
     .replaceAll("'", "&#039;");
 
   const replaceTokens = (value, settings) => {
+    const companyName = String(settings.company_name || "合同会社TSUNAGARI")
+      .trim()
+      .replace(/^合同会社\s+TSUNAGARI$/i, "合同会社TSUNAGARI");
     const replacements = {
-      company_name: settings.company_name || "合同会社 TSUNAGARI",
+      company_name: companyName,
       company_address: settings.company_address || "公式サイトの運営会社情報に記載",
       shipping_fee: Number(settings.shipping_fee || 0).toLocaleString(),
       free_shipping_threshold: Number(settings.free_shipping_threshold || 0).toLocaleString(),
@@ -73,8 +76,11 @@
   };
 
   const applySettings = (settings) => {
+    const companyName = String(settings.company_name || "合同会社TSUNAGARI")
+      .trim()
+      .replace(/^合同会社\s+TSUNAGARI$/i, "合同会社TSUNAGARI");
     document.querySelectorAll('[data-managed-setting="company_name"]').forEach((element) => {
-      element.textContent = settings.company_name || "合同会社 TSUNAGARI";
+      element.textContent = companyName;
     });
     document.querySelectorAll('[data-managed-setting="company_address"]').forEach((element) => {
       element.textContent = settings.company_address

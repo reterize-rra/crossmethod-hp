@@ -1552,7 +1552,10 @@ function applyManagedSettings(settings) {
 
   const footerCompanyLines = document.querySelectorAll(".footer-company p");
   if (footerCompanyLines[0] && settings.company_name) {
-    footerCompanyLines[0].textContent = `運営会社：${String(settings.company_name).trim()}`;
+    const companyName = String(settings.company_name)
+      .trim()
+      .replace(/^合同会社\s+TSUNAGARI$/i, "合同会社TSUNAGARI");
+    footerCompanyLines[0].innerHTML = `運営会社：<a href="/company/">${escapeHtml(companyName)}</a>`;
   }
   if (footerCompanyLines[1] && settings.company_address) {
     footerCompanyLines[1].textContent = `所在地：${String(settings.company_address).trim()}`;
