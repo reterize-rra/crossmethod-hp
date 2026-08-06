@@ -74,6 +74,8 @@
     consented: false,
     submitting: false,
     registering: false,
+    illustrationData: Object.create(null),
+    illustrationRequests: Object.create(null),
     clientRegistrationId: loadOrCreateRegistrationId(),
     clientSubmissionId: loadOrCreateSubmissionId(),
     runToken: initialRunToken,
@@ -389,7 +391,9 @@
     const current = state.currentIndex + 1;
     const total = state.questions.length;
     const percent = Math.round((current / total) * 100);
+    const hasArt = hasQuestionArt(question);
     const artUrl = questionArtUrl(question);
+    const artKey = questionArtKey(question);
 
     renderShell(
       `<div class="diagnosis-progress">
@@ -398,7 +402,7 @@
        </div>
        <p class="diagnosis-eyebrow">VOICE ${String(current).padStart(2, '0')}</p>
        <h1>今の状態に近いものを<br>選んでください</h1>`,
-      `<div class="diagnosis-question ${artUrl ? '' : 'diagnosis-question--no-art'}">
+      `<div class="diagnosis-question ${hasArt ? '' : 'diagnosis-question--no-art'}">
          <div>
            <p class="diagnosis-question__number">QUESTION ${String(current).padStart(2, '0')}</p>
            <h2>${escapeHtml(question.question_text || '')}</h2>
@@ -409,11 +413,15 @@
              <button class="diagnosis-button diagnosis-button--primary" type="button" id="questionNextButton">${current === total ? '確認へ進む' : '次へ'}</button>
            </div>
          </div>
-         ${artUrl ? `<figure class="diagnosis-question__art"><img src="${escapeAttr(artUrl)}" alt="" loading="eager" referrerpolicy="no-referrer"></figure>` : ''}
+         ${hasArt ? `<figure class="diagnosis-question__art" data-art-key="${escapeAttr(artKey)}">
+           <div class="diagnosis-art-status" ${artUrl ? 'hidden' : ''}><span class="diagnosis-art-spinner" aria-hidden="true"></span><span>画像を読み込んでいます…</span></div>
+           <img src="${escapeAttr(artUrl)}" alt="" loading="eager" referrerpolicy="no-referrer" ${artUrl ? '' : 'hidden'}>
+         </figure>` : ''}
        </div>`
     );
 
     renderAnswer(question);
+    if (hasArt) loadQuestionArt(question);
     document.getElementById('questionBackButton').addEventListener('click', () => {
       if (state.currentIndex === 0) renderBasicInfo();
       else renderQuestion(state.currentIndex - 1);
@@ -665,13 +673,92 @@
   }
 
   function questionArtUrl(question) {
-    return String(
+    var inlineData = String(
+      question.illustration_data_uri || ''
+    ).trim();
+    if (inlineData.indexOf('data:image/') === 0) return inlineData;
+    return String(state.illustrationData[questionArtKey(question)] || '').trim();
+  }
+
+  function hasQuestionArt(question) {
+    return Boolean(String(
       question.illustration_data_uri ||
       question.illustration_url ||
-      state.assets.default_illustration_data_uri ||
-      state.assets.default_illustration_url ||
+      question.illustration_file_id ||
+      question.illustration_file_url ||
+      question.image_slot ||
       ''
-    ).trim();
+    ).trim());
+  }
+
+  function questionArtKey(question) {
+    return [
+      activeDiagnosisId(),
+      String(question.question_id || '').trim(),
+      String(question.image_slot || '').trim()
+    ].join(':');
+  }
+
+  async function loadQuestionArt(question) {
+    const key = questionArtKey(question);
+    const existing = questionArtUrl(question);
+
+    if (existing) {
+      applyQuestionArt(key, existing);
+      return;
+    }
+
+    if (!state.illustrationRequests[key]) {
+      state.illustrationRequests[key] = requestApi({
+        action: 'standard_diagnosis_illustration',
+        diagnosis_id: activeDiagnosisId(),
+        question_id: String(question.question_id || '').trim(),
+        image_slot: String(question.image_slot || '').trim()
+      }).then(result => {
+        const dataUri = String(result.image_data_uri || '').trim();
+        if (dataUri.indexOf('data:image/') !== 0) {
+          throw new Error('画像データを確認できません。');
+        }
+        state.illustrationData[key] = dataUri;
+        return dataUri;
+      }).finally(() => {
+        delete state.illustrationRequests[key];
+      });
+    }
+
+    try {
+      const dataUri = await state.illustrationRequests[key];
+      applyQuestionArt(key, dataUri);
+    } catch (_) {
+      showQuestionArtError(key);
+    }
+  }
+
+  function applyQuestionArt(key, dataUri) {
+    const figure = document.querySelector(`[data-art-key="${cssEscape(key)}"]`);
+    if (!figure) return;
+    const image = figure.querySelector('img');
+    const status = figure.querySelector('.diagnosis-art-status');
+    if (!image) return;
+    image.src = dataUri;
+    image.hidden = false;
+    if (status) status.hidden = true;
+  }
+
+  function showQuestionArtError(key) {
+    const figure = document.querySelector(`[data-art-key="${cssEscape(key)}"]`);
+    if (!figure) return;
+    const status = figure.querySelector('.diagnosis-art-status');
+    if (!status) return;
+    status.classList.add('is-error');
+    status.innerHTML = '<span>画像を読み込めませんでした。再読み込みしてください。</span>';
+  }
+
+  function cssEscape(value) {
+    if (window.CSS && typeof window.CSS.escape === 'function') {
+      return window.CSS.escape(String(value));
+    }
+    return String(value).replace(/["\\]/g, '\\$&');
   }
 
   function showScreenError(message) {

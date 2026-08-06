@@ -257,6 +257,10 @@ button{touch-action:manipulation}
 .diagnosis-question--no-art{grid-template-columns:1fr}
 .diagnosis-question__art{min-height:330px;border-radius:24px;background:linear-gradient(145deg,#dff2f2,#f8fbfb);overflow:hidden}
 .diagnosis-question__art img{width:100%;height:100%;min-height:330px;display:block;object-fit:cover}
+.diagnosis-art-status{min-height:330px;padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--cm-muted);text-align:center;font-size:12px;font-weight:800}
+.diagnosis-art-status[hidden]{display:none}
+.diagnosis-art-status.is-error{color:var(--cm-error)}
+.diagnosis-art-spinner{width:34px;height:34px;border:3px solid #cfe3e4;border-top-color:var(--cm-teal);border-radius:50%;animation:cmSpin .85s linear infinite}
 .diagnosis-question__number{margin:0 0 10px;color:var(--cm-teal);font-size:12px;font-weight:900;letter-spacing:.14em}
 .diagnosis-question h2{margin:0;font-size:clamp(23px,3vw,32px);line-height:1.48}
 .diagnosis-answer{margin-top:24px}
@@ -321,7 +325,7 @@ button{touch-action:manipulation}
   .diagnosis-app{width:min(100% - 20px,1040px);padding:20px 0 34px;min-height:calc(100vh - 150px)}
   .diagnosis-shell{border-radius:24px}.diagnosis-hero{min-height:190px;padding:30px 22px}.diagnosis-content{padding:28px 20px 30px}
   .diagnosis-form{grid-template-columns:1fr}.diagnosis-field--full{grid-column:auto}
-  .diagnosis-question{grid-template-columns:1fr;gap:20px}.diagnosis-question__art{order:-1;min-height:190px;max-height:230px}.diagnosis-question__art img{min-height:190px;max-height:230px}
+  .diagnosis-question{grid-template-columns:1fr;gap:20px}.diagnosis-question__art{order:-1;min-height:190px;max-height:230px}.diagnosis-question__art img,.diagnosis-art-status{min-height:190px;max-height:230px}
   .diagnosis-actions{display:grid;grid-template-columns:1fr}.diagnosis-button{width:100%}.diagnosis-button--primary{order:-1}
   .diagnosis-summary__row{grid-template-columns:1fr;gap:4px}
   .diagnosis-footer{width:min(100% - 24px,1040px);display:block;text-align:center}.diagnosis-footer p+p{margin-top:5px}
