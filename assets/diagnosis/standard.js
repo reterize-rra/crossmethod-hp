@@ -5,7 +5,8 @@
   const app = document.getElementById('diagnosisApp');
   const diagnosisId = String(document.body.dataset.diagnosisId || '').trim();
   const pageTitle = String(document.body.dataset.pageTitle || '声の確認').trim();
-  const storageKey = `cm-standard-diagnosis:${diagnosisId}`;
+  const initialRunToken = getRunTokenFromUrl();
+  const storageKey = `cm-standard-diagnosis:${diagnosisId}:${initialRunToken ? initialRunToken.slice(-16) : 'common'}`;
 
   const allowedDiagnosisIds = new Set([
     'brand_attraction',
@@ -72,7 +73,11 @@
     mode: '',
     consented: false,
     submitting: false,
-    clientSubmissionId: loadOrCreateSubmissionId()
+    registering: false,
+    clientRegistrationId: loadOrCreateRegistrationId(),
+    clientSubmissionId: loadOrCreateSubmissionId(),
+    runToken: initialRunToken,
+    run: null
   };
 
   boot();
@@ -112,6 +117,10 @@
         throw new Error('この診断の設問が登録されていません。');
       }
 
+      if (state.runToken) {
+        await resolveRunFromUrl();
+      }
+
       document.title = `${displayTitle()}｜クロスメソッド™`;
       renderStart();
     } catch (error) {
@@ -144,10 +153,28 @@
     return data;
   }
 
+  async function resolveRunFromUrl() {
+    const result = await requestApi({
+      action: 'resolve_standard_diagnosis_run',
+      diagnosis_id: activeDiagnosisId(),
+      run_token: state.runToken
+    });
+
+    state.run = result.run || null;
+    if (!state.run || !state.run.company_name) {
+      throw new Error('会社専用の診断情報を確認できませんでした。');
+    }
+  }
+
   function renderStart() {
+    const runInfo = state.run
+      ? `<div class="diagnosis-company"><span>会社・事業所</span><strong>${escapeHtml(publicCompanyName(state.run.company_name))}</strong></div>`
+      : '';
+
     renderShell(
       `<p class="diagnosis-eyebrow">CROSS METHOD™ / ORGANIZATION VOICE</p>
        <h1>${escapeHtml(displayTitle())}</h1>
+       ${runInfo}
        <p>良い・悪いを決める診断ではありません。今の状態を整理し、組織が次に確認すべき声を見つけるための入口です。</p>`,
       `<h2>回答を始める前に</h2>
        <p>感じていることに最も近い回答を選んでください。正解や不正解はありません。</p>
@@ -176,14 +203,15 @@
     renderShell(
       `<p class="diagnosis-eyebrow">BASIC INFORMATION</p>
        <h1>${escapeHtml(displayTitle())}</h1>
-       <p>回答を正しく集計するための基本情報を入力してください。</p>`,
+       <p>${state.run ? '会社情報は専用URLから読み込まれています。' : '初回のみ会社情報を登録し、社内共有用の専用URLを発行します。'}</p>`,
       `<h2>基本情報</h2>
        <p>必須項目を入力して、設問へ進んでください。</p>
        <div class="diagnosis-form">${basicInfoFields()}</div>
+       ${state.run ? '' : '<div class="diagnosis-note">入力後、2人目以降の方へ共有できる会社専用URLが表示されます。</div>'}
        <div id="screenError" class="diagnosis-error" role="alert"></div>
        <div class="diagnosis-actions">
          <button class="diagnosis-button diagnosis-button--secondary" type="button" id="backButton">戻る</button>
-         <button class="diagnosis-button diagnosis-button--primary" type="button" id="basicNextButton">設問へ進む</button>
+         <button class="diagnosis-button diagnosis-button--primary" type="button" id="basicNextButton">${state.run ? '設問へ進む' : '会社専用URLを発行する'}</button>
        </div>`
     );
 
@@ -193,7 +221,10 @@
 
   function basicInfoFields() {
     const type = basicType();
-    const common = fieldHtml('companyName', '会社名・店舗名・事業所名', '例：株式会社〇〇 / 〇〇事業所', true, true) +
+    const company = state.run
+      ? `<div class="diagnosis-company diagnosis-field--full"><span>会社・事業所</span><strong>${escapeHtml(publicCompanyName(state.run.company_name))}</strong></div>`
+      : fieldHtml('companyName', '会社名・店舗名・事業所名', '例：株式会社〇〇 / 〇〇事業所', true, true);
+    const common = company +
       fieldHtml('personName', type === 'manager' ? 'お名前・管理者名' : 'お名前', '入力してください', true, false) +
       fieldHtml('jobDepartment', '職種・部署（任意）', '例：介護職 / 営業 / 管理部門', false, false);
 
@@ -234,8 +265,10 @@
     </div>`;
   }
 
-  function saveBasicInfo() {
-    const companyName = valueOf('companyName');
+  async function saveBasicInfo() {
+    const companyName = state.run
+      ? String(state.run.company_name || '').trim()
+      : valueOf('companyName');
     const personName = valueOf('personName');
 
     if (!companyName) {
@@ -265,7 +298,89 @@
       mode: 'hp_standard'
     };
 
-    renderQuestion(Math.min(state.currentIndex, state.questions.length - 1));
+    if (state.run) {
+      renderQuestion(Math.min(state.currentIndex, state.questions.length - 1));
+      return;
+    }
+
+    if (state.registering) return;
+    state.registering = true;
+    const button = document.getElementById('basicNextButton');
+    if (button) {
+      button.disabled = true;
+      button.textContent = 'URLを発行しています…';
+    }
+
+    try {
+      const result = await requestApi({
+        action: 'prepare_standard_diagnosis_run',
+        diagnosis_id: activeDiagnosisId(),
+        client_registration_id: state.clientRegistrationId,
+        run_name: '',
+        company: state.company
+      });
+
+      state.run = result.run || null;
+      if (!state.run || !state.run.public_url) {
+        throw new Error('発行された会社専用URLを確認できません。');
+      }
+
+      state.runToken = getRunTokenFromUrl(state.run.public_url);
+      if (!state.runToken) {
+        throw new Error('会社専用URLの識別情報を確認できません。');
+      }
+
+      try {
+        window.history.replaceState(null, '', state.run.public_url);
+      } catch (_) {}
+
+      renderRunIssued();
+    } catch (error) {
+      state.registering = false;
+      if (button) {
+        button.disabled = false;
+        button.textContent = '会社専用URLを発行する';
+      }
+      showScreenError(error && error.message ? error.message : '会社専用URLを発行できませんでした。');
+    }
+  }
+
+  function renderRunIssued() {
+    state.registering = false;
+    renderShell(
+      `<p class="diagnosis-eyebrow">COMPANY DIAGNOSIS URL</p>
+       <h1>会社専用URLを<br>発行しました</h1>
+       <p>この実施回の回答は、同じ会社・診断としてまとめて保存されます。</p>`,
+      `<h2>${escapeHtml(publicCompanyName(state.run.company_name))}</h2>
+       <div class="diagnosis-note"><strong>2人目以降の方へ</strong><br>下のURLをそのまま共有してください。会社名を入力せずに診断を始められます。</div>
+       <div id="issuedUrl" class="diagnosis-issued-url">${escapeHtml(state.run.public_url || '')}</div>
+       <div id="copyStatus" class="diagnosis-copy-status" aria-live="polite"></div>
+       <div class="diagnosis-actions">
+         <button class="diagnosis-button diagnosis-button--secondary" type="button" id="copyUrlButton">会社専用URLをコピーする</button>
+         <button class="diagnosis-button diagnosis-button--primary" type="button" id="continueButton">このまま回答する</button>
+       </div>
+       <p class="diagnosis-small-note">初回の方は、この画面からそのまま回答できます。発行したURLを開き直す必要はありません。</p>`
+    );
+
+    document.getElementById('copyUrlButton').addEventListener('click', copyIssuedUrl);
+    document.getElementById('continueButton').addEventListener('click', () => renderQuestion(0));
+  }
+
+  async function copyIssuedUrl() {
+    const url = String(state.run && state.run.public_url || '').trim();
+    const status = document.getElementById('copyStatus');
+
+    if (!url) {
+      if (status) status.textContent = 'コピーするURLがありません。';
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(url);
+      if (status) status.textContent = '会社専用URLをコピーしました。';
+    } catch (_) {
+      if (status) status.textContent = '自動コピーできないため、上のURLを選択してコピーしてください。';
+    }
   }
 
   function renderQuestion(index) {
@@ -396,6 +511,10 @@
 
   async function submitAnswers() {
     if (state.submitting) return;
+    if (!state.runToken || !state.run) {
+      showScreenError('会社専用の診断URLを確認できません。最初から開き直してください。');
+      return;
+    }
     const button = document.getElementById('submitButton');
     state.submitting = true;
     button.disabled = true;
@@ -403,12 +522,19 @@
 
     try {
       const result = await requestApi({
-        action: 'submit_standard_diagnosis',
+        action: 'submit_standard_diagnosis_run',
         diagnosis_id: activeDiagnosisId(),
-        mode: state.mode,
+        run_token: state.runToken,
         client_submission_id: state.clientSubmissionId,
         submitted_client_at: new Date().toISOString(),
-        company: state.company,
+        respondent: {
+          respondent_type: state.company.respondent_type,
+          respondent_name: state.company.respondent_name,
+          job_department: state.company.job_department,
+          role: state.company.role,
+          tenure: state.company.tenure,
+          months_since_joined: state.company.months_since_joined
+        },
         answers: state.questions.map(question => state.answers[question.question_id]).filter(Boolean)
       });
       writeSessionReceipt(result);
@@ -566,6 +692,19 @@
     if (element) element.focus();
   }
 
+  function loadOrCreateRegistrationId() {
+    try {
+      const key = `${storageKey}:registration-id`;
+      const saved = sessionStorage.getItem(key);
+      if (saved) return saved;
+      const value = createRegistrationId();
+      sessionStorage.setItem(key, value);
+      return value;
+    } catch (_) {
+      return createRegistrationId();
+    }
+  }
+
   function loadOrCreateSubmissionId() {
     try {
       const saved = sessionStorage.getItem(`${storageKey}:submission-id`);
@@ -582,6 +721,28 @@
     if (window.crypto && typeof window.crypto.randomUUID === 'function') return `web_${window.crypto.randomUUID()}`;
     const random = Math.random().toString(36).slice(2);
     return `web_${Date.now().toString(36)}_${random}`;
+  }
+
+  function createRegistrationId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') return `reg_${window.crypto.randomUUID()}`;
+    const random = Math.random().toString(36).slice(2);
+    return `reg_${Date.now().toString(36)}_${random}`;
+  }
+
+  function getRunTokenFromUrl(url) {
+    try {
+      const target = new URL(url || window.location.href, window.location.href);
+      return String(target.searchParams.get('run') || '').trim();
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function publicCompanyName(value) {
+    return String(value || '')
+      .replace(/^【HP実施回試験】/, '')
+      .replace(/^【HP保存試験】/, '')
+      .trim();
   }
 
   function writeSessionReceipt(result) {

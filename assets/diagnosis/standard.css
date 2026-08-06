@@ -164,6 +164,38 @@ button{touch-action:manipulation}
   line-height:1.75;
 }
 
+.diagnosis-company{
+  position:relative;
+  z-index:1;
+  margin-top:20px;
+  padding:14px 17px;
+  display:flex;
+  gap:4px;
+  border-radius:16px;
+  background:var(--cm-paper);
+}
+
+.diagnosis-company span{color:var(--cm-muted);font-size:11px;font-weight:800;letter-spacing:.08em}
+.diagnosis-company strong{font-size:17px;line-height:1.5;overflow-wrap:anywhere}
+.diagnosis-hero .diagnosis-company{max-width:620px;border-color:rgba(140,231,229,.24);color:#fff;background:rgba(255,255,255,.08)}
+.diagnosis-hero .diagnosis-company span{color:#a9d9de}
+
+.diagnosis-issued-url{
+  margin-top:22px;
+  padding:16px 18px;
+  border:1px solid #cbdfe1;
+  border-radius:16px;
+  color:var(--cm-navy);
+  background:#fff;
+  font-size:13px;
+  line-height:1.7;
+  overflow-wrap:anywhere;
+  user-select:all;
+}
+
+.diagnosis-copy-status{min-height:24px;margin-top:9px;color:var(--cm-success);font-size:12px;font-weight:800}
+.diagnosis-small-note{margin-top:18px!important;color:var(--cm-muted)!important;font-size:12px;line-height:1.7!important}
+
 .diagnosis-consent{
   margin-top:24px;
   padding:18px;
