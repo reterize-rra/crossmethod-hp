@@ -48,6 +48,14 @@ body.guide-stress {
   --guide-soft-2: #eaf9fa;
 }
 
+body.guide-health {
+  --guide-accent: #138f8d;
+  --guide-accent-dark: #0b706f;
+  --guide-accent-2: #69a94f;
+  --guide-soft: #eaf8f5;
+  --guide-soft-2: #f1f8e9;
+}
+
 a { color: var(--guide-accent-dark); }
 
 a:focus-visible,
