@@ -170,8 +170,11 @@ button{touch-action:manipulation}
   margin-top:20px;
   padding:14px 17px;
   display:flex;
+  flex-direction:column;
   gap:4px;
+  border:1px solid var(--cm-line);
   border-radius:16px;
+  color:var(--cm-ink);
   background:var(--cm-paper);
 }
 
