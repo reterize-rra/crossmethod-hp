@@ -5805,3 +5805,88 @@ a.news-item:hover {
   .evaluation-result-title strong{font-size:15px}
   .evaluation-result-outcomes span{font-size:7.8px}
 }
+
+/* =========================================================
+   Business guide directory / SEO internal links
+   ========================================================= */
+.home-guides{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 8% 12%,rgba(16,182,189,.10),transparent 28%),
+    radial-gradient(circle at 92% 88%,rgba(212,165,61,.10),transparent 26%),
+    linear-gradient(180deg,#f7fcfc 0%,#ffffff 100%);
+}
+.home-guides-heading{
+  max-width:900px;
+  margin-inline:auto;
+}
+.home-guide-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:34px;
+}
+.home-guide-card{
+  --home-guide-accent:#0fa8b1;
+  min-height:260px;
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  border:1px solid rgba(16,47,71,.10);
+  border-top:6px solid var(--home-guide-accent);
+  border-radius:26px;
+  color:#102f47;
+  background:#ffffff;
+  box-shadow:0 16px 42px rgba(16,47,71,.08);
+  text-decoration:none;
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.home-guide-card:hover{
+  transform:translateY(-4px);
+  border-color:color-mix(in srgb,var(--home-guide-accent),transparent 60%);
+  box-shadow:0 24px 52px rgba(16,47,71,.13);
+}
+.home-guide-card:focus-visible{
+  outline:3px solid color-mix(in srgb,var(--home-guide-accent),transparent 60%);
+  outline-offset:4px;
+}
+.home-guide-topic{
+  color:var(--home-guide-accent);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+.home-guide-card h3{
+  margin:10px 0 12px;
+  color:#102f47;
+  font-size:clamp(23px,2.5vw,32px);
+  line-height:1.42;
+}
+.home-guide-card p{
+  margin:0 0 24px;
+  color:#5f7480;
+  line-height:1.85;
+}
+.home-guide-card strong{
+  margin-top:auto;
+  color:var(--home-guide-accent);
+  font-size:14px;
+}
+.home-guide-card strong span{
+  display:inline-block;
+  margin-left:5px;
+  transition:transform .2s ease;
+}
+.home-guide-card:hover strong span{
+  transform:translateX(4px);
+}
+.home-guide-card.guide-hr{--home-guide-accent:#c78d20}
+.home-guide-card.guide-food{--home-guide-accent:#38a866}
+.home-guide-card.guide-stress{--home-guide-accent:#765eaa}
+.home-guide-card.guide-health{--home-guide-accent:#138f8d}
+
+@media(max-width:760px){
+  .home-guide-grid{grid-template-columns:1fr}
+  .home-guide-card{min-height:0;padding:24px 20px}
+}
