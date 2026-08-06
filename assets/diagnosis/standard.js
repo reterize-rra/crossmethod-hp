@@ -690,6 +690,15 @@
     ).trim());
   }
 
+  function canRequestQuestionArt(question) {
+    if (!question) return false;
+    return Boolean(String(
+      question.question_id ||
+      question.image_slot ||
+      ''
+    ).trim());
+  }
+
   function questionArtKey(question) {
     if (!question) return '';
     return [
@@ -700,7 +709,7 @@
   }
 
   async function loadQuestionArt(question) {
-    if (!question || !hasQuestionArt(question)) return;
+    if (!canRequestQuestionArt(question)) return;
     const key = questionArtKey(question);
     const existing = questionArtUrl(question);
 
@@ -730,7 +739,8 @@
     try {
       const dataUri = await state.illustrationRequests[key];
       applyQuestionArt(key, dataUri);
-    } catch (_) {
+    } catch (error) {
+      console.error('設問画像を取得できませんでした。', error);
       showQuestionArtError(key);
     }
   }
@@ -766,8 +776,8 @@
     }
 
     artImage.style.backgroundImage = 'radial-gradient(circle at 62% 34%, rgba(111,227,229,.24), transparent 32%), linear-gradient(135deg, rgba(255,255,255,.9), rgba(232,248,250,.76))';
-    artImage.classList.toggle('is-preloading', hasQuestionArt(question));
-    if (hasQuestionArt(question)) loadQuestionArt(question);
+    artImage.classList.toggle('is-preloading', canRequestQuestionArt(question));
+    if (canRequestQuestionArt(question)) loadQuestionArt(question);
   }
 
   function syncMobileVisual(question, screen) {
