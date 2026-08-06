@@ -8,27 +8,38 @@
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="X-Robots-Tag" content="noindex, nofollow, noarchive">
   <title>従業員は今、幸せか｜クロスメソッド™</title>
-  <link rel="stylesheet" href="../../assets/diagnosis/standard.css">
+  <link rel="stylesheet" href="../../assets/diagnosis/standard.css?v=20260806-layout-v4">
 </head>
-<body data-diagnosis-id="employee_happiness" data-page-title="従業員は今、幸せか">
+<body data-screen="loading" data-diagnosis-id="employee_happiness" data-page-title="従業員は今、幸せか">
   <a class="skip-link" href="#diagnosisApp">診断画面へ移動</a>
-  <header class="diagnosis-header">
-    <div class="diagnosis-header__inner">
-      <div class="diagnosis-brand">
-        <span class="diagnosis-brand__mark" aria-hidden="true">✣</span>
-        <div>
-          <strong>クロスメソッド™</strong>
-          <span>合同会社TSUNAGARI</span>
-        </div>
-      </div>
-      <span class="diagnosis-header__tag">組織の声を、次の一歩へ</span>
+
+  <div class="visual-layer" aria-hidden="true">
+    <div class="art-wrap">
+      <div id="artImg" class="art-img"></div>
+      <div class="os-scan"></div>
     </div>
+  </div>
+
+  <header class="global-header">
+    <div class="header-left">
+      <img id="companyLogo" class="company-logo ready" src="../../assets/images/brand/company_logo.png" alt="合同会社TSUNAGARI">
+    </div>
+    <div class="header-tag">Cross Method</div>
   </header>
 
-  <main id="diagnosisApp" class="diagnosis-app" aria-live="polite">
-    <section class="diagnosis-card diagnosis-card--loading">
-      <div class="diagnosis-loader" aria-hidden="true"></div>
-      <p>診断情報を読み込んでいます…</p>
+  <main class="app">
+    <div class="brand-row">
+      <img id="crossLogo" class="cross-logo ready" src="../../assets/images/brand/crossmethod_logo.png" alt="クロスメソッド™">
+      <div class="cross-text">クロスメソッド™</div>
+    </div>
+
+    <section id="diagnosisApp" aria-live="polite">
+      <div class="stage">
+        <div class="card loading">
+          <div class="spinner"></div>
+          <p>診断情報を読み込んでいます…</p>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -36,11 +47,6 @@
     <p class="diagnosis-noscript">この診断にはJavaScriptが必要です。ブラウザの設定を確認してください。</p>
   </noscript>
 
-  <footer class="diagnosis-footer">
-    <p>回答は、組織や職場をより良くするための確認材料として扱います。</p>
-    <p>© 合同会社TSUNAGARI</p>
-  </footer>
-
-  <script src="../../assets/diagnosis/standard.js" defer></script>
+  <script src="../../assets/diagnosis/standard.js?v=20260806-layout-v4" defer></script>
 </body>
 </html>

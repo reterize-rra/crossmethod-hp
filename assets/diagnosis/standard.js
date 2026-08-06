@@ -3,6 +3,7 @@
 
   const API_ENDPOINT = 'https://api.tsunagari-jp.com/diagnosis.php';
   const app = document.getElementById('diagnosisApp');
+  const artImage = document.getElementById('artImg');
   const diagnosisId = String(document.body.dataset.diagnosisId || '').trim();
   const pageTitle = String(document.body.dataset.pageTitle || '声の確認').trim();
   const initialRunToken = getRunTokenFromUrl();
@@ -169,45 +170,41 @@
   }
 
   function renderStart() {
+    setScreen('start');
+    setPageArt(state.questions[0]);
     const runInfo = state.run
       ? `<div class="diagnosis-company"><span>会社・事業所</span><strong>${escapeHtml(publicCompanyName(state.run.company_name))}</strong></div>`
       : '';
 
-    renderShell(
-      `<p class="diagnosis-eyebrow">CROSS METHOD™ / ORGANIZATION VOICE</p>
-       <h1>${escapeHtml(displayTitle())}</h1>
-       ${runInfo}
-       <p>良い・悪いを決める診断ではありません。今の状態を整理し、組織が次に確認すべき声を見つけるための入口です。</p>`,
-      `<h2>回答を始める前に</h2>
-       <p>感じていることに最も近い回答を選んでください。正解や不正解はありません。</p>
-       <div class="diagnosis-note">回答内容は、職場や組織をより良くするための集計・改善支援に使用します。個人を責めるためのものではありません。</div>
-       <div class="diagnosis-consent">
-         <label><input id="diagnosisConsent" type="checkbox" ${state.consented ? 'checked' : ''}><span>回答データが診断の集計・組織改善の確認材料として使用されることに同意します。</span></label>
-       </div>
-       <div id="screenError" class="diagnosis-error" role="alert"></div>
-       <div class="diagnosis-actions">
-         <button class="diagnosis-button diagnosis-button--primary" type="button" id="startButton">同意して回答を始める</button>
-       </div>`
-    );
+    app.innerHTML = `<div class="stage">
+      <div class="card">
+        <div class="pill">クロスメソッド™｜声の確認</div>
+        <h1 class="hero-title">${escapeHtml(displayTitle())}</h1>
+        ${runInfo}
+        <p>この確認は、良い・悪いを決めるものではありません。今の状態を整理し、次に確認すべき声を見つけるための入口です。</p>
+        <div class="note">回答内容は、職場やサービスをより良くするための確認材料として扱います。個人を責めるためのものではありません。</div>
+        <div id="screenError" class="error" role="alert"></div>
+        <div class="actions">
+          <button class="btn-primary btn-start" type="button" id="startButton">はじめる</button>
+        </div>
+      </div>
+    </div>`;
+    syncMobileVisual(state.questions[0], 'start');
 
     document.getElementById('startButton').addEventListener('click', () => {
-      const consent = document.getElementById('diagnosisConsent');
-      if (!consent || !consent.checked) {
-        showScreenError('同意欄を確認してください。');
-        return;
-      }
       state.consented = true;
       renderBasicInfo();
     });
   }
 
   function renderBasicInfo() {
+    setScreen('basic');
+    setPageArt(state.questions[0]);
     renderShell(
-      `<p class="diagnosis-eyebrow">BASIC INFORMATION</p>
-       <h1>${escapeHtml(displayTitle())}</h1>
-       <p>${state.run ? '会社情報は専用URLから読み込まれています。' : '初回のみ会社情報を登録し、社内共有用の専用URLを発行します。'}</p>`,
-      `<h2>基本情報</h2>
-       <p>必須項目を入力して、設問へ進んでください。</p>
+      `<div class="pill">基本情報</div>
+       <h2>回答のための基本情報を入力してください</h2>
+       <p>${state.run ? '会社情報は専用URLから読み込まれています。必須項目を入力して、設問へ進んでください。' : '初回のみ会社情報を登録し、社内共有用の専用URLを発行します。'}</p>`,
+      `<p>回答を集計するための情報です。個人を責めるための情報ではありません。</p>
        <div class="diagnosis-form">${basicInfoFields()}</div>
        ${state.run ? '' : '<div class="diagnosis-note">入力後、2人目以降の方へ共有できる会社専用URLが表示されます。</div>'}
        <div id="screenError" class="diagnosis-error" role="alert"></div>
@@ -349,8 +346,10 @@
 
   function renderRunIssued() {
     state.registering = false;
+    setScreen('basic');
+    setPageArt(state.questions[0]);
     renderShell(
-      `<p class="diagnosis-eyebrow">COMPANY DIAGNOSIS URL</p>
+      `<div class="pill">会社専用URL</div>
        <h1>会社専用URLを<br>発行しました</h1>
        <p>この実施回の回答は、同じ会社・診断としてまとめて保存されます。</p>`,
       `<h2>${escapeHtml(publicCompanyName(state.run.company_name))}</h2>
@@ -391,37 +390,27 @@
     const current = state.currentIndex + 1;
     const total = state.questions.length;
     const percent = Math.round((current / total) * 100);
-    const hasArt = hasQuestionArt(question);
-    const artUrl = questionArtUrl(question);
-    const artKey = questionArtKey(question);
-
-    renderShell(
-      `<div class="diagnosis-progress">
-         <div class="diagnosis-progress__meta"><span>${current} / ${total}</span><span>${escapeHtml(displayTitle())}</span></div>
-         <div class="diagnosis-progress__track"><div class="diagnosis-progress__bar" style="width:${percent}%"></div></div>
-       </div>
-       <p class="diagnosis-eyebrow">VOICE ${String(current).padStart(2, '0')}</p>
-       <h1>今の状態に近いものを<br>選んでください</h1>`,
-      `<div class="diagnosis-question ${hasArt ? '' : 'diagnosis-question--no-art'}">
-         <div>
-           <p class="diagnosis-question__number">QUESTION ${String(current).padStart(2, '0')}</p>
-           <h2>${escapeHtml(question.question_text || '')}</h2>
-           <div id="answerArea" class="diagnosis-answer"></div>
-           <div id="screenError" class="diagnosis-error" role="alert"></div>
-           <div class="diagnosis-actions">
-             <button class="diagnosis-button diagnosis-button--secondary" type="button" id="questionBackButton">戻る</button>
-             <button class="diagnosis-button diagnosis-button--primary" type="button" id="questionNextButton">${current === total ? '確認へ進む' : '次へ'}</button>
-           </div>
-         </div>
-         ${hasArt ? `<figure class="diagnosis-question__art" data-art-key="${escapeAttr(artKey)}">
-           <div class="diagnosis-art-status" ${artUrl ? 'hidden' : ''}><span class="diagnosis-art-spinner" aria-hidden="true"></span><span>画像を読み込んでいます…</span></div>
-           <img src="${escapeAttr(artUrl)}" alt="" loading="eager" referrerpolicy="no-referrer" ${artUrl ? '' : 'hidden'}>
-         </figure>` : ''}
-       </div>`
-    );
+    setScreen('question');
+    setPageArt(question);
+    app.innerHTML = `<div class="progress-wrap">
+      <div class="progress-meta"><span>${current} / ${total}</span><span>${escapeHtml(displayTitle())}</span></div>
+      <div class="progress"><div class="bar" style="width:${percent}%"></div></div>
+    </div>
+    <div class="stage">
+      <div class="card question-card">
+        <p class="question-number">QUESTION ${String(current).padStart(2, '0')}</p>
+        <h2 class="q-text">${escapeHtml(question.question_text || '')}</h2>
+        <div id="answerArea" class="diagnosis-answer"></div>
+        <div id="screenError" class="error" role="alert"></div>
+        <div class="actions">
+          <button class="btn-secondary" type="button" id="questionBackButton">戻る</button>
+          <button class="btn-primary" type="button" id="questionNextButton">${current === total ? '確認へ進む' : '次へ'}</button>
+        </div>
+      </div>
+    </div>`;
+    syncMobileVisual(question, 'question');
 
     renderAnswer(question);
-    if (hasArt) loadQuestionArt(question);
     document.getElementById('questionBackButton').addEventListener('click', () => {
       if (state.currentIndex === 0) renderBasicInfo();
       else renderQuestion(state.currentIndex - 1);
@@ -464,9 +453,9 @@
     }
 
     const choices = choicesFor(question);
-    area.innerHTML = `<div class="diagnosis-choices">${choices.map((choice, index) => {
+    area.innerHTML = `<div class="choice-list">${choices.map((choice, index) => {
       const selected = existing && String(existing.answer_value) === String(choice.value);
-      return `<button type="button" class="diagnosis-choice ${selected ? 'is-selected' : ''}" data-choice-index="${index}" aria-pressed="${selected ? 'true' : 'false'}">${escapeHtml(choice.label)}</button>`;
+      return `<button type="button" class="choice ${selected ? 'selected' : ''}" data-choice-index="${index}" aria-pressed="${selected ? 'true' : 'false'}"><span class="choice-dot" aria-hidden="true"></span><span>${escapeHtml(choice.label)}</span></button>`;
     }).join('')}</div>`;
 
     area.querySelectorAll('[data-choice-index]').forEach(button => {
@@ -489,6 +478,8 @@
   }
 
   function renderConfirm() {
+    setScreen('confirm');
+    setPageArt(state.questions[state.questions.length - 1]);
     const rows = [
       ['診断', displayTitle()],
       ['会社名・店舗名・事業所名', state.company.company_name || ''],
@@ -498,7 +489,7 @@
     ];
 
     renderShell(
-      `<p class="diagnosis-eyebrow">CONFIRM</p>
+      `<div class="pill">送信前確認</div>
        <h1>送信前の確認</h1>
        <p>内容を確認し、問題がなければ回答を送信してください。</p>`,
       `<h2>回答を送信します</h2>
@@ -557,8 +548,10 @@
 
   function renderComplete(result) {
     const receipt = result && (result.response_id || result.request_id) ? String(result.response_id || result.request_id) : '';
+    setScreen('complete');
+    setPageArt(state.questions[0]);
     renderShell(
-      `<p class="diagnosis-eyebrow">COMPLETE</p>
+      `<div class="pill">送信完了</div>
        <h1>回答を受け付けました</h1>
        <p>ご協力いただき、ありがとうございます。</p>`,
       `<div class="diagnosis-complete">
@@ -571,15 +564,19 @@
   }
 
   function renderError(message) {
-    app.innerHTML = `<section class="diagnosis-shell">
-      <div class="diagnosis-hero"><p class="diagnosis-eyebrow">DIAGNOSIS ERROR</p><h1>診断を表示できません</h1><p>しばらく時間を置いて、もう一度お試しください。</p></div>
-      <div class="diagnosis-content"><div class="diagnosis-error is-visible" role="alert">${escapeHtml(message)}</div><div class="diagnosis-actions"><button class="diagnosis-button diagnosis-button--primary" type="button" id="reloadButton">再読み込みする</button></div></div>
-    </section>`;
+    setScreen('error');
+    setPageArt(null);
+    app.innerHTML = `<div class="stage"><div class="card"><h2>診断を表示できません</h2><p>しばらく時間を置いて、もう一度お試しください。</p><div class="error is-visible" role="alert">${escapeHtml(message)}</div><div class="actions"><button class="btn-primary" type="button" id="reloadButton">再読み込みする</button></div></div></div>`;
     document.getElementById('reloadButton').addEventListener('click', () => window.location.reload());
   }
 
   function renderShell(heroHtml, contentHtml) {
-    app.innerHTML = `<section class="diagnosis-shell"><div class="diagnosis-hero">${heroHtml}</div><div class="diagnosis-content">${contentHtml}</div></section>`;
+    app.innerHTML = `<div class="stage"><div class="card">${heroHtml}${contentHtml}</div></div>`;
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  function setScreen(name) {
+    document.body.setAttribute('data-screen', name);
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
@@ -673,6 +670,7 @@
   }
 
   function questionArtUrl(question) {
+    if (!question) return '';
     var inlineData = String(
       question.illustration_data_uri || ''
     ).trim();
@@ -681,6 +679,7 @@
   }
 
   function hasQuestionArt(question) {
+    if (!question) return false;
     return Boolean(String(
       question.illustration_data_uri ||
       question.illustration_url ||
@@ -692,6 +691,7 @@
   }
 
   function questionArtKey(question) {
+    if (!question) return '';
     return [
       activeDiagnosisId(),
       String(question.question_id || '').trim(),
@@ -700,6 +700,7 @@
   }
 
   async function loadQuestionArt(question) {
+    if (!question || !hasQuestionArt(question)) return;
     const key = questionArtKey(question);
     const existing = questionArtUrl(question);
 
@@ -735,23 +736,62 @@
   }
 
   function applyQuestionArt(key, dataUri) {
-    const figure = document.querySelector(`[data-art-key="${cssEscape(key)}"]`);
-    if (!figure) return;
-    const image = figure.querySelector('img');
-    const status = figure.querySelector('.diagnosis-art-status');
-    if (!image) return;
-    image.src = dataUri;
-    image.hidden = false;
-    if (status) status.hidden = true;
+    const safe = String(dataUri).replace(/"/g, '%22');
+    if (artImage && artImage.dataset.artKey === key) {
+      artImage.style.backgroundImage = `url("${safe}")`;
+      artImage.classList.remove('is-preloading');
+      artImage.classList.remove('is-error');
+    }
+    document.querySelectorAll('.cm-mobile-art-image').forEach(element => {
+      if (element.dataset.artKey === key) element.style.backgroundImage = `url("${safe}")`;
+    });
   }
 
   function showQuestionArtError(key) {
-    const figure = document.querySelector(`[data-art-key="${cssEscape(key)}"]`);
-    if (!figure) return;
-    const status = figure.querySelector('.diagnosis-art-status');
-    if (!status) return;
-    status.classList.add('is-error');
-    status.innerHTML = '<span>画像を読み込めませんでした。再読み込みしてください。</span>';
+    if (!artImage || artImage.dataset.artKey !== key) return;
+    artImage.classList.remove('is-preloading');
+    artImage.classList.add('is-error');
+  }
+
+  function setPageArt(question) {
+    if (!artImage) return;
+    const key = questionArtKey(question);
+    const dataUri = questionArtUrl(question);
+    artImage.dataset.artKey = key;
+    artImage.classList.remove('is-error');
+
+    if (dataUri) {
+      applyQuestionArt(key, dataUri);
+      return;
+    }
+
+    artImage.style.backgroundImage = 'radial-gradient(circle at 62% 34%, rgba(111,227,229,.24), transparent 32%), linear-gradient(135deg, rgba(255,255,255,.9), rgba(232,248,250,.76))';
+    artImage.classList.toggle('is-preloading', hasQuestionArt(question));
+    if (hasQuestionArt(question)) loadQuestionArt(question);
+  }
+
+  function syncMobileVisual(question, screen) {
+    document.querySelectorAll('.cm-mobile-start-visual,.cm-mobile-question-visual').forEach(element => element.remove());
+    if (!window.matchMedia || !window.matchMedia('(max-width: 860px)').matches || !question) return;
+
+    const key = questionArtKey(question);
+    const dataUri = questionArtUrl(question);
+    const visual = document.createElement('div');
+    visual.className = screen === 'question' ? 'cm-mobile-question-visual' : 'cm-mobile-start-visual';
+    const image = document.createElement('div');
+    image.className = 'cm-mobile-art-image';
+    image.dataset.artKey = key;
+    if (dataUri) image.style.backgroundImage = `url("${String(dataUri).replace(/"/g, '%22')}")`;
+    visual.appendChild(image);
+
+    if (screen === 'question') {
+      const card = app.querySelector('.question-card');
+      if (card) card.insertBefore(visual, card.firstChild);
+    } else {
+      const stage = app.querySelector('.stage');
+      const card = stage && stage.querySelector('.card');
+      if (stage && card) stage.insertBefore(visual, card);
+    }
   }
 
   function cssEscape(value) {
