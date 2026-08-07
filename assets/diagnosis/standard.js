@@ -2,7 +2,7 @@
   'use strict';
 
   const API_ENDPOINT = 'https://api.tsunagari-jp.com/diagnosis.php';
-  const STATIC_ART_VERSION = '20260807-all-standard-v2';
+  const STATIC_ART_VERSION = '20260808-all-standard-v3';
   const app = document.getElementById('diagnosisApp');
   const artImage = document.getElementById('artImg');
   const diagnosisId = String(document.body.dataset.diagnosisId || '').trim();
@@ -132,6 +132,22 @@
   }
 
   async function requestApi(payload) {
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      try {
+        return await requestApiOnce(payload);
+      } catch (error) {
+        lastError = error;
+        if (attempt >= 2 || !isRetryableApiError(error)) throw error;
+        await wait(1200);
+      }
+    }
+
+    throw lastError || new Error('診断サーバーへ接続できませんでした。');
+  }
+
+  async function requestApiOnce(payload) {
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -154,6 +170,15 @@
     }
 
     return data;
+  }
+
+  function isRetryableApiError(error) {
+    const message = String(error && error.message || '');
+    return /Failed to fetch|NetworkError|timed out|タイムアウト|正しい応答|接続に失敗|診断サーバーへ接続/.test(message);
+  }
+
+  function wait(milliseconds) {
+    return new Promise(resolve => window.setTimeout(resolve, milliseconds));
   }
 
   async function resolveRunFromUrl() {
@@ -329,6 +354,8 @@
       if (!state.runToken) {
         throw new Error('会社専用URLの識別情報を確認できません。');
       }
+
+      state.run.public_url = officialRunUrl(state.runToken);
 
       state.clientSubmissionId = loadOrCreateSubmissionId(state.runToken);
       clearRegistrationId(initialRunToken, state.clientRegistrationId);
@@ -952,6 +979,18 @@
       return String(target.searchParams.get('run') || '').trim();
     } catch (_) {
       return '';
+    }
+  }
+
+  function officialRunUrl(runToken) {
+    try {
+      const url = new URL(window.location.href);
+      url.search = '';
+      url.hash = '';
+      url.searchParams.set('run', String(runToken || '').trim());
+      return url.toString();
+    } catch (_) {
+      return String(state.run && state.run.public_url || '').trim();
     }
   }
 
