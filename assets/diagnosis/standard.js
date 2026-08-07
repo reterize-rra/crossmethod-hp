@@ -2,6 +2,7 @@
   'use strict';
 
   const API_ENDPOINT = 'https://api.tsunagari-jp.com/diagnosis.php';
+  const STATIC_ART_VERSION = '20260806-static-v6';
   const app = document.getElementById('diagnosisApp');
   const artImage = document.getElementById('artImg');
   const diagnosisId = String(document.body.dataset.diagnosisId || '').trim();
@@ -190,6 +191,7 @@
       </div>
     </div>`;
     syncMobileVisual(state.questions[0], 'start');
+    window.setTimeout(preloadStaticQuestionArts, 400);
 
     document.getElementById('startButton').addEventListener('click', () => {
       state.consented = true;
@@ -699,6 +701,56 @@
     ).trim());
   }
 
+  function staticQuestionArtUrl(question) {
+    if (!question) return '';
+    const safeDiagnosisId = String(diagnosisId || '')
+      .trim()
+      .replace(/[^a-zA-Z0-9_-]/g, '');
+    const safeSlot = String(question.image_slot || '')
+      .trim()
+      .replace(/[^a-zA-Z0-9_-]/g, '');
+    if (!safeDiagnosisId || !safeSlot) return '';
+    return `/assets/diagnosis/illustrations/${safeDiagnosisId}/${safeSlot}.webp?v=${STATIC_ART_VERSION}`;
+  }
+
+  function probeImageUrl(url) {
+    return new Promise((resolve, reject) => {
+      const safeUrl = String(url || '').trim();
+      if (!safeUrl) {
+        reject(new Error('画像URLが空です。'));
+        return;
+      }
+
+      const image = new Image();
+      const timer = window.setTimeout(() => {
+        image.onload = null;
+        image.onerror = null;
+        reject(new Error('画像の読み込みがタイムアウトしました。'));
+      }, 5000);
+
+      image.decoding = 'async';
+      image.onload = () => {
+        window.clearTimeout(timer);
+        resolve(safeUrl);
+      };
+      image.onerror = () => {
+        window.clearTimeout(timer);
+        reject(new Error('静的画像を読み込めませんでした。'));
+      };
+      image.src = safeUrl;
+    });
+  }
+
+  function preloadStaticQuestionArts() {
+    state.questions.slice(1).forEach(question => {
+      const url = staticQuestionArtUrl(question);
+      if (!url) return;
+      const image = new Image();
+      image.decoding = 'async';
+      image.src = url;
+    });
+  }
+
   function questionArtKey(question) {
     if (!question) return '';
     return [
@@ -719,19 +771,31 @@
     }
 
     if (!state.illustrationRequests[key]) {
-      state.illustrationRequests[key] = requestApi({
-        action: 'standard_diagnosis_illustration',
-        diagnosis_id: activeDiagnosisId(),
-        question_id: String(question.question_id || '').trim(),
-        image_slot: String(question.image_slot || '').trim()
-      }).then(result => {
+      state.illustrationRequests[key] = (async () => {
+        const staticUrl = staticQuestionArtUrl(question);
+        if (staticUrl) {
+          try {
+            await probeImageUrl(staticUrl);
+            state.illustrationData[key] = staticUrl;
+            return staticUrl;
+          } catch (_) {
+            // 静的画像が未配置の診断は、既存の安全なAPI取得へ切り替える。
+          }
+        }
+
+        const result = await requestApi({
+          action: 'standard_diagnosis_illustration',
+          diagnosis_id: activeDiagnosisId(),
+          question_id: String(question.question_id || '').trim(),
+          image_slot: String(question.image_slot || '').trim()
+        });
         const dataUri = String(result.image_data_uri || '').trim();
         if (dataUri.indexOf('data:image/') !== 0) {
           throw new Error('画像データを確認できません。');
         }
         state.illustrationData[key] = dataUri;
         return dataUri;
-      }).finally(() => {
+      })().finally(() => {
         delete state.illustrationRequests[key];
       });
     }
