@@ -13,15 +13,25 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 96px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
   color: var(--guide-text);
   background: #f8fbfc;
   font-family: "Noto Sans JP", sans-serif;
   line-height: 1.9;
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body.guide-hr {
@@ -68,7 +78,9 @@ summary:focus-visible {
 img { max-width: 100%; }
 
 .guide-shell {
-  width: min(1160px, calc(100% - 40px));
+  width: calc(100% - 40px);
+  max-width: 1160px;
+  min-width: 0;
   margin: 0 auto;
 }
 
@@ -83,6 +95,7 @@ img { max-width: 100%; }
 }
 
 .guide-header-inner {
+  min-width: 0;
   min-height: 76px;
   display: flex;
   align-items: center;
@@ -174,7 +187,10 @@ img { max-width: 100%; }
   font-size: clamp(36px, 5.2vw, 64px);
   line-height: 1.33;
   letter-spacing: -.045em;
-  text-wrap: balance;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  text-wrap: wrap;
 }
 
 .guide-lead {
@@ -248,15 +264,28 @@ img { max-width: 100%; }
 }
 
 .guide-article {
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 26px;
+}
+
+.guide-article > *,
+.guide-layout > *,
+.guide-hero-grid > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .guide-answer,
 .guide-section,
 .guide-source-note,
 .guide-related {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding: clamp(26px, 4vw, 42px);
   border: 1px solid var(--guide-line);
   border-radius: 30px;
@@ -279,7 +308,20 @@ img { max-width: 100%; }
   font-size: clamp(27px, 3vw, 38px);
   line-height: 1.5;
   letter-spacing: -.035em;
-  text-wrap: balance;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  text-wrap: wrap;
+}
+
+.guide-article p,
+.guide-article li,
+.guide-article a,
+.guide-article strong,
+.guide-article span {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .guide-section h3 {
@@ -381,8 +423,12 @@ img { max-width: 100%; }
 }
 
 .guide-table-wrap {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   margin-top: 24px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--guide-line);
   border-radius: 22px;
 }
@@ -670,7 +716,7 @@ img { max-width: 100%; }
 @media (max-width: 960px) {
   .guide-hero-grid,
   .guide-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .guide-hero-card { max-width: 640px; }
@@ -681,17 +727,28 @@ img { max-width: 100%; }
 @media (max-width: 680px) {
   html { scroll-padding-top: 78px; }
 
-  .guide-shell { width: min(100% - 24px, 1160px); }
+  .guide-shell {
+    width: calc(100% - 24px);
+    max-width: 1160px;
+  }
 
-  .guide-header-inner { min-height: 66px; }
+  .guide-header-inner { min-height: 66px; gap: 12px; }
   .guide-company-logo { width: 116px; }
   .guide-brand-divider,
   .guide-brand strong { display: none; }
-  .guide-header-link { padding: 8px 11px; font-size: 11px; }
+  .guide-header-link {
+    max-width: 54vw;
+    padding: 8px 11px;
+    flex: 0 1 auto;
+    font-size: 11px;
+    line-height: 1.35;
+    text-align: center;
+    white-space: normal;
+  }
 
   .guide-hero { padding: 40px 0 56px; }
   .guide-hero-grid { gap: 28px; }
-  .guide-hero h1 { font-size: clamp(32px, 10.7vw, 43px); line-height: 1.4; }
+  .guide-hero h1 { font-size: clamp(30px, 9vw, 40px); line-height: 1.35; }
   .guide-lead { font-size: 15px; }
 
   .guide-layout { padding: 46px 0 60px; gap: 22px; }
@@ -703,7 +760,16 @@ img { max-width: 100%; }
 
   .guide-answer h2,
   .guide-section h2,
-  .guide-related h2 { font-size: 27px; }
+  .guide-related h2 { font-size: clamp(24px, 7vw, 27px); }
+
+  .guide-answer p,
+  .guide-section p,
+  .guide-related p,
+  .guide-source-note p,
+  .guide-source-note li {
+    font-size: 15px;
+    line-height: 1.9;
+  }
 
   .guide-grid,
   .guide-related-grid,

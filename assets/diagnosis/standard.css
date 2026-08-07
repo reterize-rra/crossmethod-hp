@@ -2218,3 +2218,37 @@
   .diagnosis-button{width:100%}
   .diagnosis-summary__row{display:grid;grid-template-columns:1fr;gap:4px}
 }
+
+/* =========================================================
+   EMERGENCY RESPONSIVE FIX v8
+   診断名を1行固定せず、カード幅の中で安全に折り返す。
+   ========================================================= */
+body[data-screen="start"] .hero-title{
+  max-width:100%!important;
+  white-space:normal!important;
+  word-break:normal!important;
+  overflow-wrap:anywhere!important;
+  text-wrap:wrap!important;
+  font-size:clamp(32px,3.4vw,52px)!important;
+  line-height:1.2!important;
+  letter-spacing:0!important;
+}
+
+@media(max-width:980px){
+  body[data-screen="start"] .hero-title{
+    font-size:clamp(28px,7.4vw,40px)!important;
+    line-height:1.22!important;
+  }
+}
+
+html.cm-force-mobile body[data-screen="start"] .hero-title{
+  max-width:100%!important;
+  white-space:normal!important;
+  word-break:normal!important;
+  overflow-wrap:anywhere!important;
+  text-wrap:wrap!important;
+  font-size:clamp(28px,8vw,38px)!important;
+  line-height:1.22!important;
+  letter-spacing:0!important;
+  margin-bottom:4vw!important;
+}
