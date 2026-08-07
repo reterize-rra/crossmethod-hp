@@ -2,13 +2,12 @@
   'use strict';
 
   const API_ENDPOINT = 'https://api.tsunagari-jp.com/diagnosis.php';
-  const STATIC_ART_VERSION = '20260806-static-v6';
+  const STATIC_ART_VERSION = '20260807-all-standard-v2';
   const app = document.getElementById('diagnosisApp');
   const artImage = document.getElementById('artImg');
   const diagnosisId = String(document.body.dataset.diagnosisId || '').trim();
   const pageTitle = String(document.body.dataset.pageTitle || '声の確認').trim();
   const initialRunToken = getRunTokenFromUrl();
-  const storageKey = `cm-standard-diagnosis:${diagnosisId}:${initialRunToken ? initialRunToken.slice(-16) : 'common'}`;
 
   const allowedDiagnosisIds = new Set([
     'brand_attraction',
@@ -78,8 +77,8 @@
     registering: false,
     illustrationData: Object.create(null),
     illustrationRequests: Object.create(null),
-    clientRegistrationId: loadOrCreateRegistrationId(),
-    clientSubmissionId: loadOrCreateSubmissionId(),
+    clientRegistrationId: loadOrCreateRegistrationId(initialRunToken),
+    clientSubmissionId: loadOrCreateSubmissionId(initialRunToken),
     runToken: initialRunToken,
     run: null
   };
@@ -92,7 +91,7 @@
       return;
     }
 
-    const savedReceipt = readSessionReceipt();
+    const savedReceipt = readSessionReceipt(initialRunToken);
     if (savedReceipt) {
       renderComplete(savedReceipt);
       return;
@@ -330,6 +329,9 @@
       if (!state.runToken) {
         throw new Error('会社専用URLの識別情報を確認できません。');
       }
+
+      state.clientSubmissionId = loadOrCreateSubmissionId(state.runToken);
+      clearRegistrationId(initialRunToken, state.clientRegistrationId);
 
       try {
         window.history.replaceState(null, '', state.run.public_url);
@@ -893,9 +895,15 @@
     if (element) element.focus();
   }
 
-  function loadOrCreateRegistrationId() {
+  function storageBaseKey(runToken) {
+    const token = String(runToken || '').trim();
+    const scope = token ? token.slice(-48) : 'common';
+    return `cm-standard-diagnosis:${diagnosisId}:${scope}`;
+  }
+
+  function loadOrCreateRegistrationId(runToken) {
     try {
-      const key = `${storageKey}:registration-id`;
+      const key = `${storageBaseKey(runToken)}:registration-id`;
       const saved = sessionStorage.getItem(key);
       if (saved) return saved;
       const value = createRegistrationId();
@@ -906,12 +914,20 @@
     }
   }
 
-  function loadOrCreateSubmissionId() {
+  function clearRegistrationId(runToken, registrationId) {
     try {
-      const saved = sessionStorage.getItem(`${storageKey}:submission-id`);
+      const key = `${storageBaseKey(runToken)}:registration-id`;
+      if (sessionStorage.getItem(key) === registrationId) sessionStorage.removeItem(key);
+    } catch (_) {}
+  }
+
+  function loadOrCreateSubmissionId(runToken) {
+    try {
+      const key = `${storageBaseKey(runToken)}:submission-id`;
+      const saved = sessionStorage.getItem(key);
       if (saved) return saved;
       const value = createSubmissionId();
-      sessionStorage.setItem(`${storageKey}:submission-id`, value);
+      sessionStorage.setItem(key, value);
       return value;
     } catch (_) {
       return createSubmissionId();
@@ -948,7 +964,7 @@
 
   function writeSessionReceipt(result) {
     try {
-      sessionStorage.setItem(`${storageKey}:receipt`, JSON.stringify({
+      sessionStorage.setItem(`${storageBaseKey(state.runToken || initialRunToken)}:receipt`, JSON.stringify({
         ok: true,
         response_id: String(result.response_id || ''),
         request_id: String(result.request_id || '')
@@ -956,9 +972,9 @@
     } catch (_) {}
   }
 
-  function readSessionReceipt() {
+  function readSessionReceipt(runToken) {
     try {
-      const raw = sessionStorage.getItem(`${storageKey}:receipt`);
+      const raw = sessionStorage.getItem(`${storageBaseKey(runToken)}:receipt`);
       return raw ? JSON.parse(raw) : null;
     } catch (_) {
       return null;
