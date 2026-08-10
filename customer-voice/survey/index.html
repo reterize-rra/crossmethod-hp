@@ -10,7 +10,7 @@
   <meta name="description" content="サービスや体験をより良くするための匿名アンケートです。">
   <link rel="icon" href="/favicon.ico">
   <link rel="preload" as="image" href="/assets/customer-voice/customer-satisfaction-reference.png">
-  <link rel="stylesheet" href="/assets/customer-voice/customer-voice-survey.css?v=20260810-visual-v3">
+  <link rel="stylesheet" href="/assets/customer-voice/customer-voice-survey.css?v=20260810-trust-v4">
 </head>
 <body data-screen="loading">
   <header class="survey-header">
@@ -22,6 +22,10 @@
           <img class="survey-method-logo" src="/assets/images/brand/crossmethod_logo.png" alt="" aria-hidden="true">
           <span class="survey-method-name">クロスメソッド™</span>
         </span>
+      </div>
+      <div id="surveyTarget" class="survey-target" hidden aria-label="ご回答先">
+        <span>ご回答先</span>
+        <strong id="headerLocationName"></strong>
       </div>
       <span class="survey-anonymous">匿名回答</span>
     </div>
@@ -49,14 +53,21 @@
       <section id="surveyState" hidden>
         <section id="introView" class="surface-card intro-card">
           <p class="intro-card__pill">お客様向け｜声の確認</p>
-          <h1 id="surveyTitle">お客様の声</h1>
-          <p class="intro-card__lead">感じたことを、そのまま教えてください。いただいた声は、より良いサービスづくりに活用されます。</p>
-          <div class="intro-card__note">個人を特定して責めるためのものではありません。安心してご回答ください。</div>
-          <p id="surveyContext" class="visually-hidden">
+          <div class="intro-card__destination" aria-label="このアンケートのご回答先">
+            <span class="intro-card__destination-label">ご回答先</span>
+            <strong id="locationName"></strong>
             <span id="organizationName"></span>
-            <span id="locationName"></span>
-          </p>
-          <p id="locationMessage" class="visually-hidden" hidden></p>
+          </div>
+          <h1 id="surveyTitle">お客様の声</h1>
+          <div class="intro-card__purpose">
+            <p class="intro-card__purpose-title">一つひとつの声を、お店のこれからへ。</p>
+            <p>いただいたご意見は、接客・商品・居心地などの品質を振り返り、より良いサービスと体験につなげるために大切に活用します。良かったことも、気になったことも、どうぞ率直にお聞かせください。</p>
+          </div>
+          <div id="locationMessage" class="intro-card__message" hidden>
+            <span>お店からのメッセージ</span>
+            <p id="locationMessageText"></p>
+          </div>
+          <div class="intro-card__note">回答は匿名です。個人を特定して責めるためのものではありません。安心してご回答ください。</div>
           <button id="startButton" class="button button--primary intro-card__start" type="button">はじめる</button>
         </section>
 
@@ -109,6 +120,6 @@
     <a href="/privacy-policy/" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>
   </footer>
 
-  <script src="/assets/customer-voice/customer-voice-survey.js?v=20260810-visual-v3" defer></script>
+  <script src="/assets/customer-voice/customer-voice-survey.js?v=20260810-trust-v4" defer></script>
 </body>
 </html>

@@ -26,7 +26,8 @@
     [
       "loadingState", "errorState", "surveyState", "successState", "errorMessage",
       "retryButton", "introView", "questionView", "startButton", "surveyTitle",
-      "organizationName", "locationName", "locationMessage", "surveyForm", "questionList",
+      "surveyTarget", "headerLocationName", "organizationName", "locationName",
+      "locationMessage", "locationMessageText", "surveyForm", "questionList",
       "answeredCount", "requiredCount", "progressBar", "currentQuestionNumber",
       "totalQuestionCount", "progressTrack", "questionNavigation", "previousButton",
       "nextButton", "navigationHint", "submitCard", "formError", "submitButton",
@@ -83,12 +84,22 @@
   function renderSurvey(runtime) {
     const organization = runtime.organization || {};
     const location = runtime.location || {};
+    const organizationName = String(organization.name || "").trim();
+    const locationName = String(location.name || "").trim();
+    const displayLocationName = locationName || organizationName || "ご利用先";
+    const displayOrganizationName = organizationName && organizationName !== displayLocationName
+      ? organizationName
+      : "";
+    const locationMessage = String(location.message || "").trim();
 
     elements.surveyTitle.textContent = "お客様の声";
-    elements.organizationName.textContent = organization.name || "";
-    elements.locationName.textContent = location.name || "";
-    elements.locationMessage.textContent = location.message || "";
-    elements.locationMessage.hidden = !location.message;
+    elements.headerLocationName.textContent = displayLocationName;
+    elements.locationName.textContent = displayLocationName;
+    elements.organizationName.textContent = displayOrganizationName;
+    elements.surveyTarget.hidden = !displayLocationName;
+    elements.locationMessageText.textContent = locationMessage;
+    elements.locationMessage.hidden = !locationMessage;
+    document.title = `${displayLocationName}｜お客様の声｜クロスメソッド™`;
 
     state.questions = runtime.questions.slice().sort((a, b) => {
       return Number(a.question_order || 0) - Number(b.question_order || 0);
