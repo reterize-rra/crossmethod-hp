@@ -286,9 +286,32 @@
     updateProgress();
 
     if (shouldScroll) {
-      elements.questionView.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.setTimeout(() => cards[safeIndex]?.focus({ preventScroll: true }), 360);
+      window.requestAnimationFrame(() => {
+        keepQuestionPanelInSafeView();
+        window.setTimeout(() => cards[safeIndex]?.focus({ preventScroll: true }), 360);
+      });
     }
+  }
+
+  function keepQuestionPanelInSafeView() {
+    const panel = elements.questionView;
+    if (!panel) return;
+
+    const panelRect = panel.getBoundingClientRect();
+    const headerRect = document.querySelector(".survey-header__inner")?.getBoundingClientRect();
+    const safeTop = Math.max(12, Math.ceil(headerRect?.bottom || 0) + 12);
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+    const panelIsHiddenAboveHeader = panelRect.top < safeTop;
+    const panelStartsBelowViewport = panelRect.top > Math.max(safeTop, viewportHeight - 120);
+
+    if (!panelIsHiddenAboveHeader && !panelStartsBelowViewport) return;
+
+    const targetTop = Math.max(0, window.scrollY + panelRect.top - safeTop);
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    window.scrollTo({
+      top: targetTop,
+      behavior: reduceMotion ? "auto" : "smooth"
+    });
   }
 
   async function submitSurvey(event) {
