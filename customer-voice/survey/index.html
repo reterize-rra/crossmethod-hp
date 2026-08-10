@@ -9,30 +9,37 @@
   <title>お客様の声｜クロスメソッド™</title>
   <meta name="description" content="サービスや体験をより良くするための匿名アンケートです。">
   <link rel="icon" href="/favicon.ico">
-  <link rel="stylesheet" href="/assets/customer-voice/customer-voice-survey.css?v=20260810-visual-v1">
+  <link rel="preload" as="image" href="/assets/customer-voice/customer-satisfaction-reference.png">
+  <link rel="stylesheet" href="/assets/customer-voice/customer-voice-survey.css?v=20260810-visual-v3">
 </head>
-<body>
+<body data-screen="loading">
   <header class="survey-header">
-    <div class="survey-shell survey-header__inner">
-      <a class="survey-brand" href="/" aria-label="合同会社TSUNAGARI トップページ">
-        <img class="survey-brand__company" src="/assets/images/brand/company_logo.png" alt="合同会社TSUNAGARI">
-        <span class="survey-brand__divider" aria-hidden="true"></span>
-        <img class="survey-brand__method" src="/assets/images/brand/crossmethod_logo.png" alt="">
-        <span class="survey-brand__name">クロスメソッド™</span>
-      </a>
-      <span class="survey-header__privacy">匿名回答</span>
+    <div class="survey-header__inner">
+      <div class="survey-brand-lockup" aria-label="合同会社TSUNAGARI・クロスメソッド™">
+        <img class="survey-company-logo" src="/assets/images/brand/company_logo.png" alt="合同会社TSUNAGARI">
+        <span class="survey-brand-divider" aria-hidden="true"></span>
+        <span class="survey-method-brand">
+          <img class="survey-method-logo" src="/assets/images/brand/crossmethod_logo.png" alt="" aria-hidden="true">
+          <span class="survey-method-name">クロスメソッド™</span>
+        </span>
+      </div>
+      <span class="survey-anonymous">匿名回答</span>
     </div>
   </header>
 
+  <div class="survey-art" aria-hidden="true">
+    <img src="/assets/customer-voice/customer-satisfaction-reference.png" alt="">
+  </div>
+
   <main class="survey-main">
-    <div class="survey-shell survey-shell--form">
-      <section id="loadingState" class="state-card" aria-live="polite">
+    <div class="survey-shell">
+      <section id="loadingState" class="surface-card state-card" aria-live="polite">
         <span class="spinner" aria-hidden="true"></span>
         <h1>アンケートを準備しています</h1>
         <p>そのまま少しお待ちください。</p>
       </section>
 
-      <section id="errorState" class="state-card" hidden aria-live="assertive">
+      <section id="errorState" class="surface-card state-card" hidden aria-live="assertive">
         <span class="state-icon state-icon--error" aria-hidden="true">!</span>
         <h1>アンケートを表示できません</h1>
         <p id="errorMessage">URLをご確認のうえ、もう一度お試しください。</p>
@@ -40,101 +47,53 @@
       </section>
 
       <section id="surveyState" hidden>
-        <div class="survey-intro">
-          <div class="survey-intro__copy">
-            <div class="survey-intro__logo-wrap" id="organizationLogoWrap" hidden>
-              <img id="organizationLogo" class="survey-intro__logo" alt="">
+        <section id="introView" class="surface-card intro-card">
+          <p class="intro-card__pill">お客様向け｜声の確認</p>
+          <h1 id="surveyTitle">お客様の声</h1>
+          <p class="intro-card__lead">感じたことを、そのまま教えてください。いただいた声は、より良いサービスづくりに活用されます。</p>
+          <div class="intro-card__note">個人を特定して責めるためのものではありません。安心してご回答ください。</div>
+          <p id="surveyContext" class="visually-hidden">
+            <span id="organizationName"></span>
+            <span id="locationName"></span>
+          </p>
+          <p id="locationMessage" class="visually-hidden" hidden></p>
+          <button id="startButton" class="button button--primary intro-card__start" type="button">はじめる</button>
+        </section>
+
+        <section id="questionView" class="surface-card question-panel" hidden>
+          <div class="question-progress" aria-live="polite">
+            <div class="question-progress__meta">
+              <span><strong id="currentQuestionNumber">1</strong> / <span id="totalQuestionCount">10</span></span>
+              <span>回答済み <strong id="answeredCount">0</strong> / <span id="requiredCount">9</span></span>
             </div>
-            <p class="survey-intro__eyebrow">Customer Voice</p>
-            <h1 id="surveyTitle">お客様の声をお聞かせください</h1>
-            <div class="survey-intro__target">
-              <strong id="organizationName"></strong>
-              <span id="locationName"></span>
-            </div>
-            <p id="surveyDescription" class="survey-intro__description"></p>
-            <p id="locationMessage" class="survey-intro__message" hidden></p>
-            <div class="survey-intro__facts" aria-label="回答について">
-              <span><b aria-hidden="true">⌚</b>約2〜3分</span>
-              <span><b aria-hidden="true">○</b>匿名で回答</span>
-              <span><b aria-hidden="true">✓</b>全9問＋任意1問</span>
+            <div id="progressTrack" class="progress-track" role="progressbar" aria-label="アンケートの進み具合" aria-valuemin="1" aria-valuemax="10" aria-valuenow="1">
+              <span id="progressBar"></span>
             </div>
           </div>
-          <div class="survey-intro__visual" aria-hidden="true">
-            <svg viewBox="0 0 560 430" role="presentation">
-              <defs>
-                <linearGradient id="intro-aqua" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#e8fbfa"/>
-                  <stop offset="1" stop-color="#cceef0"/>
-                </linearGradient>
-                <linearGradient id="intro-gold" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#fff8e8"/>
-                  <stop offset="1" stop-color="#f5dfac"/>
-                </linearGradient>
-                <filter id="intro-shadow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feDropShadow dx="0" dy="16" stdDeviation="15" flood-color="#153f55" flood-opacity=".12"/>
-                </filter>
-              </defs>
-              <path d="M96 346c34-75 81-124 147-164 71-43 156-55 237-29" fill="none" stroke="#75cdd1" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 14" opacity=".7"/>
-              <circle cx="414" cy="94" r="55" fill="url(#intro-gold)" opacity=".78"/>
-              <circle cx="145" cy="301" r="78" fill="url(#intro-aqua)"/>
-              <g filter="url(#intro-shadow)">
-                <path d="M173 86h225c22 0 40 18 40 40v112c0 22-18 40-40 40H285l-72 57 16-57h-56c-22 0-40-18-40-40V126c0-22 18-40 40-40Z" fill="#fff"/>
-                <circle cx="222" cy="182" r="14" fill="#19aeb5"/>
-                <circle cx="285" cy="182" r="14" fill="#75c9a0"/>
-                <circle cx="348" cy="182" r="14" fill="#d6ac4f"/>
-              </g>
-              <g transform="translate(316 263)">
-                <circle cx="64" cy="48" r="32" fill="#fff" stroke="#9bdadd" stroke-width="7"/>
-                <path d="M22 150c3-52 20-78 42-78s40 26 43 78" fill="#e5f7f6" stroke="#19627b" stroke-width="7" stroke-linecap="round"/>
-                <circle cx="141" cy="69" r="25" fill="#fff7e5" stroke="#e2bd68" stroke-width="7"/>
-                <path d="M110 150c3-40 14-61 31-61s29 21 32 61" fill="#fff7e8" stroke="#19627b" stroke-width="7" stroke-linecap="round"/>
-              </g>
-              <g fill="#fff" stroke="#66c3c8" stroke-width="5">
-                <path d="M80 108h92c15 0 27 12 27 27v27c0 15-12 27-27 27h-35l-27 24 6-24H80c-15 0-27-12-27-27v-27c0-15 12-27 27-27Z"/>
-                <path d="M402 279h90c15 0 27 12 27 27v24c0 15-12 27-27 27h-30l-27 23 6-23h-39c-15 0-27-12-27-27v-24c0-15 12-27 27-27Z"/>
-              </g>
-              <g fill="#c4e9e8">
-                <circle cx="90" cy="149" r="7"/><circle cx="119" cy="149" r="7"/><circle cx="148" cy="149" r="7"/>
-                <circle cx="412" cy="317" r="7"/><circle cx="441" cy="317" r="7"/><circle cx="470" cy="317" r="7"/>
-              </g>
-            </svg>
-            <p><span>声</span>を、より良い体験へ</p>
-          </div>
-        </div>
 
-        <div class="progress-card" aria-live="polite">
-          <div class="progress-card__text">
-            <span class="progress-card__step">STEP <strong><span id="currentQuestionNumber">1</span>／<span id="totalQuestionCount">10</span></strong></span>
-            <span class="progress-card__answered">回答済み <strong><span id="answeredCount">0</span>／<span id="requiredCount">9</span>問</strong></span>
-          </div>
-          <div class="progress-track" id="progressTrack" role="progressbar" aria-label="アンケートの進み具合" aria-valuemin="1" aria-valuemax="10" aria-valuenow="1">
-            <span id="progressBar"></span>
-          </div>
-        </div>
+          <form id="surveyForm" novalidate>
+            <input id="websiteField" class="honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div id="questionList" class="question-list"></div>
+            <div id="formError" class="form-error" role="alert" hidden></div>
 
-        <form id="surveyForm" novalidate>
-          <input id="websiteField" class="honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div id="questionList" class="question-list"></div>
+            <div id="questionNavigation" class="question-navigation">
+              <button id="previousButton" class="button button--back" type="button">前へ</button>
+              <p id="navigationHint">直感に近いものをお選びください</p>
+              <button id="nextButton" class="button button--next" type="button">次へ</button>
+            </div>
 
-          <div id="formError" class="form-error" role="alert" hidden></div>
-
-          <div id="questionNavigation" class="question-navigation">
-            <button id="previousButton" class="button button--back" type="button">前の質問へ</button>
-            <p id="navigationHint">直感に近いものをお選びください</p>
-            <button id="nextButton" class="button button--next" type="button">次の質問へ</button>
-          </div>
-
-          <div id="submitCard" class="submit-card" hidden>
-            <p>ご回答は、サービスや体験をより良くするために活用します。個人を特定する情報の入力は不要です。</p>
-            <button id="submitButton" class="button button--primary" type="submit">
-              <span class="button__label">回答を送信する</span>
-              <span class="button__loading" hidden>送信しています</span>
-            </button>
-          </div>
-        </form>
+            <div id="submitCard" class="submit-card" hidden>
+              <p>ご回答は、サービスや体験をより良くするために活用します。個人を特定する情報の入力は不要です。</p>
+              <button id="submitButton" class="button button--primary" type="submit">
+                <span class="button__label">回答を送信する</span>
+                <span class="button__loading" hidden>送信しています</span>
+              </button>
+            </div>
+          </form>
+        </section>
       </section>
 
-      <section id="successState" class="state-card state-card--success" hidden aria-live="polite">
+      <section id="successState" class="surface-card state-card state-card--success" hidden aria-live="polite">
         <span class="state-icon state-icon--success" aria-hidden="true">✓</span>
         <p class="state-card__eyebrow">Thank you</p>
         <h1>ご回答ありがとうございました</h1>
@@ -146,12 +105,10 @@
   </main>
 
   <footer class="survey-footer">
-    <div class="survey-shell survey-footer__inner">
-      <span>Powered by クロスメソッド™</span>
-      <a href="/privacy-policy/" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>
-    </div>
+    <span>Powered by クロスメソッド™</span>
+    <a href="/privacy-policy/" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>
   </footer>
 
-  <script src="/assets/customer-voice/customer-voice-survey.js?v=20260810-visual-v1" defer></script>
+  <script src="/assets/customer-voice/customer-voice-survey.js?v=20260810-visual-v3" defer></script>
 </body>
 </html>
