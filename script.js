@@ -244,7 +244,10 @@ function setupFoodGalleryCollapse() {
   const items = Array.from(gallery.querySelectorAll(".food-item"));
   let control = document.getElementById("food-gallery-toggle-control");
 
-  // 再初期化時に状態をリセット
+  // 画面幅の変更や再初期化でも、利用者が開いた状態を維持する。
+  const isExpanded = gallery.dataset.foodExpanded === "true" ||
+    gallery.classList.contains("is-expanded");
+
   items.forEach((item) => {
     item.hidden = false;
     item.classList.remove("food-item-extra", "is-revealed");
@@ -260,12 +263,13 @@ function setupFoodGalleryCollapse() {
 
   const extraItems = items.slice(initialVisibleCount);
   extraItems.forEach((item) => {
-    item.hidden = true;
+    item.hidden = !isExpanded;
     item.classList.add("food-item-extra");
+    item.classList.toggle("is-revealed", isExpanded);
   });
 
   gallery.classList.add("has-collapsed-items");
-  gallery.classList.remove("is-expanded");
+  gallery.classList.toggle("is-expanded", isExpanded);
 
   if (!control) {
     control = document.createElement("div");
@@ -294,6 +298,8 @@ function setupFoodGalleryCollapse() {
   const cleanButton = button.cloneNode(true);
   button.replaceWith(cleanButton);
   const cleanLabel = cleanButton.querySelector(".food-toggle-label");
+  cleanButton.setAttribute("aria-expanded", String(isExpanded));
+  if (cleanLabel) cleanLabel.textContent = isExpanded ? "閉じる" : "もっと見る";
 
   cleanButton.addEventListener("click", () => {
     const isExpanded = cleanButton.getAttribute("aria-expanded") === "true";
@@ -301,6 +307,7 @@ function setupFoodGalleryCollapse() {
     const beforeTop = cleanButton.getBoundingClientRect().top;
 
     cleanButton.setAttribute("aria-expanded", String(nextExpanded));
+    gallery.dataset.foodExpanded = String(nextExpanded);
     gallery.classList.toggle("is-expanded", nextExpanded);
 
     if (nextExpanded) {
@@ -327,13 +334,10 @@ function setupFoodGalleryCollapse() {
 
   if (!window.__foodGalleryResponsiveBound) {
     window.__foodGalleryResponsiveBound = true;
-    let resizeTimer = 0;
-    window.addEventListener("resize", () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        setupFoodGalleryCollapse();
-      }, 180);
-    });
+    // スマホのアドレスバーの開閉（高さのみのresize）では再初期化しない。
+    // 表示件数が変わるPC／スマホ境界を跨いだときだけ再計算する。
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    mediaQuery.addEventListener("change", setupFoodGalleryCollapse);
   }
 }
 
@@ -1925,7 +1929,6 @@ function setupMobileMotion() {
     .orbit-center-card,
     .orbit-node,
     .achievement-logo-card,
-    .food-item,
     .room-experience,
     .final-box,
     .embed-shell
@@ -1940,7 +1943,6 @@ function setupMobileMotion() {
     .orbit-center-card,
     .orbit-node,
     .achievement-logo-card,
-    .food-item,
     .room-experience,
     .final-box,
     .embed-shell

@@ -3200,6 +3200,16 @@ a.news-item:hover {
   }
 }
 
+/* 商品は静止させ、浮遊演出は背後の装飾レイヤーに限定する。 */
+.healthyfood #food-gallery .food-item,
+.healthyfood #food-gallery .food-image-frame,
+.healthyfood #food-gallery .food-image-frame img {
+  animation: none !important;
+  transform: none !important;
+  transition: none !important;
+  opacity: 1 !important;
+}
+
 .food-gallery-toggle-control {
   display: flex;
   justify-content: center;
