@@ -372,7 +372,6 @@ function setupOrderModal() {
       return;
     }
     customer.paymentMethod = paymentMethod;
-    customer.message = `【支払い方法】${paymentMethod}${customer.message ? "\n" + customer.message : ""}`;
     const subtotal = calcSubtotal(orderItems);
     const shipping = calcShipping(subtotal);
     const payload = {

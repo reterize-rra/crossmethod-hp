@@ -1237,6 +1237,7 @@ section[data-food-ambient] > .hf-shell {
 }
 
 .hf-form-grid input,
+.hf-form-grid select,
 .hf-form-grid textarea {
   width: 100%;
   padding: 12px 13px;

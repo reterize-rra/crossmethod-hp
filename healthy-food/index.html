@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/healthy-food/healthy-food.css">
+  <link rel="stylesheet" href="/assets/healthy-food/healthy-food.css?v=20261021-order-details-v2">
 
   <script type="application/ld+json">
   {
@@ -512,6 +512,13 @@
           <label>メール<input name="email" type="email" required></label>
           <label>電話番号<input name="phone" type="tel"></label>
           <label class="full">配送先住所<textarea name="address" rows="3"></textarea></label>
+          <label class="full">支払い方法
+            <select name="paymentMethod" required>
+              <option value="">選択してください</option>
+              <option value="口座振込">口座振込</option>
+              <option value="クレジットカード">クレジットカード</option>
+            </select>
+          </label>
           <label class="full">備考<textarea name="message" rows="3"></textarea></label>
         </div>
 
@@ -524,7 +531,7 @@
   </div>
 
   <script src="/assets/security/form-security.js?v=20261021-v1"></script>
-  <script src="/assets/healthy-food/healthy-food.js?v=20261021-form-security-v1"></script>
+  <script src="/assets/healthy-food/healthy-food.js?v=20261021-order-details-v2"></script>
   <script src="/assets/managed/site-links.js"></script>
 </body>
 </html>

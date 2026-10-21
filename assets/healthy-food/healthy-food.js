@@ -483,6 +483,13 @@
     }
 
     const formData = new FormData(form);
+    const customer = Object.fromEntries(formData.entries());
+    const paymentMethod = String(customer.paymentMethod || "").trim();
+    if (!paymentMethod) {
+      window.alert("支払い方法を選択してください。");
+      return;
+    }
+    customer.paymentMethod = paymentMethod;
     const subtotal = calculateSubtotal(items);
     const shipping = calculateShipping(subtotal);
 
@@ -493,7 +500,8 @@
       subtotal,
       shipping,
       total: subtotal + shipping,
-      customer: Object.fromEntries(formData.entries()),
+      customer,
+      paymentMethod,
       requestId: createRequestId(),
       createdAt: new Date().toISOString()
     };
