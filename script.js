@@ -360,6 +360,7 @@ function setupOrderModal() {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (form.dataset.hpSubmitting === 'true') return;
     const orderItems = getOrderItems();
     if (orderItems.length === 0) { alert("商品個数を1つ以上入力してください。"); return; }
     const formData = new FormData(form);
@@ -391,10 +392,22 @@ function setupOrderModal() {
       alert("ローカル確認中です。GAS URL設定後、注文内容をスプレッドシート保存＋自動返信メールへ接続できます。");
       return;
     }
-    await postToGas(SITE_CONFIG.foodOrderGasUrl, payload, "注文依頼を送信しました。");
-    form.reset();
-    updateOrderSummary();
-    closeAllModals();
+    const submitButton = form.querySelector('button[type="submit"]');
+    const buttonText = submitButton?.textContent;
+    form.dataset.hpSubmitting = 'true';
+    try {
+      if (submitButton) { submitButton.disabled = true; submitButton.textContent = '確認して送信しています…'; }
+      await postToGas(SITE_CONFIG.foodOrderGasUrl, payload, "注文依頼を送信しました。", form);
+      window.HPFormSecurity.accepted(form);
+      form.reset();
+      updateOrderSummary();
+      closeAllModals();
+    } catch (error) {
+      // postToGasで表示済み。入力を保持して再送できるようにします。
+    } finally {
+      delete form.dataset.hpSubmitting;
+      if (submitButton) { submitButton.disabled = false; submitButton.textContent = buttonText; }
+    }
   });
 }
 
@@ -443,6 +456,7 @@ function setupContactModal() {
   if (!form) return;
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (form.dataset.hpSubmitting === 'true') return;
     const submitButton = form.querySelector('button[type="submit"]');
     const formData = new FormData(form);
     const payload = {
@@ -457,19 +471,30 @@ function setupContactModal() {
       alert("ローカル確認中です。GAS URL設定後、問い合わせ内容をHP管理スプレッドシートへ保存できます。");
       return;
     }
+    form.dataset.hpSubmitting = 'true';
     try {
-      if (submitButton) { submitButton.disabled = true; submitButton.textContent = "送信しています…"; }
-      await postToGas(SITE_CONFIG.inquiryGasUrl, payload, "相談内容を送信しました。");
+      if (submitButton) { submitButton.disabled = true; submitButton.textContent = "確認して送信しています…"; }
+      await postToGas(SITE_CONFIG.inquiryGasUrl, payload, "相談内容を送信しました。", form);
+      window.HPFormSecurity.accepted(form);
       form.reset();
       closeAllModals();
+    } catch (error) {
+      // postToGasで表示済み。入力を保持します。
     } finally {
+      delete form.dataset.hpSubmitting;
       if (submitButton) { submitButton.disabled = false; submitButton.textContent = "相談内容を送る"; }
     }
   });
 }
 
-async function postToGas(url, payload, successMessage) {
+async function postToGas(url, payload, successMessage, form) {
   try {
+    if (payload.action === 'submitFoodOrder' || payload.action === 'submitInquiry') {
+      if (!window.HPFormSecurity) throw new Error('送信前の確認を読み込めませんでした。ページを再読み込みしてください。');
+      const verification = await window.HPFormSecurity.prepare(form,
+        payload.action === 'submitFoodOrder' ? 'food_order' : 'inquiry', url, payload);
+      payload = { ...payload, ...verification };
+    }
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -481,6 +506,7 @@ async function postToGas(url, payload, successMessage) {
     alert(result.message || successMessage);
     return result;
   } catch (error) {
+    if (form && window.HPFormSecurity) window.HPFormSecurity.failed(form, error.message);
     console.error(error);
     alert(error.message || "送信中にエラーが発生しました。");
     throw error;

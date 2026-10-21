@@ -471,6 +471,7 @@
     event.preventDefault();
 
     const form = event.currentTarget;
+    if (form.dataset.hpSubmitting === 'true') return;
     const submitButton = form.querySelector(
       'button[type="submit"]'
     );
@@ -497,18 +498,21 @@
       createdAt: new Date().toISOString()
     };
 
+    form.dataset.hpSubmitting = 'true';
     try {
       if (submitButton) {
         submitButton.disabled = true;
         submitButton.textContent = "送信しています…";
       }
 
+      if (!window.HPFormSecurity) throw new Error('送信前の確認を読み込めませんでした。ページを再読み込みしてください。');
+      const verification = await window.HPFormSecurity.prepare(form, 'food_order', API_URL, payload);
       const response = await fetch(API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "text/plain;charset=utf-8"
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...verification }),
         redirect: "follow"
       });
 
@@ -524,16 +528,19 @@
         result.message || "注文依頼を送信しました。"
       );
 
+      window.HPFormSecurity.accepted(form);
       form.reset();
       renderOrderTable();
       closeAllModals();
     } catch (error) {
+      if (window.HPFormSecurity) window.HPFormSecurity.failed(form, error.message);
       console.error(error);
       window.alert(
         error.message ||
           "送信中にエラーが発生しました。"
       );
     } finally {
+      delete form.dataset.hpSubmitting;
       if (submitButton) {
         submitButton.disabled = false;
         submitButton.textContent = "注文を依頼する";
