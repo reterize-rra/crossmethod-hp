@@ -89,6 +89,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=20260925-food-fix">
   <link rel="stylesheet" href="/assets/managed/site-links.css">
+<style>
+[data-home-disabled][hidden]{display:none!important}
+.wk{min-width:0;align-self:center;scroll-margin-top:110px;border:1px solid #c9e6e7;border-radius:25px;background:#fff;overflow:hidden;box-shadow:0 18px 45px #0b35421c}
+.wk-copy{padding:clamp(14px,2vw,30px);background:linear-gradient(130deg,#fff,#ebf9f8)}
+.wk-meta{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;color:#245967;font-size:.91rem;font-weight:800}
+.wk-meta strong{background:#067b7d;color:white;border-radius:999px;padding:5px 14px;letter-spacing:.06em}
+.wk h2{font-size:clamp(1.35rem,2.25vw,2.4rem);line-height:1.25;margin:12px 0 6px;color:#102b41;letter-spacing:.01em}
+.wk h2 span{display:block}
+.wk-copy p{color:#365664;margin:0;font-size:clamp(.79rem,1.1vw,1rem)}
+.wk-media{position:relative;background:#09182a;aspect-ratio:1280/656}
+.wk-media video{display:block;width:100%;height:100%;object-fit:contain}
+.wk-hit{position:absolute;left:63%;top:47%;width:13%;height:16%;border-radius:15px}
+.wk-hit:focus-visible{outline:3px solid white;outline-offset:3px}
+.wk-status{padding:10px 16px;margin:0;color:#25495a;background:#eaf6f5;font-size:.85rem}
+.guide-word{display:inline-block;white-space:nowrap}
+.main-nav .nav-workshop{color:#00797d;font-weight:900}
+.wk[hidden],.wk-status[hidden]{display:none}
+@media(max-width:600px){.wk-hit{min-height:40px;min-width:42px}}
+
+#diagnostics a.orbit-node{pointer-events:auto!important;cursor:pointer!important}
+#diagnostics a.orbit-node:focus-visible{outline:3px solid #087f85;outline-offset:3px}
+#wk-title.cross-gradient{color:transparent}
+
+
+
+#mobile-bottom-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+
+.mobile-menu-links .drawer-card-1,.mobile-menu-links .drawer-card-3,.mobile-menu-links .drawer-card-5,.mobile-menu-links .drawer-card-6{border-radius:999px!important;border-left-width:1px!important}
+</style>
 </head>
 
 <body>
@@ -110,12 +140,13 @@
       </button>
 
       <nav class="main-nav" aria-label="メインナビゲーション">
-        <a href="#experience">無料体験診断</a>
-        <a href="#visible-voices">視える化できる声</a>
-        <a href="#stresscheck">ストレスチェック</a>
+        <a class="nav-workshop" href="https://seminar.tsunagari-jp.com/seminar.php?watch=OD-7ZKAL1RY3YXO">無料ワークショップ</a>
+        <a href="/employee-retention/">クロス式™ 人事評価制度</a>
+        <a href="/customer-voice/">お客様の声</a>
+        <a href="/stress-check/">ストレスチェック</a>
         <a href="/healthy-food/">健康食</a>
         <a href="/health-management/#recognition">認定支援</a>
-        <a href="/seminar-counseling/">カウンセリング・セミナー</a>
+        
         <button type="button" class="nav-consult" data-open-contact="総合相談">相談はこちら</button>
       </nav>
     </div>
@@ -128,7 +159,16 @@
       <button class="mobile-menu-close" id="mobile-menu-close" type="button" aria-label="メニューを閉じる">×</button>
     </div>
     <p class="mobile-menu-motto">つながりを基とし、ただ支えるのではなく、共に歩む</p>
-    <nav class="mobile-menu-links" id="mobile-menu-links" aria-label="スマートフォン用ページ内メニュー"></nav>
+    <nav class="mobile-menu-links" id="mobile-menu-links" aria-label="スマートフォン用メニュー">
+        <a class="mobile-menu-link menu-color-2 drawer-card-1" href="https://seminar.tsunagari-jp.com/seminar.php?watch=OD-7ZKAL1RY3YXO"><span class="mobile-menu-number" aria-hidden="true">01</span><strong>無料ワークショップ</strong><span class="mobile-menu-arrow" aria-hidden="true">→</span></a>
+        <a class="mobile-menu-link menu-color-5 drawer-card-2" href="/employee-retention/"><span class="mobile-menu-number" aria-hidden="true">02</span><strong>クロス式™ 人事評価制度</strong><span class="mobile-menu-arrow" aria-hidden="true">→</span></a>
+        <a class="mobile-menu-link menu-color-1 drawer-card-3" href="/customer-voice/"><span class="mobile-menu-number" aria-hidden="true">03</span><strong>お客様の声</strong><span class="mobile-menu-arrow" aria-hidden="true">→</span></a>
+        <a class="mobile-menu-link menu-color-3 drawer-card-4" href="/stress-check/"><span class="mobile-menu-number" aria-hidden="true">04</span><strong>ストレスチェック</strong><span class="mobile-menu-arrow" aria-hidden="true">→</span></a>
+        <a class="mobile-menu-link menu-color-6 drawer-card-5" href="/healthy-food/"><span class="mobile-menu-number" aria-hidden="true">05</span><strong>健康食</strong><span class="mobile-menu-arrow" aria-hidden="true">→</span></a>
+        <a class="mobile-menu-link menu-color-7 drawer-card-6" href="/health-management/#recognition"><span class="mobile-menu-number" aria-hidden="true">06</span><strong>認定支援</strong><span class="mobile-menu-arrow" aria-hidden="true">→</span></a>
+        
+        <button type="button" class="mobile-menu-contact" data-open-contact="総合相談">相談はこちら</button>
+      </nav>
     <button class="mobile-menu-contact" type="button" data-open-contact="総合相談">今すぐ相談する</button>
   </aside>
 
@@ -145,46 +185,21 @@
             <span class="hero-line-1">声は、組織を変える</span>
             <span class="hero-line-2 cross-gradient">資産になる。</span>
           </h1>
-          <p class="lead">
-            お客様の声、従業員の声、現場の声を集め、課題を視える化し、改善行動へつなげる。
-            合同会社TSUNAGARIが提供するクロスメソッド™は、職場改善・人材定着・健康経営・リスク予防まで支援する仕組みです。
-          </p>
+          <p class="lead">クロスメソッド™は、お客様・従業員・現場の声から、職場の強みと課題を視える化する仕組みです。何から変えるべきかを一緒に整理し、職場改善・人材定着・健康経営・リスク予防まで支援します。</p>
         </div>
 
-        <div class="hero-graph-card" aria-label="声の視える化による改善イメージ">
-          <div class="graph-card-head">
-            <p class="tiny-label">Before / After</p>
-            <span>Animated Preview</span>
+        <section class="wk" id="workshop" aria-labelledby="wk-title">
+          <div class="wk-copy">
+            <div class="wk-meta"><strong>完全無料</strong><span>好きなときに体験できる</span></div>
+            <h2 id="wk-title" class="cross-gradient">自分と職場の「今」を知る。</h2>
+            <p>短い問いに答えながら、働き方や職場の課題を振り返り、次にできることを考えます。</p>
           </div>
-          <h2>感覚だった課題を、<br>判断できる数字へ。</h2>
-          <p class="graph-lead">声を集めると、改善すべき順番が見えてきます。</p>
+          <div class="wk-media">
+            <video id="wk-video" muted loop playsinline preload="none" poster="/assets/workshop/workshop-poster.jpg" data-src="/assets/workshop/workshop-banner.mp4" aria-hidden="true"></video>
+            <a class="wk-hit" href="https://seminar.tsunagari-jp.com/seminar.php?watch=OD-7ZKAL1RY3YXO" aria-label="ウェルビーイング体験型ワークショップを開く"></a>
+          </div>
+        </section>
 
-          <div class="before-after">
-            <div class="mini-chart before">
-              <strong>Before</strong>
-              <div class="bars muted-bars">
-                <i style="height:32%"></i><i style="height:46%"></i><i style="height:28%"></i><i style="height:40%"></i>
-              </div>
-              <p>課題が点在</p>
-            </div>
-            <div class="pulse-arrow">→</div>
-            <div class="mini-chart after">
-              <strong>After</strong>
-              <div class="bars vivid-bars">
-                <i style="height:58%"></i><i style="height:74%"></i><i style="height:87%"></i><i style="height:96%"></i>
-              </div>
-              <p>優先順位が明確</p>
-            </div>
-          </div>
-          <div class="hero-floating-actions">
-            <a class="float-action fa-free" href="#experience">無料体験診断</a>
-            <a class="float-action fa-voice" href="#visible-voices">視える化できる声</a>
-            <button class="float-action fa-stress" type="button" data-open-contact="ストレスチェック相談">ストレスチェック</button>
-            <a class="float-action fa-food" href="/healthy-food/">健康食</a>
-            <a class="float-action fa-cert" href="/health-management/#recognition">認定支援</a>
-            <a class="float-action fa-room" href="/seminar-counseling/">カウンセリング・セミナー</a>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -383,7 +398,7 @@
       </div>
     </section>
 
-    <section class="section-pad experience" id="experience" data-section-id="experience">
+    <section class="section-pad experience" id="experience" data-section-id="experience" hidden data-home-disabled="true">
       <div class="container">
         <div class="section-head centered compact-head">
           <p class="section-label">Free Trial</p>
@@ -429,6 +444,52 @@
       </div>
     </section>
 
+    
+
+    
+
+    
+
+
+    <section class="section-pad diagnostics" id="diagnostics" data-section-id="diagnostics">
+      <div class="container">
+        <div class="section-head centered">
+          <p class="section-label">Diagnostics</p>
+          <h2 class="mobile-heading-diagnostics">
+            <span>どの声を視える化</span>
+            <span>しますか？</span>
+          </h2>
+          <p>中心にあるのは、問いです。周囲の声を拾うことで、組織の状態が立体的に見えてきます。</p>
+        </div>
+
+        <div class="voice-orbit-map">
+          <div class="orbit-center-card">
+            <span>Cross Method</span>
+            <h3>どの声を<br><span class="center-question">聴きたいですか？</span></h3>
+            
+          </div>
+
+          <a class="orbit-node n01" href="/customer-voice/"><b>1</b>お客様は満足して帰ったか</a>
+          <a class="orbit-node n02" href="/employee-voice/"><b>2</b>従業員は今、幸せか</a>
+          <a class="orbit-node n03" href="/employee-retention/"><b>3</b>ここで働き続けたいか</a>
+          <a class="orbit-node n04" href="/employee-voice/"><b>4</b>会社を理解して頑張れているか</a>
+          <a class="orbit-node n05" href="/employee-retention/"><b>5</b>頑張りが報われる仕組みか</a>
+          <a class="orbit-node n06" href="/employee-voice/"><b>6</b>現場はどこで詰まっているか</a>
+          <a class="orbit-node n07" href="/employee-retention/"><b>7</b>管理者は抱え込んでいないか</a>
+          <a class="orbit-node n08" href="/employee-retention/"><b>8</b>新人は本音を言えているか</a>
+          <a class="orbit-node n09" href="/employee-retention/"><b>9</b>その人の本質はなにか</a>
+          <a class="orbit-node n10" href="/employee-retention/"><b>10</b>面談で本音を引き出せているか</a>
+          <a class="orbit-node n11" href="/employee-retention/"><b>11</b>面接で本質を見抜けているか</a>
+          <a class="orbit-node n12" href="/employee-retention/"><b>12</b>会社の魅力は伝わっているか</a>
+          <a class="orbit-node n13" href="/employee-retention/"><b>13</b>評価は行動変化につながっているか</a>
+          <a class="orbit-node n14" href="/risk-safety/"><b>14</b>緊急時に本当に動ける準備があるか</a>
+          <a class="orbit-node n15" href="/health-management/"><b>15</b>相談できる空気と初動体制があるか</a>
+          <a class="orbit-node n16" href="/risk-safety/"><b>16</b>尊厳を守るケアが続いているか</a>
+          <a class="orbit-node n17" href="/risk-safety/"><b>17</b>記録と情報共有の安全が守られているか</a>
+          <a class="orbit-node n18" href="/risk-safety/"><b>18</b>ヒヤリが再発防止に変わっているか</a>
+        </div>
+      </div>
+    </section>
     <section class="section-pad voice-behind" id="visible-voices" data-section-id="voice-behind">
       <div class="container">
         <div class="section-head centered">
@@ -453,7 +514,6 @@
         </div>
       </div>
     </section>
-
     <section class="section-pad services" id="services" data-section-id="services">
       <div class="container">
         <div class="section-head centered">
@@ -478,47 +538,6 @@
         </div>
       </div>
     </section>
-
-    <section class="section-pad diagnostics" id="diagnostics" data-section-id="diagnostics">
-      <div class="container">
-        <div class="section-head centered">
-          <p class="section-label">Diagnostics</p>
-          <h2 class="mobile-heading-diagnostics">
-            <span>どの声を視える化</span>
-            <span>しますか？</span>
-          </h2>
-          <p>中心にあるのは、問いです。周囲の声を拾うことで、組織の状態が立体的に見えてきます。</p>
-        </div>
-
-        <div class="voice-orbit-map">
-          <div class="orbit-center-card">
-            <span>Cross Method</span>
-            <h3>どの声を<br><span class="center-question">聴きたいですか？</span></h3>
-            <a class="center-trial-button" href="#experience">まずは体験から</a>
-          </div>
-
-          <a class="orbit-node n01" href="/customer-voice/"><b>1</b>お客様は満足して帰ったか</a>
-          <a class="orbit-node n02" href="/employee-voice/"><b>2</b>従業員は今、幸せか</a>
-          <a class="orbit-node n03" href="/employee-retention/"><b>3</b>ここで働き続けたいか</a>
-          <a class="orbit-node n04" href="/employee-voice/"><b>4</b>会社を理解して頑張れているか</a>
-          <a class="orbit-node n05" href="/employee-retention/"><b>5</b>頑張りが報われる仕組みか</a>
-          <a class="orbit-node n06" href="/employee-voice/"><b>6</b>現場はどこで詰まっているか</a>
-          <a class="orbit-node n07" href="/employee-retention/"><b>7</b>管理者は抱え込んでいないか</a>
-          <a class="orbit-node n08" href="/employee-retention/"><b>8</b>新人は本音を言えているか</a>
-          <a class="orbit-node n09" href="/employee-retention/"><b>9</b>その人の本質はなにか</a>
-          <a class="orbit-node n10" href="/employee-retention/"><b>10</b>面談で本音を引き出せているか</a>
-          <a class="orbit-node n11" href="/employee-retention/"><b>11</b>面接で本質を見抜けているか</a>
-          <a class="orbit-node n12" href="/employee-retention/"><b>12</b>会社の魅力は伝わっているか</a>
-          <a class="orbit-node n13" href="/employee-retention/"><b>13</b>評価は行動変化につながっているか</a>
-          <a class="orbit-node n14" href="/risk-safety/"><b>14</b>緊急時に本当に動ける準備があるか</a>
-          <a class="orbit-node n15" href="/health-management/"><b>15</b>相談できる空気と初動体制があるか</a>
-          <a class="orbit-node n16" href="/risk-safety/"><b>16</b>尊厳を守るケアが続いているか</a>
-          <a class="orbit-node n17" href="/risk-safety/"><b>17</b>記録と情報共有の安全が守られているか</a>
-          <a class="orbit-node n18" href="/risk-safety/"><b>18</b>ヒヤリが再発防止に変わっているか</a>
-        </div>
-      </div>
-    </section>
-
 
     <section class="section-pad achievements" id="achievements" data-section-id="achievements">
       <div class="container">
@@ -627,7 +646,7 @@
       <div class="container">
         <div class="section-head centered home-guides-heading">
           <p class="section-label">Business Guides</p>
-          <h2 id="business-guides-title">企業の課題から調べる、経営課題ガイド</h2>
+          <h2 id="business-guides-title">企業の課題から調べる、<span class="guide-word">経営課題ガイド</span></h2>
           <p>制度やサービスを選ぶ前に知っておきたい基本、進め方、注意点を、合同会社TSUNAGARIが企業向けに整理しています。</p>
         </div>
 
@@ -663,7 +682,7 @@
       </div>
     </section>
 
-    <section class="section-pad virtualrooms" id="virtualrooms" data-section-id="virtualrooms">
+    <section class="section-pad virtualrooms" id="virtualrooms" data-section-id="virtualrooms" hidden data-home-disabled="true">
       <div class="container">
         <div class="section-head centered">
           <p class="section-label">Virtual Rooms</p>
@@ -693,7 +712,7 @@
         <h2 class="final-title">まずは、あなたの組織に眠る声を確認してみませんか？</h2>
         <p>声は、放っておくと不満や離職につながることがあります。丁寧に集めれば、改善のヒントや選ばれる理由になります。</p>
         <div class="final-actions">
-          <a class="button primary" href="#experience">無料体験診断へ</a>
+          <a class="button primary" href="https://seminar.tsunagari-jp.com/seminar.php?watch=OD-7ZKAL1RY3YXO">無料ワークショップへ</a>
           <button class="button white" type="button" data-open-contact="総合相談">相談フォームを開く</button>
         </div>
       </div>
@@ -718,7 +737,7 @@
   </footer>
 
   <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="スマートフォン用固定メニュー">
-    <a class="mobile-bottom-link mobile-bottom-trial" href="#experience" data-mobile-target="experience">
+    <a class="mobile-bottom-link mobile-bottom-trial" href="https://seminar.tsunagari-jp.com/seminar.php?watch=OD-7ZKAL1RY3YXO" data-mobile-target="workshop">
       <span class="mobile-bottom-icon" aria-hidden="true">
         <svg viewBox="0 0 32 32">
           <path d="M9 5h11l4 4v18H9z"/>
@@ -727,7 +746,7 @@
           <path d="M12 13h5"/>
         </svg>
       </span>
-      <span>無料体験</span>
+      <span>ワークショップ</span>
     </a>
     <a class="mobile-bottom-link mobile-bottom-food" href="/healthy-food/" data-mobile-target="healthyfood">
       <span class="mobile-bottom-icon" aria-hidden="true">
@@ -739,16 +758,7 @@
       </span>
       <span>健康食</span>
     </a>
-    <a class="mobile-bottom-link mobile-bottom-online" href="/seminar-counseling/" data-mobile-target="virtualrooms">
-      <span class="mobile-bottom-icon" aria-hidden="true">
-        <svg viewBox="0 0 32 32">
-          <rect x="5" y="7" width="22" height="16" rx="2"/>
-          <path d="M2 26h28"/>
-          <path d="m14 12 7 4-7 4z"/>
-        </svg>
-      </span>
-      <span>相談・セミナー</span>
-    </a>
+    
     <button class="mobile-bottom-link mobile-bottom-contact" type="button" data-open-contact="総合相談" data-mobile-target="contact">
       <span class="mobile-bottom-icon" aria-hidden="true">
         <svg viewBox="0 0 32 32">
@@ -884,7 +894,7 @@
   </div>
 
 <script src="/assets/security/form-security.js?v=20261021-v1"></script>
-<script src="script.js?v=20261021-order-details-v2"></script>
+<script src="script.js?v=20261108-home-workshop"></script>
 <script src="/assets/managed/section-visuals.js"></script>
 <script src="/assets/managed/section-ambient.js"></script>
 <script src="/assets/legal/legal-links.js"></script>

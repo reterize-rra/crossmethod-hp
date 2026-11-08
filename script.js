@@ -106,6 +106,7 @@ const ORDER_SETTINGS = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  setupWorkshopBanner();
   positionPrioritySections();
   await setupManagedSite();
   positionPrioritySections();
@@ -128,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 function setupExperienceFrame() {
   const frame = document.getElementById("crossmethod-experience-frame");
   const note = document.getElementById("embed-note");
-  if (!frame) return;
+  if (!frame || frame.closest("[data-home-disabled]")) return;
 
   setupTrialFrameAutoHeight(frame);
 
@@ -1608,7 +1609,7 @@ function applySectionManagement(sections) {
       const section = byId.get(config.id);
       if (!section) return;
       managedIds.add(config.id);
-      section.hidden = config.fixed ? false : config.visible === false;
+      section.hidden = section.dataset.homeDisabled === "true" || (!config.fixed && config.visible === false);
       if (!config.fixed && contact) main.insertBefore(section, contact);
     });
 
@@ -1622,41 +1623,42 @@ function applySectionManagement(sections) {
   });
 
   positionPrioritySections();
-  rebuildManagedNavigation(sections);
 }
 
-/**
- * トップページ上部の重要導線は、管理表の並び替え後も固定します。
- * 表示順：ファーストビュー → 人事評価制度 → 無料体験診断 → その他
- */
 function positionPrioritySections() {
-  const main = document.querySelector("main");
   const hero = document.querySelector('main > section[data-section-id="hero"]');
   const evaluation = document.getElementById("evaluation-feature");
-  const experience = document.getElementById("experience");
-  if (!main || !hero || !evaluation) return;
-
-  hero.insertAdjacentElement("afterend", evaluation);
-  if (experience) evaluation.insertAdjacentElement("afterend", experience);
+  if (hero && evaluation) hero.insertAdjacentElement("afterend", evaluation);
+  let after = document.querySelector("main > .chat-warning");
+  for (const id of ["diagnostics", "visible-voices", "services"]) {
+    const section = document.getElementById(id);
+    if (after && section) {
+      after.insertAdjacentElement("afterend", section);
+      after = section;
+    }
+  }
 }
 
-function rebuildManagedNavigation(sections) {
-  const nav = document.querySelector(".main-nav");
-  if (!nav) return;
-  const consultButton = nav.querySelector(".nav-consult");
-  nav.querySelectorAll("a").forEach((anchor) => anchor.remove());
-
-  sections
-    .filter((item) => item.visible !== false && item.menuVisible && item.menuName && item.menuLink)
-    .sort((a, b) => Number(a.order || 9999) - Number(b.order || 9999))
-    .forEach((item) => {
-      const anchor = document.createElement("a");
-      anchor.href = item.menuLink;
-      anchor.textContent = item.menuName;
-      nav.insertBefore(anchor, consultButton || null);
-    });
+function setupWorkshopBanner() {
+  const video = document.getElementById("wk-video");
+  if (!video || !("IntersectionObserver" in window)) return;
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  video.defaultPlaybackRate = 2;
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting || reduced.matches) {
+      video.pause();
+      return;
+    }
+    if (!video.hasAttribute("src")) video.src = video.dataset.src;
+    video.playbackRate = 2;
+    video.play().catch(() => {});
+  }, { threshold: 0.18 });
+  observer.observe(video);
+  reduced.addEventListener?.("change", () => {
+    if (reduced.matches) video.pause();
+    else { observer.unobserve(video); observer.observe(video); }
+  });
 }
-
 
 function renderManagedInquiryForm(config) {
   const form = document.getElementById("contact-form");
@@ -1833,39 +1835,7 @@ function setupMobileNavigation() {
 
   if (!toggle || !drawer || !backdrop || !closeButton || !linkContainer) return;
 
-  const mobileMenuItems = [
-    { sectionId: "evidence", targetId: "evidence", label: "数字で見る現実", color: "menu-color-1" },
-    { sectionId: "experience", targetId: "experience", label: "無料診断体験", color: "menu-color-2" },
-    { sectionId: "voice-behind", targetId: "visible-voices", label: "声の裏に隠れた価値", color: "menu-color-3" },
-    { sectionId: "services", targetId: "services", label: "主な支援メニュー", color: "menu-color-4" },
-    { sectionId: "diagnostics", targetId: "diagnostics", label: "“声の診断”一覧", color: "menu-color-5" },
-    { sectionId: "healthyfood", targetId: "healthyfood", label: "社食検討の方へ", color: "menu-color-6" },
-    { sectionId: "certification", targetId: "certification", label: "認定支援", color: "menu-color-7" },
-    { sectionId: "flow", targetId: "flow", label: "導入の流れ", color: "menu-color-8" },
-    { sectionId: "virtualrooms", targetId: "virtualrooms", label: "カウンセリング・セミナー", color: "menu-color-9" }
-  ];
-
-  function buildDrawerLinks() {
-    const links = mobileMenuItems
-      .filter((item) => {
-        const section = document.querySelector(
-          `main > section[data-section-id="${item.sectionId}"]`
-        );
-        return section && !section.hidden;
-      })
-      .map((item, index) => `
-        <a class="mobile-menu-link ${item.color}" href="#${escapeHtml(item.targetId)}">
-          <span class="mobile-menu-number">${String(index + 1).padStart(2, "0")}</span>
-          <strong>${escapeHtml(item.label)}</strong>
-          <span class="mobile-menu-arrow" aria-hidden="true">→</span>
-        </a>
-      `);
-
-    linkContainer.innerHTML = links.join("");
-  }
-
   function openDrawer() {
-    buildDrawerLinks();
     document.body.classList.add("mobile-menu-open");
     toggle.setAttribute("aria-expanded", "true");
     toggle.setAttribute("aria-label", "メニューを閉じる");
