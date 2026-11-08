@@ -1626,16 +1626,22 @@ function applySectionManagement(sections) {
 }
 
 function positionPrioritySections() {
-  const hero = document.querySelector('main > section[data-section-id="hero"]');
-  const evaluation = document.getElementById("evaluation-feature");
-  if (hero && evaluation) hero.insertAdjacentElement("afterend", evaluation);
-  let after = document.querySelector("main > .chat-warning");
-  for (const id of ["diagnostics", "visible-voices", "services"]) {
-    const section = document.getElementById(id);
-    if (after && section) {
-      after.insertAdjacentElement("afterend", section);
-      after = section;
+  const main = document.querySelector("main[data-home-approved-layout]");
+  if (!main) return;
+  const ids = [
+    "hero", "evaluation-feature", "news", "evidence", "chat-warning",
+    "diagnostics", "voice-behind", "services", "achievements",
+    "healthyfood", "certification", "flow", "business-guides"
+  ];
+  const sections = new Map(Array.from(main.children, node => [node.dataset.sectionId, node]));
+  let previous = null;
+  for (const id of ids) {
+    const section = sections.get(id);
+    if (!section) continue;
+    if (previous && previous.nextElementSibling !== section) {
+      previous.insertAdjacentElement("afterend", section);
     }
+    previous = section;
   }
 }
 

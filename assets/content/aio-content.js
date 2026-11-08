@@ -299,6 +299,7 @@
   }
 
   function insertAboutSection() {
+    if (document.querySelector("main[data-home-approved-layout]")) return;
     const existingSections = Array.from(
       document.querySelectorAll("#crossmethod-about")
     );

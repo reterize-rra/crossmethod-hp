@@ -90,7 +90,7 @@
   <link rel="stylesheet" href="style.css?v=20260925-food-fix">
   <link rel="stylesheet" href="/assets/managed/site-links.css">
 <style>
-[data-home-disabled][hidden]{display:none!important}
+[data-home-disabled][hidden], main[data-home-approved-layout] > #crossmethod-about{display:none!important}
 .wk{min-width:0;align-self:center;scroll-margin-top:110px;border:1px solid #c9e6e7;border-radius:25px;background:#fff;overflow:hidden;box-shadow:0 18px 45px #0b35421c}
 .wk-copy{padding:clamp(14px,2vw,30px);background:linear-gradient(130deg,#fff,#ebf9f8)}
 .wk-meta{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;color:#245967;font-size:.91rem;font-weight:800}
@@ -169,10 +169,9 @@
         
         <button type="button" class="mobile-menu-contact" data-open-contact="総合相談">相談はこちら</button>
       </nav>
-    <button class="mobile-menu-contact" type="button" data-open-contact="総合相談">今すぐ相談する</button>
   </aside>
 
-  <main>
+  <main data-home-approved-layout>
     <section class="hero section-pad" data-section-id="hero" data-section-fixed="true">
       <div class="container hero-grid">
         <div class="hero-copy">
@@ -894,12 +893,12 @@
   </div>
 
 <script src="/assets/security/form-security.js?v=20261021-v1"></script>
-<script src="script.js?v=20261108-home-workshop"></script>
+<script src="script.js?v=20261108-home-approved-v2"></script>
 <script src="/assets/managed/section-visuals.js"></script>
 <script src="/assets/managed/section-ambient.js"></script>
 <script src="/assets/legal/legal-links.js"></script>
 <script src="/assets/faq/faq-top.js"></script>
-<script src="/assets/content/aio-content.js"></script>
+<script src="/assets/content/aio-content.js?v=20261108-home-approved-v2"></script>
 <script src="/assets/analytics/ga4-events.js"></script>
   <script src="/assets/managed/site-links.js"></script>
 </body>
