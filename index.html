@@ -119,6 +119,60 @@
 
 .mobile-menu-links .drawer-card-1,.mobile-menu-links .drawer-card-3,.mobile-menu-links .drawer-card-5,.mobile-menu-links .drawer-card-6{border-radius:999px!important;border-left-width:1px!important}
 </style>
+<style>
+.home-quick-list,.home-more>summary{display:none}
+.home-stat-value{white-space:nowrap}
+.home-consult{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px;padding:clamp(18px,3vw,36px);border:1px solid #c7e1dd;border-radius:24px;background:linear-gradient(115deg,#f0faf6,#fff8ed);color:#122d3e;box-shadow:0 12px 30px #143b4610}
+.home-consult-tag{display:inline-block;background:#d9eee6;color:#14544e;border-radius:100px;padding:5px 12px;font-size:.78rem;font-weight:800}
+.home-consult h3{margin:8px 0 5px;font-size:clamp(1.1rem,2.3vw,1.65rem);line-height:1.45}
+.home-consult p{margin:0;color:#435b66;font-size:.95rem;line-height:1.7}
+.home-consult a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border-radius:14px;background:#126a63;color:white;text-align:center;text-decoration:none;font-size:.88rem;font-weight:800;flex:none}
+.home-consult a:hover{background:#0c534e}
+.home-consult a:focus-visible,.home-more>summary:focus-visible{outline:3px solid #146b65;outline-offset:3px}
+@media(max-width:767px){
+  .home-quick-list{display:grid;gap:0;margin:0 0 10px;padding:0;list-style:none;border:1px solid #d5e7e9;border-radius:16px;background:#fff;overflow:hidden}
+  .home-quick-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;padding:10px 12px;color:#183749;font-size:.84rem;line-height:1.45}
+  .home-quick-list li+li{border-top:1px solid #e4eff0}
+  .home-quick-list strong{color:#08635f;font-size:1rem;font-weight:900;white-space:nowrap}
+  .voice-behind .home-quick-list li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .voice-behind .home-quick-list strong{font-size:.84rem}
+  .home-more>summary{display:flex;min-height:44px;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;border-radius:12px;background:#edf7f6;color:#124f4b;font-size:.86rem;font-weight:800;list-style:none;cursor:pointer}
+  .home-more>summary::-webkit-details-marker{display:none}
+  .home-more>summary::after{content:"+";font-size:1.2rem;line-height:1}
+  .home-more[open]>summary::after{content:"−"}
+  .home-more-close,.home-more[open]>summary .home-more-open{display:none}
+  .home-more[open]>summary .home-more-close{display:inline}
+  .home-more .infographic-grid,.home-more .meaning-board{margin-top:10px;gap:8px!important;grid-template-columns:minmax(0,1fr)!important}
+  .home-more .info-card,.home-more .meaning-board article{min-height:0;height:auto;padding:14px 16px!important;border-radius:14px!important;animation:none!important;transform:none!important}
+  .home-more .info-card .round-index,.home-more .info-card [aria-hidden="true"],.home-more .meaning-board article>span{display:none!important}
+  .home-more .info-card h3,.home-more .meaning-board h3{padding:0!important;margin:0 0 4px!important;font-size:1rem!important;max-width:none!important;min-height:0!important}
+  .home-more .info-card p.big{font-size:1.25rem!important;line-height:1.35!important;max-width:none!important;margin:4px 0}
+  .home-more .info-card p:not(.big),.home-more .meaning-board p{font-size:.84rem!important;line-height:1.55!important;margin-top:4px}
+  .home-consult{display:grid;gap:12px;margin-top:18px;border-radius:18px}
+  .home-consult a{width:100%;white-space:normal}
+  .home-consult p{font-size:.88rem}
+}
+</style>
+<style id="home-review-palette">
+/* Color accents follow the cards each summary represents. */
+.home-consult{border-color:#d5dce9;background:linear-gradient(115deg,#ecfaf5 0%,#f3f2ff 55%,#fff4e8 100%)}
+.home-consult-tag{background:#e9e2f8;color:#553c80}
+.home-consult a{background:linear-gradient(110deg,#08645d,#175c8a 58%,#62428b)}
+.home-consult a:hover{background:linear-gradient(110deg,#07534d,#144c75 58%,#523675)}
+@media(max-width:767px){
+  .home-quick-list{border-color:#d9e2ea}
+  .home-quick-list li{--row-bg:#eff8ff;--row-ink:#145885;--row-line:#3598c4;background:linear-gradient(100deg,var(--row-bg),#fff 92%);border-inline-start:4px solid var(--row-line)}
+  .home-quick-list li+li{border-top-color:#e1e9ef}
+  .home-quick-list strong{color:var(--row-ink)}
+  #evidence .home-quick-list li:nth-child(1){--row-bg:#fff6df;--row-ink:#795315;--row-line:#dca33b}
+  #evidence .home-quick-list li:nth-child(2){--row-bg:#edf8e8;--row-ink:#2b642c;--row-line:#79b958}
+  #evidence .home-quick-list li:nth-child(3){--row-bg:#fff0ef;--row-ink:#953c4c;--row-line:#df7683}
+  .voice-behind .home-quick-list li:nth-child(1){--row-bg:#e8f9f7;--row-ink:#08675e;--row-line:#38a79d}
+  .voice-behind .home-quick-list li:nth-child(3){--row-bg:#f4effc;--row-ink:#603e8b;--row-line:#a287cf}
+  .home-more-evidence>summary{background:linear-gradient(100deg,#edf7e7,#fff2d8);color:#315b37}
+  .home-more-voices>summary{background:linear-gradient(100deg,#e7f5ff,#f1eafa);color:#3e4e83}
+}
+</style>
 </head>
 
 <body>
@@ -319,7 +373,9 @@
           <p>働く人の課題は、すでに企業の経営課題です。だからこそ、声を拾い、早い段階で状態を視える化する必要があります。</p>
         </div>
 
-        <div class="infographic-grid">
+        <ul class="home-quick-list" aria-label="主な数字"><li><span>年間の離職者</span><strong>約719.5万人</strong></li><li><span>ビジネスケアラー（2030年推計）</span><strong>約318万人</strong></li><li><span>精神障害の労災請求</span><strong>3,575件</strong></li></ul>
+<details class="home-more home-more-evidence" open><summary><span class="home-more-open">すべての数字と出典を見る</span><span class="home-more-close">数字と出典を閉じる</span></summary>
+<div class="infographic-grid">
           <article class="info-card blue">
             <div class="round-index">1</div>
             <div class="info-icon donut-chart" aria-hidden="true"></div>
@@ -351,7 +407,7 @@
             <div class="round-index">4</div>
             <div class="people-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i class="off"></i></div>
             <h3>ビジネスケアラー</h3>
-            <p class="big">2030年 約318万人</p>
+            <p class="big"><span class="home-stat-year">2030年</span> <span class="home-stat-value">約318万人</span></p>
             <p>経済損失額は約9兆円と試算。仕事と介護の両立は経営課題です。</p>
             <small>出典：経済産業省</small>
           </article>
@@ -392,6 +448,7 @@
             <small>クロスメソッド™で確認</small>
           </article>
         </div>
+</details>
 
         <p class="evidence-note">病気、介護、健康不安、メンタル不調、離職。これらは一部の人だけに起きる特別な問題ではありません。</p>
       </div>
@@ -440,6 +497,14 @@
           <article class="chat-card float-a"><div class="avatar person-e"></div><p>「ヒヤリは出ているのに、同じ事故が繰り返される。」</p></article>
           <article class="chat-card float-c"><div class="avatar person-f"></div><p>「ストレスチェックをしたのに、何も変わっていない。」</p></article>
         </div>
+        <aside class="home-consult" aria-labelledby="home-consult-title">
+  <div class="home-consult-copy">
+    <span class="home-consult-tag">外部相談窓口・企業向け研修</span>
+    <h3 id="home-consult-title">職場の中では、話しにくいこともある。</h3>
+    <p>上司に言いづらい悩みや、ハラスメントへの不安。働く人が社外に話せる窓口づくりを支援します。</p>
+  </div>
+  <a href="/seminar-counseling/">外部相談窓口・企業研修を詳しく見る <span aria-hidden="true">→</span></a>
+</aside>
       </div>
     </section>
 
@@ -497,7 +562,9 @@
           <p>数字は、声の中に隠れています。</p>
         </div>
 
-        <div class="meaning-board">
+        <ul class="home-quick-list" aria-label="主な事例"><li><span>お客様は満足して帰ったか</span><strong>リピート率・紹介件数</strong></li><li><span>従業員はここで働き続けたいか</span><strong>勤続年数・退職意向</strong></li><li><span>管理者は抱え込んでいないか</span><strong>管理者の残業時間</strong></li></ul>
+<details class="home-more home-more-voices" open><summary><span class="home-more-open">ほかの例も見る（全12例）</span><span class="home-more-close">事例を閉じる</span></summary>
+<div class="meaning-board">
           <article><span>1</span><h3>お客様は満足して帰ったか</h3><p>継続年数＝努力の軌跡<br>お客様の数＝感謝の数<br>リピート率＝信頼の数<br>紹介・口コミ＝応援の数</p></article>
           <article><span>2</span><h3>従業員は今、幸せか</h3><p>心の余裕＝力を出す余白<br>睡眠と休息＝働く土台<br>家庭の安定＝仕事を支える力<br>幸福感＝働く力の源</p></article>
           <article><span>3</span><h3>従業員はここで働き続けたいか</h3><p>勤続年数＝信頼の積み重ね<br>退職意向＝損失前のサイン<br>人間関係＝残りたい理由<br>定着率＝会社に残る答え</p></article>
@@ -511,6 +578,7 @@
           <article><span>11</span><h3>面接で相手の本質を見抜けているか</h3><p>面接数＝未来の仲間との出会い<br>質問の質＝本質に近づく鍵<br>教育コスト＝ミスマッチの代償<br>定着率＝採用の答え合わせ</p></article>
           <article><span>12</span><h3>会社の魅力はちゃんと伝わっているか</h3><p>応募数＝興味を持たれた数<br>応募率＝魅力が届いた割合<br>辞退数＝不安が残った数<br>採用単価＝伝わらなかったコスト</p></article>
         </div>
+</details>
       </div>
     </section>
     <section class="section-pad services" id="services" data-section-id="services">
@@ -901,5 +969,15 @@
 <script src="/assets/content/aio-content.js?v=20261108-home-approved-v2"></script>
 <script src="/assets/analytics/ga4-events.js"></script>
   <script src="/assets/managed/site-links.js"></script>
+<script>
+(() => {
+  const mobile=window.matchMedia('(max-width: 767px)');
+  const panels=document.querySelectorAll('details.home-more');
+  const sync=()=>panels.forEach(panel=>{panel.open=!mobile.matches});
+  sync();
+  if (mobile.addEventListener) mobile.addEventListener('change',sync);
+  else mobile.addListener(sync);
+})();
+</script>
 </body>
 </html>
