@@ -1,0 +1,12 @@
+import {PortalError} from './controller.mjs';
+const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+export function readableIssue(j){return j&&j.schema===2&&j.action==='issueBilling'&&uuid.test(j.enterpriseId||'')&&uuid.test(j.billingMonthId||'')&&Number.isFinite(Date.parse(j.startedAt))&&j.before?.status==='draft'&&Number.isFinite(j.before.totalAmount)&&['card','bank'].includes(j.paymentMethod);}
+export function classify(j,r){
+ if(!readableIssue(j)||!r||r.enterpriseId!==j.enterpriseId||r.billingMonthId!==j.billingMonthId||r.totalAmount!==j.before.totalAmount||!Array.isArray(r.issuedAudit))return 'unresolved';
+ if(['unpaid','paid'].includes(r.status)&&r.paymentMethod===j.paymentMethod&&r.billingTransactionCount===1&&r.invoiceJobCount===1&&r.issuedAudit.some(a=>a.action==='operator_billing_issued'&&a.sameActor===true&&Date.parse(a.at)>=Date.parse(j.startedAt)))return 'executed';
+ if(r.status==='draft'&&r.issuedAudit.length===0&&r.billingTransactionCount===0&&r.invoiceJobCount===0&&j.rejection==='recent_mfa_before_write')return 'rejected_before_write';
+ return 'unresolved';
+}
+export function readJournal(store,id){try{return JSON.parse(store?.getItem('operator-pending:'+id)||'null');}catch{return {schema:0};}}
+export async function inspect(ops){const g=ops.generation;await ops.verify(g);const j=readJournal(ops.journal,ops.identity);if(!readableIssue(j))throw new PortalError('reconciliation_insufficient');const response=await ops.api.call('operator-admin-query',{action:'reconcileIssue',enterpriseId:j.enterpriseId,billingMonthId:j.billingMonthId,startedAt:j.startedAt});ops.current(g);if(response?.success!==true)throw new PortalError('reconciliation_unavailable');return {journal:j,state:classify(j,response.data),checkedAt:response.data.checkedAt};}
+export async function resolve(ops,explicit){if(explicit!==true)throw new PortalError('explicit_confirmation_required');const g=ops.generation;const proof=await inspect(ops);ops.current(g);if(proof.state==='unresolved')throw new PortalError('reconciliation_unresolved');const key='operator-pending:'+ops.identity;if(JSON.stringify(readJournal(ops.journal,ops.identity))!==JSON.stringify(proof.journal))throw new PortalError('journal_changed');ops.journal.setItem('operator-resolved:'+ops.identity+':'+proof.journal.localId,JSON.stringify({...proof.journal,resolution:proof.state,checkedAt:proof.checkedAt,resolvedAt:new Date().toISOString()}));ops.journal.removeItem(key);ops.unknown=false;return proof;}
