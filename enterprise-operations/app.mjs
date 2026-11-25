@@ -1,3 +1,4 @@
+import {feeSettings} from './fee-settings.mjs';
 import {inspect,resolve} from './journal.mjs';
 import {addBillingLine,readBillingLines} from './billing-lines.mjs';
 import {Operations} from './operations.mjs?v=flow5';
@@ -6,11 +7,13 @@ import {adapter,validateConfig} from './sdk-adapter.mjs';
 const el=id=>document.getElementById(id),node=(tag,t)=>{const n=document.createElement(tag);n.textContent=t;return n;};
 const names={terminateEnterprise:'契約を終了',restoreEnterprise:'契約を再開',reverseBankPayment:'入金記録を訂正',createEnterprise:'企業登録・初期管理者を招待',createEnterpriseInvitation:'登録済み企業の担当者を招待',editEnterprise:'企業情報・支払方法を変更',changeEnterpriseUsage:'試用・有料の切替',saveBillingDraft:'請求明細・金額を入力',issueBilling:'請求書を発行',markBillingPaid:'銀行振込の入金を記録'};
 let client,ops,generation=0,requestId=crypto.randomUUID(),sessionIdentity=null,sessionToken=null,viewReady=false;
+const feePanel=feeSettings(el,()=>ops,()=>viewReady&&activeView==='fees');
 const choices = document.querySelectorAll('[data-action]');
 const viewActions = {
  companies:['createEnterprise','editEnterprise','changeEnterpriseUsage','terminateEnterprise','restoreEnterprise'],
  invites:['createEnterpriseInvitation'],
  billing:['saveBillingDraft','issueBilling','markBillingPaid','reverseBankPayment'],
+ fees:[],
  settings:[]
 };
 let activeView='companies';
@@ -18,6 +21,9 @@ const pages={company:0,bill:0};
 const normalize=value=>String(value??'').normalize('NFKC').trim().toLocaleLowerCase();
 function showView(view) {
  activeView=view;
+ feePanel.reset();
+ el('fee-panel').hidden=view!=='fees';
+ if(view==='fees'&&viewReady)void feePanel.read();
  for(const button of document.querySelectorAll('#work-nav button')){
    if(button.dataset.view===view){
      button.setAttribute('aria-current','page');
@@ -205,7 +211,7 @@ function fields(){el('fields').replaceChildren();el('confirm').checked=false;con
  if(action==='createEnterprise')el('field-paymentMethod').selectedIndex=-1;
 }
 function clearSensitiveView(){
- viewReady=false;el('bill-search').value='';el('bill-status').value='';el('bill-records').replaceChildren();el('records').replaceChildren();el('fields').replaceChildren();el('result').replaceChildren();
+ feePanel.reset();viewReady=false;el('bill-search').value='';el('bill-status').value='';el('bill-records').replaceChildren();el('records').replaceChildren();el('fields').replaceChildren();el('result').replaceChildren();
  el('confirm').checked=false;el('submit').disabled=true;el('action').disabled=true;
  el('pending-result').textContent='';el('resolve-confirm').checked=false;el('resolve-pending').disabled=true;
 }
@@ -226,7 +232,7 @@ async function sessionChanged(session){const id=session?.user?.id||null,token=se
    pages.company=0;pages.bill=0;
    for(const key of ['company-search','company-status','bill-search','bill-status'])el(key).value='';
    showView('companies');
- }sessionIdentity=id;sessionToken=token;viewReady=false;const g=++generation;ops.setIdentity(session?.user?.id||null);el('task').hidden=true;for(const button of choices)button.setAttribute('aria-expanded','false');el('login').hidden=!!session;el('logout').hidden=!session;el('mfa').hidden=true;el('operations').hidden=true;el('records').replaceChildren();el('fields').replaceChildren();el('result').textContent='';el('pending-result').textContent='';el('resolve-confirm').checked=false;el('resolve-pending').disabled=true;el('notice').textContent='';if(!session)return;try{const a=await client.auth.mfa.getAuthenticatorAssuranceLevel();if(g!==generation)return;if(a.error)throw Error();if(a.data.currentLevel!=='aal2'){const fs=await client.auth.mfa.listFactors();if(g!==generation)return;el('factor').replaceChildren();for(const f of fs.data.totp.filter(x=>x.status==='verified')){const o=node('option',f.friendly_name||'認証アプリ');o.value=f.id;el('factor').append(o);}el('mfa').hidden=false;notify('mfa_required');return;}await refresh();if(g===generation)el('operations').hidden=false;}catch(e){if(g===generation){notify(e.code||'read_failed');if(!el('operations').hidden||!el('login').hidden)return;if(el('notice').textContent.includes('結果を確認できません'))el('notice').textContent='管理画面の読込みに失敗しました。ページを再読み込みしてください。';}}}
+ }feePanel.reset();sessionIdentity=id;sessionToken=token;viewReady=false;const g=++generation;ops.setIdentity(session?.user?.id||null);el('task').hidden=true;for(const button of choices)button.setAttribute('aria-expanded','false');el('login').hidden=!!session;el('logout').hidden=!session;el('mfa').hidden=true;el('operations').hidden=true;el('records').replaceChildren();el('fields').replaceChildren();el('result').textContent='';el('pending-result').textContent='';el('resolve-confirm').checked=false;el('resolve-pending').disabled=true;el('notice').textContent='';if(!session)return;try{const a=await client.auth.mfa.getAuthenticatorAssuranceLevel();if(g!==generation)return;if(a.error)throw Error();if(a.data.currentLevel!=='aal2'){const fs=await client.auth.mfa.listFactors();if(g!==generation)return;el('factor').replaceChildren();for(const f of fs.data.totp.filter(x=>x.status==='verified')){const o=node('option',f.friendly_name||'認証アプリ');o.value=f.id;el('factor').append(o);}el('mfa').hidden=false;notify('mfa_required');return;}await refresh();if(g===generation){el('operations').hidden=false;if(activeView==='fees')void feePanel.read();}}catch(e){if(g===generation){notify(e.code||'read_failed');if(!el('operations').hidden||!el('login').hidden)return;if(el('notice').textContent.includes('結果を確認できません'))el('notice').textContent='管理画面の読込みに失敗しました。ページを再読み込みしてください。';}}}
 try{const r=await fetch('config.json',{cache:'no-store'});const cfg=validateConfig(await r.json());client=globalThis.supabase.createClient(cfg.supabaseUrl,cfg.anonKey,{auth:{persistSession:true,storage:sessionStorage,storageKey:'enterprise-operations-auth-v1',detectSessionInUrl:false}});for(let i=0;i<sessionStorage.length;i++){const key=sessionStorage.key(i);if(key?.startsWith('operator-pending:')&&!localStorage.getItem(key))localStorage.setItem(key,sessionStorage.getItem(key));}ops=new Operations(adapter(client,cfg.supabaseUrl),localStorage);for(const [v,t] of Object.entries(names)){const o=node('option',t);o.value=v;el('action').append(o);}client.auth.onAuthStateChange((event,session)=>{if(event==='TOKEN_REFRESHED'&&session?.user?.id===ops.identity)return;setTimeout(()=>void sessionChanged(session),0);});await sessionChanged((await client.auth.getSession()).data.session);
  el('login-form').onsubmit=async e=>{e.preventDefault();const password=el('password').value;el('password').value='';const r=await client.auth.signInWithPassword({email:el('email').value,password});if(r.error)notify('login_required');};
  el('mfa-form').onsubmit=async e=>{e.preventDefault();const code=el('code').value;el('code').value='';const r=await client.auth.mfa.challengeAndVerify({factorId:el('factor').value,code});if(r.error)notify('mfa_required');};
@@ -235,7 +241,7 @@ try{const r=await fetch('config.json',{cache:'no-store'});const cfg=validateConf
  el('company-search').oninput=()=>{pages.company=0;if(viewReady)records();};el('company-status').onchange=el('company-search').oninput;
  el('bill-search').oninput=()=>{pages.bill=0;if(viewReady)renderBills();};el('bill-status').onchange=el('bill-search').oninput;
  el('fields').oninput=()=>{el('confirm').checked=false;};el('fields').onchange=()=>{el('confirm').checked=false;rememberSelection();};
- el('action').onchange=()=>{if(ops.busy||ops.unknown)return;requestId=crypto.randomUUID();fields();rememberSelection();};el('refresh').onclick=()=>refresh().catch(e=>notify(e.code));
+ el('action').onchange=()=>{if(ops.busy||ops.unknown)return;requestId=crypto.randomUUID();fields();rememberSelection();};el('refresh').onclick=()=>activeView==='fees'?feePanel.read():refresh().catch(e=>notify(e.code));
  el('command').onsubmit=async e=>{e.preventDefault();if(!el('confirm').checked)return;const body={action:el('action').value};for(const [key,f] of Object.entries(contracts[body.action])){if(key==='clientRequestId'){body[key]=requestId;continue;}if(f.kind==='lines'){body[key]=readBillingLines(el('field-'+key));continue;}let v=el('field-'+key).value;if(v===''&&f.optional)continue;body[key]=key==='billingMonth'?v+'-01':f.kind==='boolean'?v==='true':f.kind==='integer'?Number(v):f.kind==='timestamp'?new Date(v).toISOString():v;}if(body.action==='saveBillingDraft')body.expectedUpdatedAt=el('field-lines').dataset.version||null;if(body.action==='editEnterprise'){body.expectedUpdatedAt=el('field-enterpriseId').dataset.version;body.expectedRevision=Number(el('field-enterpriseId').dataset.revision);}
  const g=generation;el('submit').disabled=true;el('action').disabled=true;el('refresh').disabled=true;try{const receipt=await ops.execute(body);if(g!==generation)return;el('result').dataset.view=activeView;el('result').hidden=false;el('result').replaceChildren(node('p','操作を受け付けました。最新の台帳を確認してください。'));const invitation=receipt?.initialAdministratorInvitation || (receipt?.inviteCode?receipt:null);if(invitation){const label=node('label','招待コード（担当者が確認済みの相手へ安全に案内）'),v=document.createElement('input');v.readOnly=true;v.value=invitation.inviteCode;label.append(v);el('result').append(label,node('p','外部メールは自動送信していません。招待の有効期限：'+invitation.expiresAt));}el('task').hidden=true;for(const button of choices)button.setAttribute('aria-expanded','false');requestId=crypto.randomUUID();await refresh();}catch(e){if(g===generation){if(['login_required','mfa_required','forbidden','invalid_response'].includes(e.code))clearSensitiveView();notify(e.code);}}finally{if(g===generation){el('submit').disabled=!viewReady||ops.busy||ops.unknown;el('action').disabled=!viewReady||ops.busy||ops.unknown;el('refresh').disabled=ops.busy;}}};
  el('logout').onclick=async()=>{if(ops.identity)sessionStorage.removeItem(selectionKey(ops.identity));await sessionChanged(null);try{await client.auth.signOut({scope:'local'});}finally{sessionStorage.removeItem('enterprise-operations-auth-v1');el('email').value='';el('password').value='';el('code').value='';el('factor').replaceChildren();}};

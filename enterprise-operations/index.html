@@ -1,8 +1,9 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self' https://uxsdddejthdpoxghuzca.supabase.co; img-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'"><title>運営管理窓口｜合同会社TSUNAGARI</title><link rel="stylesheet" href="style.css?v=layout6"></head><body><main><header><span class="wordmark">JUN-IKU</span><h1>企業管理窓口</h1><p>クロスメソッド™︎ 運営管理</p></header><p id="notice" role="status" aria-live="polite"></p><section id="login"><h2>運営担当ログイン</h2><form id="login-form"><label>メールアドレス<input id="email" type="email" autocomplete="username" required></label><label>パスワード<input id="password" type="password" autocomplete="current-password" required></label><button>ログイン</button></form></section><section id="mfa" hidden><h2>追加認証</h2><p>登録済みの認証アプリのコードを入力してください。旧名MEGURIで登録した項目も使用できます。</p><form id="mfa-form"><label>認証アプリ<select id="factor"></select></label><label>6桁コード<input id="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required></label><button>確認する</button></form></section><section id="operations" hidden>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self' https://uxsdddejthdpoxghuzca.supabase.co; img-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'"><title>運営管理窓口｜合同会社TSUNAGARI</title><link rel="stylesheet" href="style.css?v=fee7"></head><body><main><header><span class="wordmark">JUN-IKU</span><h1>企業管理窓口</h1><p>クロスメソッド™︎ 運営管理</p></header><p id="notice" role="status" aria-live="polite"></p><section id="login"><h2>運営担当ログイン</h2><form id="login-form"><label>メールアドレス<input id="email" type="email" autocomplete="username" required></label><label>パスワード<input id="password" type="password" autocomplete="current-password" required></label><button>ログイン</button></form></section><section id="mfa" hidden><h2>追加認証</h2><p>登録済みの認証アプリのコードを入力してください。旧名MEGURIで登録した項目も使用できます。</p><form id="mfa-form"><label>認証アプリ<select id="factor"></select></label><label>6桁コード<input id="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required></label><button>確認する</button></form></section><section id="operations" hidden>
   <nav id="work-nav" aria-label="業務メニュー">
     <button type="button" data-view="companies" aria-current="page">企業台帳</button>
     <button type="button" data-view="invites">招待</button>
     <button type="button" data-view="billing">請求・入金</button>
+    <button type="button" data-view="fees">請求設定</button>
     <button type="button" data-view="settings">管理設定</button>
   </nav>
   <div class="section-head"><h2 id="view-title">企業台帳</h2><button id="refresh" type="button">一覧を更新</button></div>
@@ -26,5 +27,31 @@
   <div id="result" role="status"></div>
   <div class="registry" id="company-panel"><div class="filters"><label>企業を検索<input id="company-search" type="search" placeholder="企業名・企業コード"></label><label>契約状態<select id="company-status"><option value="">すべて</option><option value="active">契約中</option><option value="terminated">契約終了</option><option value="deleted">削除済み</option></select></label></div><div id="records"></div><div id="company-pages" class="pager"></div></div>
   <section id="billing-panel" class="registry" hidden><div class="filters"><label>企業名・請求番号・請求月で検索<input id="bill-search" type="search"></label><label>請求状態<select id="bill-status"><option value="">すべて</option><option value="draft">下書き</option><option value="unpaid">未入金</option><option value="paid">入金済み</option></select></label></div><div id="bill-records"></div><div id="bill-pages" class="pager"></div></section>
+  <section id="fee-panel" class="registry" hidden>
+    <h2>JUN-IKU利用料の振込先</h2>
+    <p>ここで保存した口座が、今後発行する銀行振込の企業向け請求書に載ります。</p>
+    <p id="fee-current" role="status"></p>
+    <details><summary>① 販売者を設定</summary>
+      <form id="fee-seller" autocomplete="off">
+        <label>法人の正式名称<input name="legalName" maxlength="200" required></label>
+        <label>販売者の表示名<input name="publicBusinessName" maxlength="200" required></label>
+        <label>問い合わせメールアドレス<input name="supportEmail" type="email" required></label>
+        <label>カード明細表記（任意・空欄で未設定）<input name="statementDescriptor" maxlength="22"></label>
+        <button>利用料の販売者を保存</button>
+      </form>
+    </details>
+    <details><summary>② 振込先を設定</summary>
+      <form id="fee-bank" autocomplete="off">
+        <label>銀行名<input name="bankName" maxlength="100" required></label>
+        <label>支店名<input name="branchName" maxlength="100" required></label>
+        <label>預金種別<select name="accountType"><option>普通</option><option>当座</option></select></label>
+        <label>口座番号（半角数字）<input name="accountNumber" inputmode="numeric" pattern="[0-9]{4,8}" maxlength="8" required></label>
+        <label>口座名義<input name="accountHolder" maxlength="100" required></label>
+        <label class="check"><input type="checkbox" required>企業向け請求書に記載する振込先を確認しました</label>
+        <button>利用料の振込先を保存</button>
+      </form>
+    </details>
+    <p id="fee-message" role="status"></p>
+  </section>
   <details id="security-panel" hidden open><summary>認証・処理結果の確認</summary><button id="reauth" type="button">追加認証を更新</button><button id="inspect-pending" type="button">台帳・監査と保留を照合</button><p id="pending-result" role="status"></p><label class="check"><input id="resolve-confirm" type="checkbox">照合結果を確認し、この保留だけ解決する</label><button id="resolve-pending" type="button" disabled>確認した保留を解決</button></details>
-</section><button id="logout" hidden type="button">ログアウト</button><footer>台帳登録は契約締結ではありません。契約書・相手の権限・請求条件を担当者が確認してから操作します。外部メールは自動送信しません。</footer></main><script src="vendor/supabase.js"></script><script type="module" src="app.mjs?v=layout6"></script></body></html>
+</section><button id="logout" hidden type="button">ログアウト</button><footer>台帳登録は契約締結ではありません。契約書・相手の権限・請求条件を担当者が確認してから操作します。外部メールは自動送信しません。</footer></main><script src="vendor/supabase.js"></script><script type="module" src="app.mjs?v=fee7"></script></body></html>
