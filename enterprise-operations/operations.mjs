@@ -9,8 +9,6 @@ export class Operations {
   const g=this.generation,read=++this.readSequence;
   try{
    await this.verify(g);
-   const controls=await this.api.call('operator-admin-query',{action:'controls'});this.current(g);
-   if(controls?.success!==true)throw new PortalError('forbidden');
    const rows = [];
    const seen = new Set();
    let cursor = {};
