@@ -12,3 +12,31 @@
 .juniku-release-label,.juniku-google-pending{position:absolute;box-sizing:border-box;z-index:4;display:grid;place-content:center;text-align:center;line-height:1.15;background:#071d26;font-family:system-ui,sans-serif;font-weight:700}
 .juniku-release-label{left:39%;top:10.3%;width:16.4%;height:5.9%;border:1px solid #d8b46d;border-radius:.8cqw;color:#ffe2a0;font-size:1.95cqw}
 .juniku-google-pending{left:21.7%;top:81.8%;width:17.3%;height:8.1%;border:1px solid #9ca8a8;border-radius:.9cqw;color:#ecece6;font-size:1.64cqw}
+
+.juniku-mobile-actions, .juniku-mobile-copy { display: none; }
+
+@media (max-width: 767px) {
+  #juniku-preview {
+    color: #fff8ec;
+    background: radial-gradient(ellipse at top right, #125660, transparent 75%), #03232e;
+  }
+  #juniku-preview .juniku-hero { min-height: 232px; height: 59vw; max-height: 320px; color: inherit; }
+  #juniku-preview .juniku-hero > img, #juniku-preview .juniku-word-cover,
+  #juniku-preview .juniku-apple-link, #juniku-preview .juniku-google-pending { display: none; }
+  #juniku-preview .juniku-live-word { top: 22px; left: 5%; width: auto; height: auto; font-size: 29px; letter-spacing: .035em; }
+  #juniku-preview .juniku-release-label { top: 24px; left: auto; right: 5%; width: auto; height: auto; padding: 5px 9px; border-radius: 5px; font-size: 12px; }
+  #juniku-preview .juniku-mobile-copy { position: absolute; left: 5%; top: 37%; z-index: 2; display: grid; gap: 10px; }
+  .juniku-mobile-copy strong { font: 700 clamp(28px, 7.5vw, 46px)/1.24 serif; }
+  .juniku-mobile-copy b { color: #ffc2cb; }
+  .juniku-mobile-copy small { color: #ffdea1; font: 600 clamp(11px, 2.9vw, 16px)/1.5 system-ui,sans-serif; }
+  #juniku-preview .juniku-phones { top: 29%; right: 1%; width: 43%; height: 70%; }
+  .juniku-mobile-actions { display: grid; gap: 12px; padding: 0 5% 20px; }
+  #juniku-preview .juniku-special-cta { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 16px; background: linear-gradient(110deg,#efc778,#fff0c9,#e4b660); border-radius: 10px; color: #312313; font: 800 clamp(16px,4.4vw,20px)/1.4 system-ui,sans-serif; text-decoration: none; }
+  .juniku-mobile-stores { display: flex; align-items: center; justify-content: center; gap: 14px; }
+  #juniku-preview .juniku-mobile-stores a { display: grid; align-items: center; min-height: 44px; }
+  #juniku-preview .juniku-mobile-stores img { width: auto; height: 38px; }
+  .juniku-mobile-stores span { color: #daeaeb; font: 600 13px/1.4 system-ui,sans-serif; }
+  #mobile-bottom-nav .mobile-bottom-app { color: white; background: linear-gradient(140deg,#174a58,#063441); }
+  #mobile-bottom-nav .mobile-bottom-app .mobile-bottom-icon { padding: 0; background: transparent; }
+  .mobile-bottom-app img { display: block; width: 32px; height: 32px; border-radius: 7px; }
+}
