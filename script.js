@@ -1629,11 +1629,11 @@ function positionPrioritySections() {
   const main = document.querySelector("main[data-home-approved-layout]");
   if (!main) return;
   const ids = [
-    "hero", "evaluation-feature", "news", "evidence", "chat-warning",
+    "hero", "juniku-preview", "evaluation-feature", "news", "evidence", "chat-warning",
     "diagnostics", "voice-behind", "services", "achievements",
     "healthyfood", "certification", "flow", "business-guides"
   ];
-  const sections = new Map(Array.from(main.children, node => [node.dataset.sectionId, node]));
+  const sections = new Map(Array.from(main.children, node => [node.dataset.sectionId || node.id, node]));
   let previous = null;
   for (const id of ids) {
     const section = sections.get(id);
