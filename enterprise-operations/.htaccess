@@ -17,5 +17,5 @@ Require all denied
 </FilesMatch>
 RewriteEngine On
 RewriteCond %{HTTPS} !=on [OR]
-RewriteCond %{HTTP_HOST} !^tsunagari-jp\.com$ [NC]
+RewriteCond %{HTTP_HOST} !^www\.tsunagari-jp\.com$ [NC]
 RewriteRule ^ - [F,L]
