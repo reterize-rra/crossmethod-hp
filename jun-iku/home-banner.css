@@ -7,3 +7,8 @@
 .juniku-live-word :nth-child(1){color:#168d83;animation-delay:0s}.juniku-live-word :nth-child(2){color:#438fbd;animation-delay:.25s}.juniku-live-word :nth-child(3){color:#d9a343;animation-delay:.5s}.juniku-live-word :nth-child(4){color:#f5f2e8;animation-delay:.75s;font-size:.7em}.juniku-live-word :nth-child(5){color:#ca6681;animation-delay:1s}.juniku-live-word :nth-child(6){color:#7967a1;animation-delay:1.25s}.juniku-live-word :nth-child(7){color:#659755;animation-delay:1.5s}
 @keyframes juniku-top-letter{0%,42%,100%{transform:translateY(0) rotate(0deg)}14%{transform:translateY(-.07em) rotate(-5deg)}27%{transform:translateY(.015em) rotate(3deg)}}
 @media(prefers-reduced-motion:reduce){.juniku-live-word i,.juniku-live-word em{animation:none!important}}
+
+.juniku-preview-banner .juniku-apple-link{position:absolute;z-index:5;left:3.6%;top:81.8%;width:17.3%;height:7.9%;border-radius:.8cqw}
+.juniku-release-label,.juniku-google-pending{position:absolute;box-sizing:border-box;z-index:4;display:grid;place-content:center;text-align:center;line-height:1.15;background:#071d26;font-family:system-ui,sans-serif;font-weight:700}
+.juniku-release-label{left:39%;top:10.3%;width:16.4%;height:5.9%;border:1px solid #d8b46d;border-radius:.8cqw;color:#ffe2a0;font-size:1.95cqw}
+.juniku-google-pending{left:21.7%;top:81.8%;width:17.3%;height:8.1%;border:1px solid #9ca8a8;border-radius:.9cqw;color:#ecece6;font-size:1.64cqw}
