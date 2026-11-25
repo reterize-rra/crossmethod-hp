@@ -238,3 +238,24 @@ export const contracts={
     }
   }
 };
+
+const paymentMethod = contracts.issueBilling.paymentMethod;
+contracts.createEnterprise.paymentMethod = paymentMethod;
+contracts.editEnterprise = {
+ clientRequestId: contracts.createEnterprise.clientRequestId,
+ enterpriseId: contracts.createEnterpriseInvitation.enterpriseId,
+ ...Object.fromEntries(['legalName','industryCategory','primaryWorktypeCategory','contractedUserCapacity','areaAggregationEnabled','paymentMethod']
+   .map(key=>[key, contracts.createEnterprise[key]])),
+};
+
+contracts.terminateEnterprise = {
+ enterpriseId:contracts.editEnterprise.enterpriseId,
+ contractEndedOn:{kind:'date',label:'契約終了日'},
+ reason:{kind:'text',label:'終了理由',maxLength:1000}
+};
+contracts.restoreEnterprise = {enterpriseId:contracts.editEnterprise.enterpriseId};
+contracts.reverseBankPayment = {
+ billingMonthId:contracts.issueBilling.billingMonthId,
+ reason:{kind:'text',label:'入金記録の訂正理由',maxLength:500},
+ clientRequestId:contracts.createEnterprise.clientRequestId
+};

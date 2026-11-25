@@ -1,4 +1,3 @@
-import {merchantInput,merchantReceiptMatches} from './merchant-profile.mjs';
 import {PortalError} from './controller.mjs';
 export class Operations {
  constructor(api,journal=null){this.api=api;this.journal=journal;this.identity=null;this.generation=0;this.readSequence=0;this.busy=false;this.unknown=false;this.enterprises=[];this.bills=[];}
@@ -13,7 +12,7 @@ export class Operations {
    const seen = new Set();
    let cursor = {};
    while (true) {
-     const result = await this.api.call('operator-admin-query', {action:'enterprises', contractStatus:'active', limit:100, ...cursor});
+     const result = await this.api.call('enterprise-registry', {action:'enterprises', limit:100, ...cursor});
      this.current(g);
      if (read !== this.readSequence) throw new PortalError('stale_identity');
      if (result?.success !== true || !Array.isArray(result.data?.enterprises)) throw new PortalError('invalid_response');
@@ -24,7 +23,22 @@ export class Operations {
      seen.add(next.beforeId);
      cursor = {beforeCreatedAt:next.beforeCreatedAt, beforeId:next.beforeId};
    }
-   this.enterprises=rows;this.bills=[];return this;
+   const bills = [];
+   const billCursors = new Set();
+   let billCursor = {};
+   for (;;) {
+     const result = await this.api.call('enterprise-registry',{action:'billing', limit:200, ...billCursor});
+     this.current(g);
+     if (read !== this.readSequence) throw new PortalError('stale_identity');
+     if (result?.success !== true || !Array.isArray(result.data?.billingMonths)) throw new PortalError('invalid_response');
+     bills.push(...result.data.billingMonths);
+     const next = result.data.nextCursor;
+     if (!next) break;
+     if (!next.beforeMonth || !next.beforeId || billCursors.has(next.beforeId)) throw new PortalError('invalid_response');
+     billCursors.add(next.beforeId);
+     billCursor = {beforeMonth:next.beforeMonth, beforeId:next.beforeId};
+   }
+   this.enterprises=rows;this.bills=bills;return this;
   }catch(error){
    // A rejected current read invalidates visible business data, never the durable journal.
    if(g===this.generation&&read===this.readSequence){this.enterprises=[];this.bills=[];}
@@ -32,5 +46,48 @@ export class Operations {
   }
  }
 
- async execute(body){if(body?.action==='setMerchantProfile')body=merchantInput(body);if(this.busy||this.unknown)throw new PortalError('operation_pending');if(!['createEnterprise','createEnterpriseInvitation'].includes(body.action))throw new PortalError('forbidden');const g=this.generation;this.busy=true;let sent=false;let journalRecord;try{await this.verify(g);if(['issueBilling','markBillingPaid'].includes(body.action)){await this.refresh();this.current(g);const bill=this.bills.find(b=>b.billingMonthId===body.billingMonthId);if(!bill || (body.action==='issueBilling'?bill.status!=='draft':bill.status!=='unpaid'||bill.paymentMethod!=='bank'))throw new PortalError('state_changed');}const bill=this.bills.find(b=>b.billingMonthId===body.billingMonthId);journalRecord={schema:2,localId:crypto.randomUUID(),action:body.action,enterpriseId:body.enterpriseId||bill?.enterpriseId||null,billingMonthId:body.billingMonthId||null,requestId:body.clientRequestId||null,startedAt:new Date().toISOString(),paymentMethod:body.paymentMethod||null,before:bill?{status:bill.status,totalAmount:bill.totalAmount,paymentMethod:bill.paymentMethod||null}:null,status:"unresolved"};this.journal?.setItem("operator-pending:"+this.identity,JSON.stringify(journalRecord));sent=true;const result=await this.api.call('operator-admin-command',body);this.current(g);if(result?.success!==true)throw new PortalError('operation_unknown');if(body.action==='setMerchantProfile'&&!merchantReceiptMatches(body,result.data))throw new PortalError('operation_unknown');this.journal?.removeItem("operator-pending:"+this.identity);return result.data;}catch(e){if(g===this.generation&&['login_required','mfa_required','forbidden','invalid_response'].includes(e.code)){this.enterprises=[];this.bills=[];}if(g===this.generation&&sent){if(e.preconditionRejected===true&&e.code==='mfa_required'){journalRecord.rejection='recent_mfa_before_write';this.journal?.setItem('operator-pending:'+this.identity,JSON.stringify(journalRecord));}this.unknown=true;}throw e;}finally{if(g===this.generation)this.busy=false;}}
+ async execute(body) {
+   const actions = ['createEnterprise','editEnterprise','createEnterpriseInvitation','changeEnterpriseUsage',
+     'saveBillingDraft','issueBilling','markBillingPaid','terminateEnterprise','restoreEnterprise','reverseBankPayment'];
+   if (!actions.includes(body.action)) throw new PortalError('forbidden');
+   if (this.busy || this.unknown) throw new PortalError('operation_pending');
+   const generation = this.generation;
+   const key = 'operator-pending:' + this.identity;
+   this.busy = true;
+   try {
+     return await navigator.locks.request(key, async () => {
+       await this.verify(generation);
+       if (this.journal.getItem(key)) {
+         this.unknown = true;
+         throw new PortalError('operation_pending');
+       }
+       if (['issueBilling','markBillingPaid','reverseBankPayment'].includes(body.action)) {
+         const selected = this.bills.find(b => b.billingMonthId === body.billingMonthId);
+         if (!selected) throw new PortalError('state_changed');
+         await this.refresh();
+         const current = this.bills.find(b => b.billingMonthId === body.billingMonthId);
+         if (!current || current.updatedAt !== selected.updatedAt || current.totalAmount !== selected.totalAmount ||
+             (body.action === 'issueBilling' ? current.status !== 'draft' : current.status !== (body.action==='reverseBankPayment'?'paid':'unpaid') || current.paymentMethod !== 'bank')) {
+           throw new PortalError('state_changed');
+         }
+         body = {...body, expectedUpdatedAt:current.updatedAt};
+       }
+       const operationId = crypto.randomUUID();
+       const pending = {schema:3, localId:operationId, action:body.action, startedAt:new Date().toISOString()};
+       this.journal.setItem(key,JSON.stringify(pending));
+       try {
+         const result = await this.api.call('enterprise-registry',{...body,operationId});
+         this.current(generation);
+         if (result?.success !== true) throw new PortalError('operation_unknown');
+         this.journal.removeItem(key);
+         return result.data;
+       } catch (error) {
+         if (generation === this.generation) this.unknown = true;
+         throw error;
+       }
+     });
+   } finally {
+     if (generation === this.generation) this.busy = false;
+   }
+ }
 }

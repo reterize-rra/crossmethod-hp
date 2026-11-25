@@ -8,5 +8,17 @@ export function classify(j,r){
  return 'unresolved';
 }
 export function readJournal(store,id){try{return JSON.parse(store?.getItem('operator-pending:'+id)||'null');}catch{return {schema:0};}}
-export async function inspect(ops){const g=ops.generation;await ops.verify(g);const j=readJournal(ops.journal,ops.identity);if(!readableIssue(j))throw new PortalError('reconciliation_insufficient');const response=await ops.api.call('operator-admin-query',{action:'reconcileIssue',enterpriseId:j.enterpriseId,billingMonthId:j.billingMonthId,startedAt:j.startedAt});ops.current(g);if(response?.success!==true)throw new PortalError('reconciliation_unavailable');return {journal:j,state:classify(j,response.data),checkedAt:response.data.checkedAt};}
-export async function resolve(ops,explicit){if(explicit!==true)throw new PortalError('explicit_confirmation_required');const g=ops.generation;const proof=await inspect(ops);ops.current(g);if(proof.state==='unresolved')throw new PortalError('reconciliation_unresolved');const key='operator-pending:'+ops.identity;if(JSON.stringify(readJournal(ops.journal,ops.identity))!==JSON.stringify(proof.journal))throw new PortalError('journal_changed');ops.journal.setItem('operator-resolved:'+ops.identity+':'+proof.journal.localId,JSON.stringify({...proof.journal,resolution:proof.state,checkedAt:proof.checkedAt,resolvedAt:new Date().toISOString()}));ops.journal.removeItem(key);ops.unknown=false;return proof;}
+export async function inspect(ops){const g=ops.generation;await ops.verify(g);const j=readJournal(ops.journal,ops.identity);if (j?.schema === 3 && uuid.test(j.localId)) return receiptState(ops,j,false,g);
+if(!readableIssue(j))throw new PortalError('reconciliation_insufficient');const response=await ops.api.call('operator-admin-query',{action:'reconcileIssue',enterpriseId:j.enterpriseId,billingMonthId:j.billingMonthId,startedAt:j.startedAt});ops.current(g);if(response?.success!==true)throw new PortalError('reconciliation_unavailable');return {journal:j,state:classify(j,response.data),checkedAt:response.data.checkedAt};}
+export async function resolve(ops,explicit){if(explicit!==true)throw new PortalError('explicit_confirmation_required');const g=ops.generation;let proof=await inspect(ops);if(proof.journal.schema===3 && proof.state==='unconfirmed')proof=await receiptState(ops,proof.journal,true,g);ops.current(g);if(!['executed','closed','rejected_before_write'].includes(proof.state))throw new PortalError('reconciliation_unresolved');const key='operator-pending:'+ops.identity;if(JSON.stringify(readJournal(ops.journal,ops.identity))!==JSON.stringify(proof.journal))throw new PortalError('journal_changed');ops.journal.setItem('operator-resolved:'+ops.identity+':'+proof.journal.localId,JSON.stringify({...proof.journal,resolution:proof.state,checkedAt:proof.checkedAt,resolvedAt:new Date().toISOString()}));ops.journal.removeItem(key);ops.unknown=false;return proof;}
+
+async function receiptState(ops,journal,close,generation) {
+ const result = await ops.api.call('enterprise-registry',{
+   action:close ? 'closeOperation' : 'checkOperation', operationId:journal.localId
+ });
+ ops.current(generation);
+ if (result?.success !== true || !['executed','closed','unconfirmed'].includes(result.data?.state)) {
+   throw new PortalError('reconciliation_unavailable');
+ }
+ return {journal,state:result.data.state,checkedAt:result.data.checkedAt};
+}
