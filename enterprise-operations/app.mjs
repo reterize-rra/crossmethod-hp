@@ -1,6 +1,6 @@
 import {inspect,resolve} from './journal.mjs';
 import {addBillingLine,readBillingLines} from './billing-lines.mjs';
-import {Operations} from './operations.mjs';
+import {Operations} from './operations.mjs?v=registry2';
 import {contracts} from './contracts.mjs';
 import {adapter,validateConfig} from './sdk-adapter.mjs';
 const el=id=>document.getElementById(id),node=(tag,t)=>{const n=document.createElement(tag);n.textContent=t;return n;};
