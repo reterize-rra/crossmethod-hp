@@ -1,1 +1,32 @@
 :root{font-family:system-ui,sans-serif;color:#183f3a;background:#faf8f2}body{margin:0}main{max-width:800px;margin:auto;padding:24px}header{border-bottom:3px solid #24998a}h1{font-size:clamp(22px,4vw,32px)}section{margin:20px 0;padding:20px;background:#fff;border-radius:16px}label{display:block;margin:16px 0;font-weight:600}input,select{display:block;width:100%;box-sizing:border-box;font:inherit;padding:12px;border:1px solid #86aaa3;border-radius:8px;margin-top:8px}button{font:inherit;padding:12px 18px;border:0;border-radius:10px;background:#217f74;color:#fff;cursor:pointer;margin:6px 8px 6px 0}button:disabled{opacity:.5;cursor:wait}#notice{padding:12px;background:#fce9ee;min-height:1.5em}article{border:1px solid #c8dfda;padding:16px;margin:12px 0;border-radius:12px}dl{display:grid;grid-template-columns:1fr 1fr;gap:8px}dd{margin:0;text-align:right}footer{font-size:.9rem;line-height:1.7;margin:24px 0}#detail{background:#eef8f5}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #c38629;outline-offset:3px}[hidden]{display:none!important}
+
+:root { background:#f6f4ed; color:#1c383b; font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif; }
+main { max-width:920px; padding:32px clamp(16px,4vw,44px); }
+header { padding:26px clamp(20px,5vw,44px); border:1px solid #315658; border-bottom:4px solid #bc9852; border-radius:20px; color:#fff9ed; background:linear-gradient(120deg,#092e37,#174c50); }
+.wordmark { color:#f3cf89; font-weight:850; letter-spacing:.13em; }
+header h1 { font:700 clamp(28px,5vw,40px)/1.35 "Hiragino Mincho ProN",serif; margin:12px 0 4px; }
+header p { color:#c6dcd9; margin:0; }
+#operations { padding:0; background:transparent; }
+#notice:empty,#result:empty { display:none; }
+.choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.choices button { position:relative; text-align:left; padding:24px 46px 24px 22px; margin:0; border:1px solid #155452; border-radius:16px; background:#155452; }
+.choices button + button { background:#fffaf0; border-color:#b8a77f; color:#303f3a; }
+.choices button[aria-expanded=true] { outline:3px solid #b79247; outline-offset:2px; }
+.choices span { display:block; font-size:clamp(19px,3vw,25px); font-weight:800; }
+.choices small { display:block; margin-top:6px; font-size:14px; }
+.choices b { position:absolute; right:18px; top:38%; font-size:22px; }
+#task,.registry,details,#result:not(:empty) { margin:20px 0; background:white; border:1px solid #d2dcd6; border-radius:16px; padding:clamp(16px,3vw,28px); }
+#task-title,.section-head h2 { margin:0; }
+#fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 20px; }
+#fields h3 { grid-column:1/-1; border-bottom:1px solid #cad9d2; padding-bottom:8px; margin:18px 0 0; color:#28665d; font-size:16px; }
+#fields label { margin:0; }
+#fields small { display:block; font-size:13px; font-weight:400; margin-top:5px; }
+.check { display:flex; gap:10px; align-items:center; }
+.check input { width:20px; height:20px; margin:0; flex:none; }
+.section-head,#records article { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+#records article { border:0; border-top:1px solid #d6dfdb; border-radius:0; margin:0; padding:14px 0; }
+#records small { color:#396956; background:#e8f2ea; border-radius:99px; padding:4px 12px; white-space:nowrap; }
+#refresh,details button,#logout { background:#e5eeea; color:#20524d; }
+summary { cursor:pointer; font-weight:650; }
+#result:not(:empty) { border-left:5px solid #368571; }
+@media(max-width:620px) { .choices,#fields { grid-template-columns:1fr; } .choices button { padding-top:17px; padding-bottom:17px; } main { padding-top:15px; } #submit { width:100%; } }
