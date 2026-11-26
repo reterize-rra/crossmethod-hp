@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#082d34"><title>企業利用のご相談｜JUN-IKU</title><link rel="stylesheet" href="form.css"><script defer src="form.js"></script></head>
+<body><main><a class="back" href="../">← JUN-IKU 特設ページ</a>
+<header><p class="brand">JUN-IKU</p><h1>企業利用のご相談</h1><p>導入や料金について、お気軽にご相談ください。担当者からご入力のメールアドレスに返信します。</p></header>
+<form id="contact"><label>会社名・団体名<input name="company" autocomplete="organization" required maxlength="120"></label>
+<label>お名前<input name="name" autocomplete="name" required maxlength="80"></label>
+<label>返信先メールアドレス<input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+<label>ご相談内容<textarea name="message" required maxlength="3000" rows="6"></textarea></label>
+<div hidden><label>ウェブサイト<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<label class="agree"><input type="checkbox" name="consent" required><span><a href="../privacy.html" target="_blank" rel="noopener">プライバシーポリシー</a>を確認しました</span></label>
+<button type="submit">相談内容を送信する</button><p id="status" role="status" aria-live="polite"></p>
+</form><noscript>フォームの送信にはJavaScriptを有効にしてください。</noscript>
+<section id="done" hidden tabindex="-1"><h2>ご相談を受け付けました</h2><p>ご入力いただいたメールアドレスに、担当者からご連絡します。</p><a href="../">特設ページに戻る →</a></section>
+</main></body></html>
