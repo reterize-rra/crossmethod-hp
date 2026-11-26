@@ -212,6 +212,10 @@ body{isolation:isolate;background:#020c16}.cinema-backdrop{position:fixed;inset:
 .store-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,2vw,16px);max-width:496px;margin-inline:auto}
 .store-pair .store-slot{box-sizing:border-box;width:100%;aspect-ratio:108.85157/40;display:flex;align-items:center;justify-content:center;background:transparent;border:0}
 .store-pair .store-slot img{display:block;width:100%;height:auto;max-width:none;max-height:none}
+/* Match the visible Google Play outline to the Apple badge. Keep its lettering proportional. */
+.store-pair .play-slot{position:relative;background:#040707;border-radius:5.5% / 15%;overflow:hidden}
+.store-pair .play-slot::after{content:"";position:absolute;inset:0;border:clamp(1px,.16vw,2px) solid #a6a6a6;border-radius:inherit;pointer-events:none}
+.store-pair .play-slot img{position:absolute;inset:50% auto auto 0;transform:translateY(-50%);clip-path:inset(15% 2.5% round 1%)}
 @media(max-width:350px){.store-pair{grid-template-columns:minmax(0,208px);justify-content:center;gap:12px}}
 .store-pair small{display:block;font:600 13px/1.5 system-ui,sans-serif;color:#e9e2d0;margin-top:4px}
 .juniku-actions .enterprise-contact{width:100%;margin:16px auto 0}.juniku-actions .enterprise-contact a{width:100%}
