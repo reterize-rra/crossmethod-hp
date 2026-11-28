@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.tsunagari-jp.com/</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-11-28</lastmod>
   </url>
   <url>
     <loc>https://www.tsunagari-jp.com/company/</loc>
@@ -67,5 +67,9 @@
   <url>
     <loc>https://www.tsunagari-jp.com/guide/health-management-start/</loc>
     <lastmod>2026-08-06</lastmod>
+  </url>
+  <url>
+    <loc>https://www.tsunagari-jp.com/jun-iku/</loc>
+    <lastmod>2026-11-28</lastmod>
   </url>
 </urlset>
