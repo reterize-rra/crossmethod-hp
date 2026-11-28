@@ -8,10 +8,16 @@
 @keyframes juniku-top-letter{0%,42%,100%{transform:translateY(0) rotate(0deg)}14%{transform:translateY(-.07em) rotate(-5deg)}27%{transform:translateY(.015em) rotate(3deg)}}
 @media(prefers-reduced-motion:reduce){.juniku-live-word i,.juniku-live-word em{animation:none!important}}
 
-.juniku-preview-banner .juniku-apple-link{position:absolute;z-index:5;left:3.6%;top:81.8%;width:17.3%;height:7.9%;border-radius:.8cqw}
+.juniku-preview-banner .juniku-apple-link,.juniku-preview-banner .juniku-play-link{position:absolute;z-index:5;top:81.6%;height:8.2%;width:17.5%;display:grid;place-items:center}
+.juniku-preview-banner .juniku-apple-link{left:3.55%}
+.juniku-preview-banner .juniku-play-link{left:21.65%}
 .juniku-release-label{position:absolute;box-sizing:border-box;z-index:4;display:grid;place-content:center;text-align:center;line-height:1.15;background:#071d26;font-family:system-ui,sans-serif;font-weight:700}
 .juniku-release-label{left:39%;top:10.3%;width:16.4%;height:5.9%;border:1px solid #d8b46d;border-radius:.8cqw;color:#ffe2a0;font-size:1.95cqw}
-.juniku-preview-banner .juniku-play-link{position:absolute;z-index:5;left:21.7%;top:81.8%;width:17.3%;height:7.9%;border-radius:.8cqw}
+/* One visible frame, with the original store artwork centered inside. */
+#juniku-preview :is(.juniku-apple-link,.juniku-play-link,.juniku-mobile-stores a){box-sizing:border-box;background:#000;border:1px solid #a6a6a6;border-radius:7px;overflow:hidden}
+#juniku-preview :is(.juniku-apple-link,.juniku-play-link,.juniku-mobile-stores a) img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+#juniku-preview :is(.juniku-apple-link,.juniku-mobile-stores a:first-child) img{width:auto;height:100%;clip-path:inset(6% 4% round 3px)}
+#juniku-preview :is(.juniku-play-link,.juniku-mobile-play) img{width:94%;height:auto;clip-path:inset(15% 4% round 3px)}
 
 
 .juniku-mobile-actions, .juniku-mobile-copy { display: none; }
@@ -34,9 +40,9 @@
   .juniku-mobile-actions { display: grid; gap: 12px; padding: 0 5% 20px; }
   #juniku-preview .juniku-special-cta { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 16px; background: linear-gradient(110deg,#efc778,#fff0c9,#e4b660); border-radius: 10px; color: #312313; font: 800 clamp(16px,4.4vw,20px)/1.4 system-ui,sans-serif; text-decoration: none; }
   .juniku-mobile-stores { display: flex; align-items: center; justify-content: center; gap: 14px; }
-  #juniku-preview .juniku-mobile-stores a { display: grid; align-items: center; min-height: 44px; }
-  #juniku-preview .juniku-mobile-stores img { width: auto; height: 38px; }
-  #juniku-preview .juniku-mobile-play img { height: 49px; }
+  #juniku-preview .juniku-mobile-stores a { width:min(44%,150px);aspect-ratio:3.05;display:block; }
+
+
   .juniku-mobile-stores span { color: #daeaeb; font: 600 13px/1.4 system-ui,sans-serif; }
   #mobile-bottom-nav .mobile-bottom-app { color: white; background: linear-gradient(140deg,#174a58,#063441); }
   #mobile-bottom-nav .mobile-bottom-app .mobile-bottom-icon { padding: 0; background: transparent; }
