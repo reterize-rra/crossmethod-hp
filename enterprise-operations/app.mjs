@@ -43,7 +43,8 @@ function showView(view) {
 }
 for(const button of document.querySelectorAll('#work-nav button')){
  button.onclick=()=>{
-   if(ops?.busy||button.dataset.view===activeView)return;
+   if(ops?.busy){el('notice').textContent='送信中です。完了すると画面が切り替えられます。';return;}
+   if(button.dataset.view===activeView)return;
    showView(button.dataset.view);
    if(activeView==='invites')document.querySelector('[data-action="createEnterpriseInvitation"]').click();
  };
@@ -69,7 +70,17 @@ function pageRows(rows,key,render){
 showView('companies');
 for (const button of choices) {
  button.onclick = () => {
-   if (!viewReady || ops.busy || ops.unknown) return;
+   if (ops?.unknown) {
+     showView('settings');
+     el('security-panel').open=true;
+     el('notice').textContent='前の操作が保留中です。「台帳・監査と保留を照合」で結果を確認してください。';
+     el('inspect-pending').focus();
+     return;
+   }
+   if (!viewReady || ops.busy) {
+     el('notice').textContent=ops.busy?'送信中です。':'台帳を読み込んでいます。表示されない場合は「一覧を更新」を押してください。';
+     return;
+   }
    const action = button.dataset.action;
    el('notice').textContent='';
    if (el('task').hidden || el('action').value !== action) {
@@ -191,6 +202,18 @@ function fields(){el('fields').replaceChildren();el('confirm').checked=false;con
  if(key==='usageType'||key==='initialAdminName'||key==='enterpriseId')el('fields').append(node('h3',({usageType:'企業・契約情報',initialAdminName:'初期管理者',enterpriseId:'対象企業'})[key]));
  el('fields').append(label);}
  const action=el('action').value;
+ if(action==='createEnterpriseInvitation'){
+   const kind=el('field-inviteKind'), name=el('field-recipientName');
+   const caption=name.parentElement.firstChild;
+   const validateName=()=>{
+     name.required=kind.value==='system_admin';
+     caption.textContent=name.required?'氏名（企業管理者は必須）':'氏名（任意）';
+     name.setCustomValidity(name.required&&!name.value.trim()?'企業管理者の氏名を入力してください。':'');
+   };
+   kind.addEventListener('change',validateName);
+   name.addEventListener('input',validateName);
+   validateName();
+ }
  if(action==='saveBillingDraft'){
    const loadDraft=()=>{
      const lines=el('field-lines');
@@ -236,13 +259,43 @@ async function sessionChanged(session){const id=session?.user?.id||null,token=se
 try{const r=await fetch('config.json',{cache:'no-store'});const cfg=validateConfig(await r.json());client=globalThis.supabase.createClient(cfg.supabaseUrl,cfg.anonKey,{auth:{persistSession:true,storage:sessionStorage,storageKey:'enterprise-operations-auth-v1',detectSessionInUrl:false}});for(let i=0;i<sessionStorage.length;i++){const key=sessionStorage.key(i);if(key?.startsWith('operator-pending:')&&!localStorage.getItem(key))localStorage.setItem(key,sessionStorage.getItem(key));}ops=new Operations(adapter(client,cfg.supabaseUrl),localStorage);for(const [v,t] of Object.entries(names)){const o=node('option',t);o.value=v;el('action').append(o);}client.auth.onAuthStateChange((event,session)=>{if(event==='TOKEN_REFRESHED'&&session?.user?.id===ops.identity)return;setTimeout(()=>void sessionChanged(session),0);});await sessionChanged((await client.auth.getSession()).data.session);
  el('login-form').onsubmit=async e=>{e.preventDefault();const password=el('password').value;el('password').value='';const r=await client.auth.signInWithPassword({email:el('email').value,password});if(r.error)notify('login_required');};
  el('mfa-form').onsubmit=async e=>{e.preventDefault();const code=el('code').value;el('code').value='';const r=await client.auth.mfa.challengeAndVerify({factorId:el('factor').value,code});if(r.error)notify('mfa_required');};
- el('inspect-pending').onclick=async()=>{try{const p=await inspect(ops);el('pending-result').textContent=({executed:'監査と現在状態で実行済みを確認しました。',rejected_before_write:'変更前の追加認証拒否と現在の下書きを確認しました。',unconfirmed:'サーバーに完了記録がありません。保留を解決すると、この操作番号での遅延実行を停止し、最終結果を照合します。',closed:'未実行で終了した操作です。',unresolved:'成否を確定できません。保留を維持します。'}[p.state]);el('resolve-pending').disabled=p.state==='unresolved';}catch{el('pending-result').textContent='対象情報不足または照合不能です。保留を維持します。';el('resolve-pending').disabled=true;}};el('resolve-pending').onclick=async()=>{try{const proof=await resolve(ops,el('resolve-confirm').checked);el('pending-result').textContent=proof.state==='executed'?'実行済みです。台帳を確認してください。':'未実行を確認しました。必要に応じて操作をやり直してください。';el('submit').disabled=false;el('action').disabled=false;await refresh();}catch{el('pending-result').textContent='保留を解除できません。再送せず照合してください。';}};
+ let checkedOperation=null;
+ const resolveButton=el('resolve-pending'),inspectButton=el('inspect-pending'),confirmBox=el('resolve-confirm'),status=el('pending-result');
+ confirmBox.onchange=()=>{resolveButton.disabled=!checkedOperation||!confirmBox.checked;};
+ async function reconcilePending(close){
+   const g=generation;
+   const key='operator-pending:'+ops.identity;
+   const pending=ops.journal.getItem(key);
+   if(close&&(!confirmBox.checked||!pending||pending!==checkedOperation))return;
+   checkedOperation=null;
+   inspectButton.disabled=resolveButton.disabled=confirmBox.disabled=true;
+   status.textContent=close?'この操作の最終結果を確認しています…':'台帳と操作結果を照合しています…';
+   try{
+     if(!pending){status.textContent='確認が必要な保留操作はありません。';return;}
+     const proof=close?await resolve(ops,true):await inspect(ops);
+     if(g!==generation)return;
+     status.textContent=({executed:'実行済みです。台帳を確認してください。',rejected_before_write:'追加認証の段階で停止し、変更はありませんでした。',unconfirmed:'サーバーに完了記録がありません。下のチェックを入れて「確認した保留を解決」を押してください。',closed:'未実行で終了しました。',unresolved:'結果を特定できません。保留を維持します。'})[proof.state];
+     if(!close&&proof.state!=='unresolved')checkedOperation=pending;
+     if(close){
+       el('notice').textContent=status.textContent;
+       try{await refresh();}catch(error){if(g===generation)el('notice').textContent+=' 台帳を再読み込みしてください。';}
+     }
+   }catch{
+     if(g===generation)status.textContent='照合できませんでした。保留はそのままです。「台帳・監査と保留を照合」から確認してください。';
+   }finally{
+     inspectButton.disabled=confirmBox.disabled=false;
+     confirmBox.checked=false;
+     resolveButton.disabled=true;
+   }
+ }
+ inspectButton.onclick=()=>reconcilePending(false);
+ resolveButton.onclick=()=>reconcilePending(true);
  el('reauth').onclick=async()=>{try{const fs=await client.auth.mfa.listFactors();if(fs.error)throw Error();el('factor').replaceChildren();for(const f of fs.data.totp.filter(x=>x.status==='verified')){const o=node('option',f.friendly_name||'認証アプリ');o.value=f.id;el('factor').append(o);}el('mfa').hidden=false;notify('mfa_required');}catch{notify('login_required');}};
  el('company-search').oninput=()=>{pages.company=0;if(viewReady)records();};el('company-status').onchange=el('company-search').oninput;
  el('bill-search').oninput=()=>{pages.bill=0;if(viewReady)renderBills();};el('bill-status').onchange=el('bill-search').oninput;
  el('fields').oninput=()=>{el('confirm').checked=false;};el('fields').onchange=()=>{el('confirm').checked=false;rememberSelection();};
  el('action').onchange=()=>{if(ops.busy||ops.unknown)return;requestId=crypto.randomUUID();fields();rememberSelection();};el('refresh').onclick=()=>activeView==='fees'?feePanel.read():refresh().catch(e=>notify(e.code));
  el('command').onsubmit=async e=>{e.preventDefault();if(!el('confirm').checked)return;const body={action:el('action').value};for(const [key,f] of Object.entries(contracts[body.action])){if(key==='clientRequestId'){body[key]=requestId;continue;}if(f.kind==='lines'){body[key]=readBillingLines(el('field-'+key));continue;}let v=el('field-'+key).value;if(v===''&&f.optional)continue;body[key]=key==='billingMonth'?v+'-01':f.kind==='boolean'?v==='true':f.kind==='integer'?Number(v):f.kind==='timestamp'?new Date(v).toISOString():v;}if(body.action==='saveBillingDraft')body.expectedUpdatedAt=el('field-lines').dataset.version||null;if(body.action==='editEnterprise'){body.expectedUpdatedAt=el('field-enterpriseId').dataset.version;body.expectedRevision=Number(el('field-enterpriseId').dataset.revision);}
- const g=generation;el('submit').disabled=true;el('action').disabled=true;el('refresh').disabled=true;try{const receipt=await ops.execute(body);if(g!==generation)return;el('result').dataset.view=activeView;el('result').hidden=false;el('result').replaceChildren(node('p','操作を受け付けました。最新の台帳を確認してください。'));const invitation=receipt?.initialAdministratorInvitation || (receipt?.inviteCode?receipt:null);if(invitation){const label=node('label','招待コード（担当者が確認済みの相手へ安全に案内）'),v=document.createElement('input');v.readOnly=true;v.value=invitation.inviteCode;label.append(v);el('result').append(label,node('p','外部メールは自動送信していません。招待の有効期限：'+invitation.expiresAt));}el('task').hidden=true;for(const button of choices)button.setAttribute('aria-expanded','false');requestId=crypto.randomUUID();await refresh();}catch(e){if(g===generation){if(['login_required','mfa_required','forbidden','invalid_response'].includes(e.code))clearSensitiveView();notify(e.code);}}finally{if(g===generation){el('submit').disabled=!viewReady||ops.busy||ops.unknown;el('action').disabled=!viewReady||ops.busy||ops.unknown;el('refresh').disabled=ops.busy;}}};
+ const g=generation;el('submit').disabled=true;el('action').disabled=true;el('refresh').disabled=true;el('notice').textContent='送信中です…';try{const receipt=await ops.execute(body);if(g!==generation)return;el('notice').textContent='';el('result').dataset.view=activeView;el('result').hidden=false;el('result').replaceChildren(node('p','操作を受け付けました。最新の台帳を確認してください。'));const invitation=receipt?.initialAdministratorInvitation || (receipt?.inviteCode?receipt:null);if(invitation){const label=node('label','招待コード（担当者が確認済みの相手へ安全に案内）'),v=document.createElement('input');v.readOnly=true;v.value=invitation.inviteCode;label.append(v);el('result').append(label,node('p','外部メールは自動送信していません。招待の有効期限：'+invitation.expiresAt));}el('task').hidden=true;for(const button of choices)button.setAttribute('aria-expanded','false');requestId=crypto.randomUUID();await refresh();}catch(e){if(g===generation){if(['login_required','mfa_required','forbidden','invalid_response'].includes(e.code))clearSensitiveView();notify(e.code);}}finally{if(g===generation){el('submit').disabled=!viewReady||ops.busy||ops.unknown;el('action').disabled=!viewReady||ops.busy||ops.unknown;el('refresh').disabled=ops.busy;}}};
  el('logout').onclick=async()=>{if(ops.identity)sessionStorage.removeItem(selectionKey(ops.identity));await sessionChanged(null);try{await client.auth.signOut({scope:'local'});}finally{sessionStorage.removeItem('enterprise-operations-auth-v1');el('email').value='';el('password').value='';el('code').value='';el('factor').replaceChildren();}};
 }catch(e){notify(e.code);el('login-form').querySelector('button').disabled=true;}
